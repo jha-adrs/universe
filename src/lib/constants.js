@@ -1,0 +1,1 @@
+exports.switchThemeDuration = 'transition duration-500 ease-in-out' 
