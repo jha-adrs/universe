@@ -1,76 +1,70 @@
-import { db } from "./db"
-import {PrismaAdapter} from '@next-auth/prisma-adapter'
-import { nanoid } from "nanoid"
+import { db } from '@/lib/db'
+import { PrismaAdapter } from '@next-auth/prisma-adapter'
+import { nanoid } from 'nanoid'
+import { getServerSession } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
-// TODO: Add more providers here
-export const authOptions ={
-    adapter: PrismaAdapter(db),
-    session:{
-        strategy: 'jwt'
-    },
-    pages:{
-        signIn:'sign-in',
-        signOut:'sign-out',
 
+export const authOptions = {
+    adapter: PrismaAdapter(db),
+    session: {
+        strategy: 'jwt',
     },
-    providers:[
+    pages: {
+        signIn: '/sign-in',
+    },
+    providers: [
         GoogleProvider({
-            clientId:process.env.GOOGLE_CLIENT_ID,
-            clientSecret:process.env.GOOGLE_CLIENT_SECRET
-        })
+            clientId: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        }),
     ],
-    callbacks:{
-        async session({session,token, user}){
-            if(token){
+    callbacks: {
+        async session({ token, session }) {
+            if (token) {
                 session.user.id = token.id
-                session.user.username = token.username
+                session.user.name = token.name
                 session.user.email = token.email
-                session.user.image = token.image
-                session.user.name = token.name 
-                // TODO: Add instiutional email check here or in the provider
-                session.user.institutionalEmail = token.institutionalEmail
+                session.user.image = token.picture
+                session.user.username = token.username
             }
-            return session;
+
+            return session
         },
-        async jwt({token,user}){
+
+        async jwt({ token, user }) {
             const dbUser = await db.user.findFirst({
-                where:{
-                    email: token.email
-                }
+                where: {
+                    email: token.email,
+                },
             })
-            if(!dbUser){
-                token.id =  user?.id
+
+            if (!dbUser) {
+                token.id = user?.id
                 return token
             }
-            if(!dbUser.username){
+
+            if (!dbUser.username) {
                 await db.user.update({
-                    where:{
-                        id:dbUser.id
+                    where: {
+                        id: dbUser.id,
                     },
-                    data:{
-                        username: nanoid(10)
-                    }
+                    data: {
+                        username: nanoid(10),
+                    },
                 })
             }
+
             return {
                 id: dbUser.id,
-                username: dbUser.username,
-                email: dbUser.email,
-                image: dbUser.image,
                 name: dbUser.name,
-                institutionalEmail: dbUser.institutionalEmail
+                email: dbUser.email,
+                picture: dbUser.image,
+                username: dbUser.username,
             }
         },
-        redirect(){
+        redirect() {
             return '/'
-        }
+        },
+    },
 }
-}
-
-
-
-
-
-
-
-
+export const getAuthSession = () =>getServerSession(authOptions)
