@@ -87,7 +87,7 @@ export function UserAccountNav({ user , ...props}) {
                     </DropdownMenuSub>
 
                     <DropdownMenuItem>
-                    <Link href='/r/create'>Create a Community </Link>
+                    <Link href='/u/create'>Create a Community </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
                     <Link href='/interactions'>My Interactions </Link>
