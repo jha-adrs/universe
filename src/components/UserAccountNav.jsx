@@ -9,7 +9,6 @@ import {
     DropdownMenuLabel,
     DropdownMenuPortal,
     DropdownMenuSeparator,
-    DropdownMenuShortcut,
     DropdownMenuSub,
     DropdownMenuSubContent,
     DropdownMenuSubTrigger,
@@ -24,6 +23,7 @@ import {
 import { CaretDownIcon, PlusIcon } from '@radix-ui/react-icons'
 import Link from 'next/link'
 import { signOut } from 'next-auth/react'
+import { Icons } from './Icons'
 
 export function UserAccountNav({ user , ...props}) {
     // TODO: Add custom avatar uploaded by user
@@ -39,6 +39,7 @@ export function UserAccountNav({ user , ...props}) {
     const communities = props.communities || ['No Communities Found']
 
     const handleSignout = async () => {
+        
         signOut({
             callbackUrl: `${window.location.origin}/sign-in`,
         })
