@@ -6,19 +6,21 @@ import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
 import { useMutation } from '@tanstack/react-query'
 import axios from 'axios'
+import { Separator } from '@/components/ui/separator'
 const Page = () => {
     const router = useRouter();
     const [communityName, setCommunityName] = useState("");
     const [communityDescription, setCommunityDescription] = useState("");
 
-    const {} = useMutation({
+    const {mutate: createCommunity, isLoading} = useMutation({
         mutationFn: async () => {
             const payload = {
                 name: communityName ,
                 description: communityDescription
             }
 
-            const {data} = axios.post('/api/communities/create')
+            const {data} = axios.post('/api/community', payload)
+            return data;
         }
     })
 
@@ -30,8 +32,7 @@ const Page = () => {
                         Create a new cluster
                     </h1>
                 </div>
-
-                <hr className="border-gray-800 dark:border-gray-700 h-px" />
+                <Separator />
                 {/*TODO: Add character constraints */}
                 <div>
                     <p className="text-lg font-medium mb-2">Community Name</p>
@@ -51,8 +52,9 @@ const Page = () => {
                     </div>
                 </div>
                 <div className='flex justify-end gap-4'>
+                    {/*Add isLoading options */}
                     <Button variant='secondary' onClick={() => router.back()}> Cancel</Button>
-                    <Button variant='black' onClick={() => router.back()}> Create</Button>
+                    <Button  variant='black' onClick={() => createCommunity()}  disabled={communityName.length ===0 || communityDescription.length === 0 || isLoading}> Create Community</Button>
                 </div>
 
             </div>

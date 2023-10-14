@@ -22,7 +22,7 @@ const buttonVariants = cva(
         destructive_outline: 'border border-destructive bg-transparent shadow-sm hover:bg-accent hover:text-accent-foreground',
         secondary_outline: 'border border-secondary bg-transparent shadow-sm hover:bg-accent hover:text-accent-foreground',
         black: 'bg-black text-white shadow-sm hover:bg-customblue hover:text-accent-foreground',
-        blackwithred: 'bg-black text-white shadow-sm hover:bg-customblue hover:text-black',
+        blackwithred: 'bg-black text-white shadow-sm hover:bg-red-500',
       },
       size: {
         default: "h-9 px-4 py-2",
