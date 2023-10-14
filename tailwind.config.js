@@ -1,4 +1,4 @@
-const {fontFamily} = require('tailwindcss/defaultTheme')
+const { fontFamily } = require('tailwindcss/defaultTheme')
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
@@ -7,7 +7,7 @@ module.exports = {
     './components/**/*.{js,jsx}',
     './app/**/*.{js,jsx}',
     './src/**/*.{js,jsx}',
-	],
+  ],
   theme: {
     container: {
       center: true,
@@ -51,6 +51,12 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        customcyan: { DEFAULT: "hsl(var(--custom-cyan))" },
+        customblue: { DEFAULT: "hsl(var(--custom-blue))" },
+        customred: { DEFAULT: "hsl(var(--custom-red))" },
+        customflame: { DEFAULT: "hsl(var(--custom-flame))" },
+        custommagenta: { DEFAULT: "hsl(var(--custom-magenta))" },
+        custombgblue: { DEFAULT: "hsl(var(--custom-bg-blue))" },
       },
       borderRadius: {
         lg: "var(--radius)",

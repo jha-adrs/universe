@@ -37,6 +37,8 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model User {
@@ -56,10 +58,11 @@ model User {
   subscription Subscription[]
   Vote         Vote[]
 
-  createdClusters Cluster[] @relation("CreatedBy")
-}
+  createdCommunity Community[] @relation("CreatedBy")
+  karma          Int      @default(0)
 
-model Cluster {
+}
+model Community {
   id        String   @id @default(cuid())
   name      String   @unique
   createdAt DateTime @default(now())
@@ -69,7 +72,7 @@ model Cluster {
   creatorId String?
   creator   User?          @relation("CreatedBy", fields: [creatorId], references: [id])
   members   Subscription[]
-
+  description String?
   @@index([name])
   @@index([creatorId])
 }
@@ -77,12 +80,12 @@ model Cluster {
 model Subscription {
   user      User    @relation(fields: [userId], references: [id])
   userId    String
-  cluster   Cluster @relation(fields: [clusterId], references: [id])
-  clusterId String
+  community   Community @relation(fields: [communityId], references: [id])
+  communityId String
 
-  @@id([userId, clusterId])
-  @@index([userId]) // for user's clusters
-  @@index([clusterId]) // for cluster's members
+  @@id([userId, communityId])
+  @@index([userId]) // for user's Communities
+  @@index([communityId]) // for Community's members
 }
 
 model Post {
@@ -91,8 +94,8 @@ model Post {
   content   Json?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  cluster   Cluster  @relation(fields: [clusterId], references: [id])
-  clusterId String
+  community   Community  @relation(fields: [communityId], references: [id])
+  communityId String
 
   authorId String
   author   User   @relation(fields: [authorId], references: [id])
@@ -100,7 +103,7 @@ model Post {
   comments Comment[]
   votes    Vote[]
 
-  @@index([clusterId])
+  @@index([communityId])
   @@index([authorId])
 }
 
@@ -152,4 +155,6 @@ model Vote {
   type   VoteType
 
   @@id([userId, postId])
+  @@index([userId])
+  @@index([postId])
 }
