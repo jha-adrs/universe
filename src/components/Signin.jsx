@@ -2,10 +2,9 @@ import React from 'react'
 import { Icons } from './Icons'
 import Link from 'next/link'
 import UserAuthForm from './UserAuthForm'
-import { cn } from '@/lib/utils'
-import { buttonVariants } from './ui/button'
 const Signin = () => {
-  return (<><Link href='/' className={cn(buttonVariants({ variant: 'outline' }), 'self-start -mt-20')}> <Icons.arrow className='w-6 h-6 transform rotate-180' /> Home</Link>
+  return (<>
+  
     <div className='container mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[400px]'>
       <div className="flex flex-col space-y-2 text-center">
         <Icons.logo className='w-20 h-20 mx-auto' />

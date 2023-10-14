@@ -4,10 +4,10 @@ import { Button } from './ui/button'
 import { X } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
-const CloseModal = () => {
+const CloseModal = (props) => {
   const router = useRouter()
   return (
-    <Button variant='ghost' aria-label='close modal' className="h-6 w-6 p-0 rounded-md" onClick={()=> router.back()}>
+    <Button variant='ghost' aria-label='close modal' className="h-6 w-6 p-0 rounded-md" onClick={()=> router.back()} {...props}>
       <X className='h-4 w-4' />
     </Button>
   )

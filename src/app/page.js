@@ -1,9 +1,40 @@
+import { buttonVariants } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
+import { HomeIcon } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
 
 export default function Home() {
   return (
     <main className="">
-      <div>Hey</div>
+      <h1 className="font-bold text-3xl md:text-4xl">
+        Your feed
+      </h1>
+      <div className='grid grid-cols-1 md:grid-cols-3 gap-y-4 md:gap-x-4 py-6'>
+        {/*Feed */}
+        {/*Widgets */}
+        {/* SubbredditCluster Info */}
+
+        <div className="overflow-hidden h-fit rounded-lg border border-gray-200  order-first md:order-last">
+          <div className='bg-customblue dark:bg-accent px-6 py-4'>
+            <p className="font-semibold py-3 flex items-center gap-1.5">
+              <HomeIcon className='w-4 h-4' />
+              Home
+            </p>
+          </div>
+
+          <div className="my-3 divide-y px-6 py-4 text-sm leading-6 ">
+            <div className="flex justify-between gap-x-4 py-3">
+              <p className="text-zinc-600">Your Personal Feed need to add something more I guess</p>
+            </div>
+
+            <Link className={buttonVariants({className:'w-full mt-4 mb-6 ', variant:"black"})} href='/r/create'>
+              Create Community</Link>
+
+          </div>
+        </div>
+      </div>
+
     </main>
   )
 }
