@@ -14,4 +14,6 @@ config.AVAILABLE_AUTH_PROVIDERS = {
     github:1,
     microsoft:1
 }
+
+config.INFINITE_SCROLL_PAGINATION_AMOUNT = 2
 export default config;

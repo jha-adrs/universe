@@ -1,10 +1,12 @@
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { communitySchema } from "@/lib/validators/community";
-import {logger} from '@/lib/logger';
+import { logger } from '@/lib/logger';
+import { z } from "zod";
+// Use caching to get user session
 export async function POST(req) {
     try {
-        logger.info('Creating Community');
+        logger.info('Create Community Request');
         const session = await getAuthSession();
 
         if (!session?.user) {
@@ -14,12 +16,14 @@ export async function POST(req) {
         const body = await req.json();
         // Validate body
         const { name, description } = communitySchema.parse(body);
+        logger.info(`Community Creation request : ${name} by ${session.user.username}`)
         const communityExists = await db.Community.findFirst({
             where: {
                 name,
             }
         })
-        if(communityExists) {
+        if (communityExists) {
+            logger.warn(`Community Creation Request Rejected: ${communityExists.name}`)
             return new Response("Community Exists", { status: 409 })
         }
         const community = await db.Community.create({
@@ -30,16 +34,21 @@ export async function POST(req) {
             }
         })
         logger.info(`Community Created: ${community.name} by ${session.user.username}`)
-        await db.CommunitySubscription.create({
+        const response = await db.subscription.create({
             data: {
                 communityId: community.id,
                 userId: session.user.id,
             }
         })
+        logger.info(`Community Subscription Created: ${community.name} by ${session.user.username}`)
 
-        return new Response("Community Created", { status: 200 })
+        return new Response(community.name, { status: 201 })
     } catch (error) {
-        console.error(error);
-        return new Response("Internal Server Error", { status: 500 })
+        logger.error("Error in creating new community ", error);
+        if (error instanceof z.ZodError) {
+            return new Response(error.message, { status: 400 })
+        }
+
+        return new Response("Could not create community", { status: 500 })
     }
 }
