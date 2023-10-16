@@ -5,17 +5,17 @@ generator client {
   provider = "prisma-client-js"
 }
 
-datasource db {
-  provider     = "mysql"// "mysql" 
-  url          = env("DATABASE_URL")
-  relationMode = "prisma"
-}
 // datasource db {
- // provider     = "postgresql" 
-  //url          = env("DATABASE_URL")
-  //directUrl = env("DIRECT_URL")
-  //relationMode = "foreignKeys"
-//}
+//   provider     = "mysql"// "mysql" 
+//   url          = env("DATABASE_URL")
+//   relationMode = "prisma"
+// }
+datasource db {
+ provider     = "postgresql" 
+  url          = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+  relationMode = "foreignKeys"
+}
 
 
 model Account {
@@ -89,10 +89,12 @@ model Subscription {
   userId    String
   community   Community @relation(fields: [communityId], references: [id])
   communityId String
-
+  dateJoined DateTime @default(now())
+  
   @@id([userId, communityId])
   @@index([userId]) // for user's Communities
   @@index([communityId]) // for Community's members
+  @@index([dateJoined])
 }
 
 model Post {

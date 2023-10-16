@@ -35,6 +35,7 @@ const page = async ({params}) => {
             r/{community.name}
         </h1>
         <MiniCreatePost session={session}/>
+        
     </>
   )
 }

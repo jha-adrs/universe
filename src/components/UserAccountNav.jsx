@@ -38,7 +38,8 @@ export function UserAccountNav({ user, ...props }) {
     // TODO: Add communities page
     // TODO: Add server redirecting to communities page
     // TODO: Add URL for each community in an object
-    const communities = props.communities || ['No Communities Found','a','b','No Communities Found','a','b','No Communities Found','a','b','No Communities Found','a','b','No Communities Found','a','b']
+    
+    const communities = props.communities.length? props.communities: ['No Communities Found']
 
     const handleSignout = async () => {
 
@@ -46,6 +47,26 @@ export function UserAccountNav({ user, ...props }) {
             callbackUrl: `${window.location.origin}/sign-in`,
         })
     }
+
+    const findJoinedDuration = (dateJoined) => {
+        const joinedDate = new Date(dateJoined)
+        const currentDate = new Date()
+        const diffTime = Math.abs(currentDate - joinedDate);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        if (diffDays < 30) {
+            return `${diffDays}d ago`
+        }
+        else if (diffDays < 365) {
+            const diffMonths = Math.ceil(diffDays / 30)
+            return `${diffMonths}m ago`
+        }
+        else {
+            const diffYears = Math.ceil(diffDays / 365)
+            return `${diffYears}y ago`
+        }
+    }
+
+
     return (
         <DropdownMenu >
             <DropdownMenuTrigger asChild>
@@ -79,15 +100,18 @@ export function UserAccountNav({ user, ...props }) {
                         <DropdownMenuSubTrigger>My Communities</DropdownMenuSubTrigger>
                         <DropdownMenuPortal>
                             <DropdownMenuSubContent>
-                                <ScrollArea className="h-72  rounded-md border">
+                                <ScrollArea className="max-h-72  rounded-md border">
                                     
                                     <div className="p-4">
                                         <h4 className="mb-4 text-sm font-medium leading-none">Your Communities</h4>
                                         <hr className='h-0.25 bg-gray-400'/>
-                                        {communities.map((community, index) => {
-                                             return <DropdownMenuItem key={index}>
-                                                <Link href='/c/[community]' as={`/c/${community}`} className={cn("w-full justify-start",buttonVariants({variant:'ghost'}))}>
-                                                    {community}</Link>
+                                        { communities.map((community, index) => {
+                                            const name = community.community.name
+                                             return <DropdownMenuItem key={index} className='flex w-full hover:bg-accent rounded-lg'>
+                                                
+                                               <Link href='/c/[community]' as={`/r/${name}`} className="w-full justify-start">
+                                                    {name} <p className='text-gray-500 font-light'>{` (${findJoinedDuration(community.dateJoined)})`}</p></Link>
+                                               
                                              </DropdownMenuItem>
                                            
                                         })}
