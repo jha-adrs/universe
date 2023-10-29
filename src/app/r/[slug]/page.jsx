@@ -8,7 +8,6 @@ import React from 'react'
 const page = async ({params}) => {
     const { slug } = params;
     const session = await getAuthSession();
-    console.log("session ",session, "slug ", slug);
 
     const community = await db.community.findFirst({
         where: {name: slug},

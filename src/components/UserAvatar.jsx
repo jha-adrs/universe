@@ -13,7 +13,7 @@ const UserAvatar = ({ user, ...props }) => {
   // TODO: Round the corners of the avatar
   return (
     <Avatar >
-      {user.image ? (
+      {user?.image ? (
         <div className='relative mx-auto rounded-lg overflow-hidden' {...props}>
           <AvatarImage src={`${avatarURL}`} alt={`@${username}`}
             referrerPolicy='no-referrer'  />

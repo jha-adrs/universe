@@ -39,7 +39,7 @@ export function UserAccountNav({ user, ...props }) {
     // TODO: Add server redirecting to communities page
     // TODO: Add URL for each community in an object
     
-    const communities = props.communities.length? props.communities: ['No Communities Found']
+    const communities = props.communities.length? props.communities: [{dateJoined:0,community:{name:'No Communities Found'}}]
 
     const handleSignout = async () => {
 
@@ -49,6 +49,7 @@ export function UserAccountNav({ user, ...props }) {
     }
 
     const findJoinedDuration = (dateJoined) => {
+        if(!dateJoined) return '_'
         const joinedDate = new Date(dateJoined)
         const currentDate = new Date()
         const diffTime = Math.abs(currentDate - joinedDate);
@@ -109,7 +110,7 @@ export function UserAccountNav({ user, ...props }) {
                                             const name = community.community.name
                                              return <DropdownMenuItem key={index} className='flex w-full hover:bg-accent rounded-lg'>
                                                 
-                                               <Link href='/c/[community]' as={`/r/${name}`} className="w-full justify-start">
+                                               <Link href='/r/[community]' as={`/r/${name}`} className="w-full justify-start">
                                                     {name} <p className='text-gray-500 font-light'>{` (${findJoinedDuration(community.dateJoined)})`}</p></Link>
                                                
                                              </DropdownMenuItem>

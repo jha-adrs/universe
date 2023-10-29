@@ -3,7 +3,9 @@ import { format } from "date-fns";
 import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
 import config from "@/config/config";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
+import SubscribeLeaveToggle from "@/components/SubscribeLeaveToggle";
+import Link from "next/link";
 const Layout = async ({children, params:{slug}}) =>{
     const session = await getAuthSession();
 
@@ -71,8 +73,11 @@ const Layout = async ({children, params:{slug}}) =>{
                             </div>
                             {community.creatorId === session?.user?.id ? (<div className="flex justify-between gap-x-4 py-3">
                                 <p>You own this community</p>
-                                <Button variant="black">Admin Dashboard</Button>
                             </div>):(null)}
+                            {community.creatorId !== session?.user?.id ? (<SubscribeLeaveToggle subscriptionStatus={isSubscribed} communityId ={community.id }/>):(null)}
+                            <Link href={`/r/${community.name}/submit`} className={buttonVariants({variant:"black", className:'w-full mb-6'})}>
+                                Create a post
+                            </Link>
                         </dl>
 
                     </div>
