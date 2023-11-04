@@ -1,15 +1,16 @@
-
+"use client"
 import { formatTimeToNow } from '@/lib/utils'
 import { ArrowBigUp, ArrowUp01Icon, ArrowUpNarrowWide, DotIcon, Heart, MessageCircleIcon, MessageSquare } from 'lucide-react'
 import React, { useRef } from 'react'
 import EditorOutput from './EditorOutput';
+import PostVoteClient from './post-vote/PostVoteClient';
 
-const Post = ({communityName,post,voteAmt,currentVote,commentAmt, ...props}) => {
+const Post = ({communityName,post,votesAmt,currentVote,commentAmt, ...props}) => {
     const pRef = useRef(null);
   return (
     <div className='rounded-md bg-white shadow'>
         <div className="px-6 py-4 flex justify-between">
-
+            <PostVoteClient postId={post.id} initialVotesAmt={votesAmt} initialVote={currentVote} />
             <div className="w-0 flex-1">
                 <div className="max-h-40 mt-1 text-xs text-gray-500">
                     {communityName?(<>
@@ -18,7 +19,11 @@ const Post = ({communityName,post,voteAmt,currentVote,commentAmt, ...props}) => 
                     </a>
                     <span className="px-1"></span>
                     </>): null}
-                    <span className="text-gray-900">Posted by u/{post.author.name}</span>
+                    <span className="text-gray-900">
+                        <a href={`/u/${post.author.username}`} className="text-blue-800">
+                        Posted by u/{post.author.name}
+                        </a>
+                    </span>
                     {'  '}
                     {`(${formatTimeToNow(new Date(post.createdAt))})`}
                 </div>
@@ -40,8 +45,7 @@ const Post = ({communityName,post,voteAmt,currentVote,commentAmt, ...props}) => 
         <div className="bg-gray-50 z-20 text-sm p-4 sm:px-6">
             <a href={`/r/${communityName}/post/${post.id}`}
             className='w-fit flex items-center gap-2'>
-                <Heart className='h-4 w-4'/> {voteAmt || 0}
-                <MessageSquare  className='h-4 w-4'/> {commentAmt}
+                <MessageSquare  className='h-4 w-4'/> {commentAmt}{' '}comments
 
 
             </a>

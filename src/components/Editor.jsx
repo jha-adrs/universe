@@ -106,7 +106,6 @@ const Editor = ({communityId}) => {
                       }
                     );
                       
-                    console.log(data)
                      return {
                         success: data.success || 0,
                         file:{
@@ -131,7 +130,7 @@ const Editor = ({communityId}) => {
     useEffect(()=>{
       if(Object.keys(errors).length){
         for(const [_key, value] of Object.entries(errors)){
-          console.log(value.message, value, _key)
+          
           toast({
             title: 'Unexpected Error',
             description: value.message,
@@ -187,7 +186,6 @@ const Editor = ({communityId}) => {
 
     async function onSubmit(data){
       // Save the editor data state
-      console.log("onsubmit function ")
       const blocks = await ref.current?.save()
 
       const payload = {
@@ -195,8 +193,6 @@ const Editor = ({communityId}) => {
         content: blocks,
         communityId    
       }
-      // TODO: Remove this
-      console.log(payload, data)
       createPost(payload)
 
     }

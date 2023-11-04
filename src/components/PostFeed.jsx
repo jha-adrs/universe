@@ -12,7 +12,6 @@ const PostFeed = ({initialPosts, communityName}) => {
         root: lastPostRef.current,
         threshold: 1
     })
-    console.log(initialPosts)
     const {data, fetchNextPage, isFetchingNextPage} = useInfiniteQuery(
         ['infinitePosts'],
         async ([pageParam = 1])=>{
