@@ -11,22 +11,7 @@ const Navbar =async () => {
 
   // Get session
   const session = await getAuthSession()
-  const communities = !session?.user ? undefined : await db.subscription.findMany({
-    where: {
-      user: {
-        id: session.user.id
-      }
-    },
-    select: {
-        dateJoined:true,
-      
-      community: {
-        select: {
-          name: true
-        }
-      },
-    }
-  });
+  
 
   return (
     <div className='fixed top-0 inset-x-0 h-fit z-10  py-2 bg:white text-slate-950 dark:bg:slate-700 dark:text-white bg-slate-50 dark:bg-slate-900'>
@@ -37,7 +22,7 @@ const Navbar =async () => {
          <p className="hidden md:block font-bold"> UniVerse</p>
       </Link>
       {session?.user ? (
-        <UserAccountNav user ={session.user} communities={communities}/>
+        <UserAccountNav user ={session.user} />
       ):(
         <Link href='/sign-in' className={buttonVariants({variant:"black"})}>Sign In</Link>
       )}

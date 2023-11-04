@@ -21,11 +21,12 @@ import {
     AvatarFallback,
     AvatarImage,
 } from "@/components/ui/avatar"
-import { CaretDownIcon, PlusIcon } from '@radix-ui/react-icons'
+import { CaretDownIcon, PlusCircledIcon, PlusIcon } from '@radix-ui/react-icons'
 import Link from 'next/link'
 import { signOut } from 'next-auth/react'
 import { Icons } from './Icons'
 import { cn } from '@/lib/utils'
+import { BellDot, HelpCircle, HistoryIcon, InboxIcon, LogOutIcon, NewspaperIcon, Plus, UserCircle, UserCog2, Users2, Users2Icon } from 'lucide-react'
 
 export function UserAccountNav({ user, ...props }) {
     // TODO: Add custom avatar uploaded by user
@@ -33,13 +34,6 @@ export function UserAccountNav({ user, ...props }) {
     const name = user?.name
     const username = user?.username
     if (!avatarURL) avatarURL = `https://ui-avatars.com/api/?name=${name}&background=random&rounded=true&size=128`
-
-    // TODO Get communities from user
-    // TODO: Add communities page
-    // TODO: Add server redirecting to communities page
-    // TODO: Add URL for each community in an object
-    
-    const communities = props.communities.length? props.communities: [{dateJoined:0,community:{name:'No Communities Found'}}]
 
     const handleSignout = async () => {
 
@@ -55,15 +49,15 @@ export function UserAccountNav({ user, ...props }) {
         const diffTime = Math.abs(currentDate - joinedDate);
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
         if (diffDays < 30) {
-            return `${diffDays}d ago`
+            return `${diffDays}d`
         }
         else if (diffDays < 365) {
             const diffMonths = Math.ceil(diffDays / 30)
-            return `${diffMonths}m ago`
+            return `${diffMonths}m`
         }
         else {
             const diffYears = Math.ceil(diffDays / 365)
-            return `${diffYears}y ago`
+            return `${diffYears}y`
         }
     }
 
@@ -81,71 +75,53 @@ export function UserAccountNav({ user, ...props }) {
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56">
-                <DropdownMenuLabel className="bg-customred rounded">My Account</DropdownMenuLabel>
+                <DropdownMenuLabel className="rounded">My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
                     <DropdownMenuItem>
-                        <Link href='/'>Feed</Link>
+                        <Link href='/' className='flex flex-row place-items-center'><NewspaperIcon className='mr-2'/> Feed</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
-                        <Link href='/profile'>Profile</Link>
+                        <Link href='/profile' className='flex flex-row place-items-center'><UserCircle className='mr-2'/> Profile</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
-                        <Link href='/settings'>Settings</Link>
+                        <Link href='/settings' className='flex flex-row place-items-center'><UserCog2 className='mr-2'/> Settings</Link>
                     </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-
-                    <DropdownMenuSub>
-                        <DropdownMenuSubTrigger>My Communities</DropdownMenuSubTrigger>
-                        <DropdownMenuPortal>
-                            <DropdownMenuSubContent>
-                                <ScrollArea className="max-h-72  rounded-md border">
-                                    
-                                    <div className="p-4">
-                                        <h4 className="mb-4 text-sm font-medium leading-none">Your Communities</h4>
-                                        <hr className='h-0.25 bg-gray-400'/>
-                                        { communities.map((community, index) => {
-                                            const name = community.community.name
-                                             return <DropdownMenuItem key={index} className='flex w-full hover:bg-accent rounded-lg'>
-                                                
-                                               <Link href='/r/[community]' as={`/r/${name}`} className="w-full justify-start">
-                                                    {name} <p className='text-gray-500 font-light'>{` (${findJoinedDuration(community.dateJoined)})`}</p></Link>
-                                               
-                                             </DropdownMenuItem>
-                                           
-                                        })}
-                                    </div>
-                                </ScrollArea>
-
-                            </DropdownMenuSubContent>
-                        </DropdownMenuPortal>
-                    </DropdownMenuSub>
+                    <DropdownMenuItem>
+                        <Link href='/u/subscriptions'className='flex flex-row place-items-center' >
+                        <Users2Icon className='mr-2'/>  My Communities
+                        </Link>
+                    </DropdownMenuItem>
 
                     <DropdownMenuItem>
-                        <Link href='/q/create'>Create a Community </Link>
+                        <Link href='/r/create'className='flex flex-row place-items-center' ><Plus className='mr-2' /> Create a Community </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
-                        <Link href='/interactions'>My Interactions </Link>
+                        <Link href='/interactions' className='flex flex-row place-items-center' ><HistoryIcon className='mr-2'/>My Interactions </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
-                        <Link href='/notifications'>Notifications</Link> {/*Add modal */}
+                        <Link href='/notifications' className='flex flex-row place-items-center' ><BellDot className='mr-2'/> Notifications</Link> {/*Add modal */}
                     </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
-                    <Link href='/messages'>Direct Messages </Link> {/*Add modal */}
+                    <Link href='/messages' className='flex flex-row place-items-center' ><InboxIcon className='mr-2'/>Direct Messages </Link> {/*Add modal */}
                 </DropdownMenuItem>
-                <DropdownMenuItem>Support</DropdownMenuItem>
-                <DropdownMenuItem disabled>API</DropdownMenuItem>
+                <DropdownMenuItem>
+                <Link href='/messages' className='flex flex-row place-items-center' ><HelpCircle className='mr-2'/> Support  </Link>
+                </DropdownMenuItem>
+                
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                     onSelect={(event) => {
                         event.preventDefault()
                         handleSignout()
-                    }} >
-                    Log out
+                    }}  
+                    className='flex flex-row place-items-center focus:bg-rose-300' >
+                   <LogOutIcon className='mr-2'/> Log out
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>

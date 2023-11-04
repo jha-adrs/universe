@@ -1,5 +1,5 @@
 "use client"
-import React from 'react'
+import React, { useCallback, useEffect, useRef } from 'react'
 import TextareaAutosize from 'react-textarea-autosize';
 import Image from "next/image"
 import { CounterClockwiseClockIcon } from "@radix-ui/react-icons"
@@ -20,134 +20,188 @@ import {
 } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
 import { ImageIcon, LinkIcon, TextIcon, VideoIcon } from 'lucide-react';
-
-
-
+import { useForm } from 'react-hook-form';
+import {zodResolver}  from '@hookform/resolvers/zod'
+import { PostValidator } from '@/lib/validators/post';
+import { uploadFiles } from '@/lib/uploadthing';
+import { toast } from './ui/use-toast';
+import { useMutation } from '@tanstack/react-query';
+import axios from 'axios';
+import {useRouter, usePathname} from 'next/navigation'
 export const metadata = {
   title: "Create Post",
   description: "Create a post for your community.",
 }
-const Editor = () => {
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        console.log('submit')
+const Editor = ({communityId}) => {
+    const pathname= usePathname ();
+    const router = useRouter();
+    const {
+      register,
+      handleSubmit,
+      formState: {errors},
+    } = useForm({
+      resolver: zodResolver(PostValidator),
+      defaultValues:{
+        communityId,
+        title: '',
+        content:null
+      }
+    })
+    const ref = useRef()
+    const [isMounted, setIsMounted] = React.useState(false)
+    const _titleRef = useRef(null)
+    useEffect(()=>{
+      if (typeof window !== "undefined") setIsMounted(true)
+
+
+
+    },[])
+    const initializeEditor = useCallback(async ()=>{
+      const EditorJS = (await import('@editorjs/editorjs')).default
+      const Header = (await import('@editorjs/header')).default
+      const Embed = (await import('@editorjs/embed')).default
+      const Table = (await import('@editorjs/table')).default
+      const List = (await import('@editorjs/list')).default
+      const Code = (await import('@editorjs/code')).default
+      const LinkTool = (await import('@editorjs/link')).default
+      const InlineCode = (await import('@editorjs/inline-code')).default
+      const ImageTool = (await import('@editorjs/image')).default
+      if(!ref.current){
+        const editor  = new EditorJS({
+          holder:'editor',
+          onReady(){
+            ref.current = editor
+          },
+          placeholder: 'Start sharing here!',
+          inlineToolbar: true,
+          data:{blocks: []},
+          tools:{
+            header: Header,
+            linkTool: {
+              class: LinkTool,
+              config: {
+                endpoint: '/api/link'
+              },
+            },
+            image:{
+              class: ImageTool,
+              config:{
+                uploader:{
+                  async uploadByFile(file){
+                    // Upload both in upload things as well as AWS S3
+                     const [res] = await uploadFiles([file], "imageUploader")
+                     return {
+                        success: 1,
+                        file:{
+                          url: res.fileUrl,
+                        }
+                     }
+                  }
+                }
+              }
+            },
+            list: List,
+            code: Code,
+            inlineCode: InlineCode,
+            table: Table,
+            embed: Embed
+          }
+        })
+      }
+      
+    },[])
+
+    useEffect(()=>{
+      if(Object.keys(errors).length){
+        for(const [_key, value] of Object.entries(errors)){
+          console.log(value.message, value, _key)
+          toast({
+            title: 'Unexpected Error',
+            description: value.message,
+            variant: 'destructive'
+          })
+      }
     }
+    }, [errors])
+
+    useEffect(()=>{
+      const init = async ()=>{
+        await initializeEditor()
+      }
+
+      setTimeout(()=>{
+        _titleRef.current?.focus()
+      },0)
+      if(isMounted){
+        init()
+      }
+      return ()=>{
+        ref.current?.destroy()
+        ref.current = undefined
+      }
+
+    },[isMounted,initializeEditor])
+
+    const {mutate: createPost} = useMutation({
+      mutationFn:async ({title, content, communityId})=>{
+        const payload = {communityId, title, content}
+
+        const {data} = await axios.post('/api/community/create', payload)
+        return data
+      },
+      onError: (err)=>{
+        toast({
+          title: 'Oops! Something went wrong.',
+          description: "Post was not published!",
+          variant: 'destructive'
+        })
+      },
+      onSuccess: ()=>{
+        const redirectURL = pathname.split('/').slice(0,-1).join('/')
+        router.push(redirectURL);
+        router.refresh();
+        return toast({
+          title: 'Success!',
+          description: "Post was created!",
+          variant: 'success'
+        })
+      }
+    })
+
+
+    async function onSubmit(data){
+      // Save the editor data state
+      console.log("onsubmit function ")
+      const blocks = await ref.current?.save()
+
+      const payload = {
+        title: data.title,
+        content: blocks,
+        communityId    
+      }
+      // TODO: Remove this
+      console.log(payload, data)
+      createPost(payload)
+
+    }
+
+    if(!isMounted) return null
+
+    const {ref: titleRef, ...rest} =  register('title')
   return (
     <div className='w-full p-4 bg-zinc-50 rounded-lg border border-zinc-200'>
-       <div className="hidden h-full flex-col md:flex">
-        <div className="container flex flex-col items-start justify-between space-y-2 py-4 sm:flex-row sm:items-center sm:space-y-0 md:h-16">
-          <h2 className="text-lg font-semibold">Create Post</h2>
-          
-        </div>
-        <Separator />
-        <Tabs defaultValue="complete" className="flex-1">
-          <div className="container h-full py-6">
-            <div className="grid h-full items-stretch gap-6 md:grid-cols-[1fr_200px]">
-              <div className="hidden flex-col space-y-4 sm:flex md:order-2">
-                <div className="grid gap-2">
-                  <HoverCard openDelay={200}>
-                    <HoverCardTrigger asChild>
-                      <span className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                        Post Type
-                      </span>
-                    </HoverCardTrigger>
-                    <HoverCardContent className="w-[320px] text-sm" side="left">
-                      Choose the interface that best suits your task. You can
-                      provide: a simple prompt to complete, starting and ending
-                      text to insert a completion within, or some text with
-                      instructions to edit it.
-                    </HoverCardContent>
-                  </HoverCard>
-                  <TabsList className="grid grid-cols-3">
-                  <TabsTrigger value="image">
-                      <span className="sr-only">Text</span>
-                      <TextIcon    className="h-5 w-5" />
-                    </TabsTrigger>
-                    <TabsTrigger value="image">
-                      <span className="sr-only">Image</span>
-                      <ImageIcon    className="h-5 w-5" />
-                    </TabsTrigger>
-                    <TabsTrigger value="video">
-                      <span className="sr-only">Video</span>
-                      <VideoIcon className="h-5 w-5" />
-                    </TabsTrigger>
-                    <TabsTrigger value="edit">
-                      <span className="sr-only">Edit</span>
-                      <LinkIcon className="h-5 w-5" />
-                    </TabsTrigger>
-                  </TabsList>
-                </div>
-              </div>
-              <div className="md:order-1">
-                <TabsContent value="complete" className="mt-0 border-0 p-0">
-                  <div className="flex h-full flex-col space-y-4">
-                    <Textarea
-                      placeholder="Write a tagline for an ice cream shop"
-                      className="min-h-[400px] flex-1 p-4 md:min-h-[700px] lg:min-h-[700px]"
-                    />
-                    <div className="flex items-center space-x-2">
-                      <Button>Submit</Button>
-                      <Button variant="secondary">
-                        <span className="sr-only">Show history</span>
-                        <CounterClockwiseClockIcon className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
-                </TabsContent>
-                <TabsContent value="insert" className="mt-0 border-0 p-0">
-                  <div className="flex flex-col space-y-4">
-                    <div className="grid h-full grid-rows-2 gap-6 lg:grid-cols-2 lg:grid-rows-1">
-                      <Textarea
-                        placeholder="We're writing to [inset]. Congrats from OpenAI!"
-                        className="h-full min-h-[300px] lg:min-h-[700px] xl:min-h-[700px]"
-                      />
-                      <div className="rounded-md border bg-muted"></div>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Button>Submit</Button>
-                      <Button variant="secondary">
-                        <span className="sr-only">Show history</span>
-                        <CounterClockwiseClockIcon className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
-                </TabsContent>
-                <TabsContent value="edit" className="mt-0 border-0 p-0">
-                  <div className="flex flex-col space-y-4">
-                    <div className="grid h-full gap-6 lg:grid-cols-2">
-                      <div className="flex flex-col space-y-4">
-                        <div className="flex flex-1 flex-col space-y-2">
-                          <Label htmlFor="input">Input</Label>
-                          <Textarea
-                            id="input"
-                            placeholder="We is going to the market."
-                            className="flex-1 lg:min-h-[580px]"
-                          />
-                        </div>
-                        <div className="flex flex-col space-y-2">
-                          <Label htmlFor="instructions">Instructions</Label>
-                          <Textarea
-                            id="instructions"
-                            placeholder="Fix the grammar."
-                          />
-                        </div>
-                      </div>
-                      <div className="mt-[21px] min-h-[400px] rounded-md border bg-muted lg:min-h-[700px]" />
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Button>Submit</Button>
-                      <Button variant="secondary">
-                        <span className="sr-only">Show history</span>
-                        <CounterClockwiseClockIcon className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
-                </TabsContent>
-              </div>
-            </div>
+        <form id='community-post-form' className='w-fit m-5' onSubmit={handleSubmit(onSubmit)}>
+          <div className="prose prose-stone dark:prose-invert">
+            <TextareaAutosize 
+            ref={(e)=>{
+              titleRef(e)
+              _titleRef.current = e
+            }}
+            placeholder='Title' className='w-full resize-none appearance-none overflow-hidden bg-transparent text-xl sm:text-2xl md:text-3xl font-bold focus:outline-none'/>
+            <div id='editor' className='min-h-[500px] h-full w-full'/>
           </div>
-        </Tabs>
-      </div>
+        </form>
+      
     </div>
   )
 }

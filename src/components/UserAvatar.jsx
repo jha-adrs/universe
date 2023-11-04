@@ -12,19 +12,11 @@ const UserAvatar = ({ user, ...props }) => {
   // TODO: Add custom avatar uploaded by user
   // TODO: Round the corners of the avatar
   return (
-    <Avatar >
-      {user?.image ? (
-        <div className='relative mx-auto rounded-lg overflow-hidden' {...props}>
-          <AvatarImage src={`${avatarURL}`} alt={`@${username}`}
-            referrerPolicy='no-referrer'  />
-        </div>
-      ) : (
-        <AvatarFallback {...props}>
-          <span className='sr-only'>{user?.name}</span>
-          {name?.slice(0, 2)}
-        </AvatarFallback>
-      )}
+    <Avatar className=' w-7 h-7' {...props}>
+      <AvatarImage src={`${avatarURL}`} alt={`@${username}`} />
+      <AvatarFallback>{name?.slice(0, 2)}</AvatarFallback>
     </Avatar>
+
   )
 }
 export default UserAvatar;

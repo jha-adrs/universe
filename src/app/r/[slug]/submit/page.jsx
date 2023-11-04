@@ -24,7 +24,7 @@ const page = async ({params}) => {
         </div>
       </div>
       {/*Input Form */}
-      <Editor/>
+      <Editor communityId={community.id}/>
         <div className="w-full flex justify-end">
             <Button type='submit' variant="black" form='community-post-form'>Post</Button>
         </div>

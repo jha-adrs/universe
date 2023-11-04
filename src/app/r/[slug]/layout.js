@@ -71,6 +71,11 @@ const Layout = async ({children, params:{slug}}) =>{
                                 <dd className="text-gray-700">{memberCount}</dd>
                                 
                             </div>
+                            <div className="flex justify-between gap-x-4 py-3">
+                                <dt className="text-gray-500">Description</dt>
+                                <dd className="text-gray-700">{community.description}</dd>
+                                
+                            </div>
                             {community.creatorId === session?.user?.id ? (<div className="flex justify-between gap-x-4 py-3">
                                 <p>You own this community</p>
                             </div>):(null)}

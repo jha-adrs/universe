@@ -86,7 +86,7 @@ const Page = () => {
             <div className="relative bg-white  dark:text-white dark:bg-slate-700 w-full h-fit p-4 rounded-lg space-y-6">
                 <div className="flex justify-between items-center ">
                     <h1 className="text-xl font-semibold">
-                        Create a new cluster
+                        Create a new community
                     </h1>
                 </div>
                 <Separator />

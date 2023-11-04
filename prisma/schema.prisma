@@ -5,18 +5,28 @@ generator client {
   provider = "prisma-client-js"
 }
 
+//MySQL
+
 // datasource db {
 //   provider     = "mysql"// "mysql" 
 //   url          = env("DATABASE_URL")
 //   relationMode = "prisma"
 // }
+
+// Supabase
 datasource db {
  provider     = "postgresql" 
   url          = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
   relationMode = "foreignKeys"
 }
-
+// VERCEL
+// datasource db {
+//   provider = "postgresql"
+//   url = env("POSTGRES_PRISMA_URL") // uses connection pooling
+//   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+//   relationMode = "foreignKeys"
+// }
 
 model Account {
   id                String  @id @default(cuid())
