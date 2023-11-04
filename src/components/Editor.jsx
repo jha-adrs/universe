@@ -47,6 +47,7 @@ const Editor = ({communityId}) => {
         content:null
       }
     })
+
     const ref = useRef()
     const [isMounted, setIsMounted] = React.useState(false)
     const _titleRef = useRef(null)
@@ -160,13 +161,12 @@ const Editor = ({communityId}) => {
 
     const {mutate: createPost} = useMutation({
       mutationFn:async ({title, content, communityId})=>{
-        const payload = {communityId, title, content}
-
-        const {data} = await axios.post('/api/community/create', payload)
-        return data
+        const payload = { title, content, communityId }
+      const { data } = await axios.post('/api/community/post/create', payload)
+      return data
       },
       onError: (err)=>{
-        toast({
+        return toast({
           title: 'Oops! Something went wrong.',
           description: "Post was not published!",
           variant: 'destructive'
@@ -213,6 +213,7 @@ const Editor = ({communityId}) => {
               titleRef(e)
               _titleRef.current = e
             }}
+            {...rest}
             placeholder='Title' className='w-full resize-none appearance-none overflow-hidden bg-transparent text-xl sm:text-2xl md:text-3xl font-bold focus:outline-none'/>
             <div id='editor' className='min-h-[500px] h-full w-full'/>
           </div>

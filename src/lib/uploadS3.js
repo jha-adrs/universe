@@ -30,7 +30,7 @@ const uploadS3 = router
             });
 
             const response = await s3Client.send(command);
-            const url = await getSignedUrl(s3, command, { expiresIn: 60 * 60 * 1000 }); // 1 hour
+            const url = await getSignedUrl(s3, command, { expiresIn: 86400*7 }); // 1 hour
             return res.status(200).json({ url });
         } catch (error) {
             console.error(error);

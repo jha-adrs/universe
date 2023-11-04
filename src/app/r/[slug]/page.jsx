@@ -1,4 +1,5 @@
 import MiniCreatePost from '@/components/MiniCreatePost';
+import PostFeed from '@/components/PostFeed';
 import config from '@/config/config';
 import { getAuthSession } from '@/lib/auth';
 import { db } from '@/lib/db';
@@ -13,6 +14,9 @@ const page = async ({params}) => {
         where: {name: slug},
         include:{
             posts:{
+                orderBy:{
+                    createdAt: 'desc'
+                },
                 include:{
                     author:true,
                     votes:true,
@@ -34,7 +38,7 @@ const page = async ({params}) => {
             r/{community.name}
         </h1>
         <MiniCreatePost session={session}/>
-        
+        <PostFeed initialPosts={community.posts} communityName={community.name}/>
     </>
   )
 }

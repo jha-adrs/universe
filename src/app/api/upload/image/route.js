@@ -34,7 +34,7 @@ async function uploadImageToS3(
     const res = await s3Client.send(command);
 
     const getCommand = new GetObjectCommand(params);
-    const url = await getSignedUrl(s3Client, getCommand, { expiresIn: 3600 });
+    const url = await getSignedUrl(s3Client, getCommand, { expiresIn: 36000 });
     return url;
 }
 
