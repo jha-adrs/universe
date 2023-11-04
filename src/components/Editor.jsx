@@ -88,12 +88,28 @@ const Editor = ({communityId}) => {
               config:{
                 uploader:{
                   async uploadByFile(file){
-                    // Upload both in upload things as well as AWS S3
-                     const [res] = await uploadFiles([file], "imageUploader")
+      
+                     //const [res] = await uploadFiles([file], "imageUploader")
+                     // Send same file to AWS S3
+                     let {data} = await axios.post(
+                      "/api/upload/image",
+                      {
+                        file: file,
+                        type: file.type,
+                      },
+                      {
+                        headers: {
+                          "Content-Type": "multipart/form-data",
+                          "Access-Control-Allow-Origin": "*",
+                        },
+                      }
+                    );
+                      
+                    console.log(data)
                      return {
-                        success: 1,
+                        success: data.success || 0,
                         file:{
-                          url: res.fileUrl,
+                          url: data.url,
                         }
                      }
                   }

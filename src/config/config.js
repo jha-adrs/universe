@@ -16,4 +16,13 @@ config.AVAILABLE_AUTH_PROVIDERS = {
 }
 
 config.INFINITE_SCROLL_PAGINATION_AMOUNT = 2
+config.ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/gif']
+config.ALLOWED_VIDEO_TYPES = ['video/mp4', 'video/webm']
+config.MAX_IMAGE_SIZE = 1048576 * 5 // 5MB
+config.MAX_POST_LENGTH = 5000
+config.MAX_COMMENT_LENGTH = 1000
+config.MAX_COMMENT_DEPTH = 5
+
+
+
 export default config;
