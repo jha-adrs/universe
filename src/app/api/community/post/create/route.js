@@ -10,7 +10,8 @@ export async function POST(req) {
             return new Response("Unauthorized", {status: 401})
         }
         const body = await req.json();
-        const {communityId,title,content} = PostValidator.parse(body);
+        console.log(body);
+        const {communityId,title,content, visibility} = PostValidator.parse(body);
         const subscriptionExists = await db.subscription.findFirst({
             where:{
                 communityId,
@@ -29,6 +30,7 @@ export async function POST(req) {
                 content,
                 authorId: session.user.id,
                 communityId,
+                visibility
             }
         })
 

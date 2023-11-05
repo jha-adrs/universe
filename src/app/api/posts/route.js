@@ -2,7 +2,8 @@ import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { logger } from "@/lib/logger";
 import { z } from "zod";
-
+// TODO: Cache causing problems with public and private posts
+// import { cache } from "@/lib/cache";
 export async function GET(req){
     try {
         logger.info("GET /api/posts");
@@ -35,11 +36,30 @@ export async function GET(req){
 
             let whereClause ={}
             // If inside a community, only fetch specific posts for that community
-            if(communityName){
+            if(session && communityName){
                 whereClause = {
                     community:{
                         name:communityName,
+                        in:userCommunityIds,
                     }
+                }
+            }
+            else if(!session && communityName){
+                whereClause = {
+                    community:{
+                        name:communityName,
+                    },
+                    visibility:"PUBLIC"
+                    
+                }
+            }
+            else if(communityName){
+                whereClause = {
+                    community:{
+                        name:communityName,
+                    },
+                    visibility:"PUBLIC"
+                    
                 }
             }
             else if(session){
@@ -48,7 +68,7 @@ export async function GET(req){
                         in:userCommunityIds,
                     }
                 }
-            }
+            } 
 
             const posts = await db.post.findMany({
                 take:parseInt(limit),

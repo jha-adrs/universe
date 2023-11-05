@@ -90,10 +90,16 @@ model Community {
   creator   User?          @relation("CreatedBy", fields: [creatorId], references: [id])
   members   Subscription[]
   description String?
+  visibility CommunityVisibility @default(PUBLIC)
   @@index([name])
   @@index([creatorId])
 }
 
+enum CommunityVisibility{
+  PUBLIC
+  PRIVATE
+  RESTRICTED
+}
 model Subscription {
   user      User    @relation(fields: [userId], references: [id])
   userId    String
@@ -121,9 +127,13 @@ model Post {
 
   comments Comment[]
   votes    Vote[]
-
+  visibility ContentVisibility @default(PUBLIC)
   @@index([communityId])
   @@index([authorId])
+}
+enum ContentVisibility {
+  PUBLIC
+  PRIVATE
 }
 
 model Comment {
