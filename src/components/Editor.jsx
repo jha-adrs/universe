@@ -93,26 +93,32 @@ const Editor = ({ communityId }) => {
               uploader: {
                 async uploadByFile(file) {
 
-                  //const [res] = await uploadFiles([file], "imageUploader")
+                  const [res] = await uploadFiles([file], "imageUploader")
                   // Send same file to AWS S3
-                  let { data } = await axios.post(
-                    "/api/upload/image",
-                    {
-                      file: file,
-                      type: file.type,
-                    },
-                    {
-                      headers: {
-                        "Content-Type": "multipart/form-data",
-                        "Access-Control-Allow-Origin": "*",
-                      },
-                    }
-                  );
+                  // let { data } = await axios.post(
+                  //   "/api/upload/image",
+                  //   {
+                  //     file: file,
+                  //     type: file.type,
+                  //   },
+                  //   {
+                  //     headers: {
+                  //       "Content-Type": "multipart/form-data",
+                  //       "Access-Control-Allow-Origin": "*",
+                  //     },
+                  //   }
+                  // );
 
+                  // return {
+                  //   success: data.success || 0,
+                  //   file: {
+                  //     url: data.url,
+                  //   }
+                  // }
                   return {
-                    success: data.success || 0,
+                    success: 1,
                     file: {
-                      url: data.url,
+                      url: res.fileUrl,
                     }
                   }
                 }

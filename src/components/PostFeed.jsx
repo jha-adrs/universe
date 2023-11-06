@@ -4,9 +4,11 @@ import { useIntersection } from '@mantine/hooks'
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import React, { useEffect, useRef } from 'react'
-import Post from './Post';
 import { Loader2 } from 'lucide-react';
 import axios from 'axios';
+import dynamic from 'next/dynamic';
+const Post = dynamic(() => import('./Post'), { ssr: false })
+
 const PostFeed = ({ initialPosts, communityName }) => {
     const lastPostRef = useRef(null)
     const { ref, entry } = useIntersection({

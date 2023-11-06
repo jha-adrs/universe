@@ -2,8 +2,11 @@
 import { formatTimeToNow } from '@/lib/utils'
 import { ArrowBigUp, ArrowUp01Icon, ArrowUpNarrowWide, DotIcon, Heart, MessageCircleIcon, MessageSquare } from 'lucide-react'
 import React, { useRef } from 'react'
-import EditorOutput from './EditorOutput';
-import PostVoteClient from './post-vote/PostVoteClient';
+
+import dynamic from 'next/dynamic';
+const PostVoteClient = dynamic(() => import('./post-vote/PostVoteClient'), { ssr: false })
+const EditorOutput = dynamic(() => import('./EditorOutput'), { ssr: false })
+
 
 const Post = ({communityName,post,votesAmt,currentVote,commentAmt, ...props}) => {
     const pRef = useRef(null);

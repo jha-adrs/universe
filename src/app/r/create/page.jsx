@@ -80,6 +80,7 @@ const Page = () => {
              }
         }
     })
+    // TODO: Add community visibility options
 
     return (
         <div className='container flex items-center h-full max-3xl mx-auto'>

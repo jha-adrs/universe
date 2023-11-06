@@ -15,7 +15,7 @@ config.AVAILABLE_AUTH_PROVIDERS = {
     microsoft:1
 }
 
-config.INFINITE_SCROLL_PAGINATION_AMOUNT = 16
+config.INFINITE_SCROLL_PAGINATION_AMOUNT = 5
 config.ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/gif']
 config.ALLOWED_VIDEO_TYPES = ['video/mp4', 'video/webm']
 config.MAX_IMAGE_SIZE = 1048576 * 5 // 5MB

@@ -56,7 +56,7 @@ const UserAuthForm = ({ className, ...props }) => {
                     Or continue with
                 </span>
             </div>
-            <div className="flex justify-center items-stretch m-2">
+            <div className="flex flex-col md:flex-row justify-center items-stretch m-2">
                 <Button onClick={loginWithGoogle} variant='outline' className={cn('flex m-2', className)} disabled={isLoading || !availableProviders['google']}>
                     {isLoading ? <Icons.spinner className='w-5 h-5 mr-2 animate-spin' /> : <Icons.google className='w-5 h-5 mr-2' />} Google
                 </Button>

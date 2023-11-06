@@ -16,8 +16,8 @@ generator client {
 // Supabase
 datasource db {
  provider     = "postgresql" 
-  url          = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  url          = env("AWS_POSTGRES_DB_CONNECTION_STRING")
+  //directUrl = env("DIRECT_URL")
   relationMode = "foreignKeys"
 }
 // VERCEL
