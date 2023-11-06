@@ -60,6 +60,7 @@ const Editor = ({ communityId }) => {
 
 
   }, [])
+  //TODO: Add text sanitizer for rtf and disable posts for such content
   const initializeEditor = useCallback(async () => {
     const EditorJS = (await import('@editorjs/editorjs')).default
     const Header = (await import('@editorjs/header')).default

@@ -15,7 +15,7 @@ export async function POST(req) {
 
         const body = await req.json();
         // Validate body
-        const { name, description } = communitySchema.parse(body);
+        const { name, description, visibility } = communitySchema.parse(body);
         logger.info(`Community Creation request : ${name} by ${session.user.username}`)
         const communityExists = await db.Community.findFirst({
             where: {
@@ -31,6 +31,7 @@ export async function POST(req) {
                 name,
                 description,
                 creatorId: session.user.id,
+                visibility: visibility
             }
         })
         logger.info(`Community Created: ${community.name} by ${session.user.username}`)
