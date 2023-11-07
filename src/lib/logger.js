@@ -50,7 +50,7 @@ const deepRegexReplace = (value,single_key = '') => {
 const winstonLogger = createLogger({
     transports: [
         new transports.Console({
-            level: 'debug',
+            level: 'verbose',
             format: combine(
             timestamp(),
             format.colorize(),
@@ -113,6 +113,9 @@ var Unilogger = {
     },
     debug: function(message, ...args) {
         winstonLogger.debug(message, ...args)
+    },
+    verbose: function(message, ...args) {
+        winstonLogger.verbose(message, ...args)
     },
     deepRegexReplace: (data) => {
         try{

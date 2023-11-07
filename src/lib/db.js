@@ -28,7 +28,6 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 prisma.$on('warn', (e) => {
-  
   logger.warn(e.message, e.target)
 })
 prisma.$on('info', (e) => {
@@ -39,7 +38,7 @@ prisma.$on('error', (e) => {
   logger.error(e.message, e.target)
 })
 prisma.$on('query', (e) => {
-  logger.info("Execute Query", e.query, "Params", e.params,"Duration",e.duration, 'ms')
+  logger.verbose("Execute Query", e.query, "Params", e.params,"Duration",e.duration, 'ms')
 })
 
 exports.db = prisma;
