@@ -77,7 +77,7 @@ model User {
 
   createdCommunity Community[] @relation("CreatedBy")
   karma          Int      @default(0)
-
+  joinedDate     DateTime @default(now())
 }
 model Community {
   id        String   @id @default(cuid())
@@ -85,7 +85,7 @@ model Community {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   posts     Post[]
-
+  image    String?
   creatorId String?
   creator   User?          @relation("CreatedBy", fields: [creatorId], references: [id])
   members   Subscription[]

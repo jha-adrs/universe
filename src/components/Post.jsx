@@ -4,6 +4,7 @@ import { ArrowBigUp, ArrowUp01Icon, ArrowUpNarrowWide, DotIcon, Heart, MessageCi
 import React, { useRef } from 'react'
 
 import dynamic from 'next/dynamic';
+import { UserHoverCard } from './hover-card/UserHoverCard';
 const PostVoteClient = dynamic(() => import('./post-vote/PostVoteClient'), { ssr: false })
 const EditorOutput = dynamic(() => import('./EditorOutput'), { ssr: false })
 
@@ -15,20 +16,22 @@ const Post = ({communityName,post,votesAmt,currentVote,commentAmt, ...props}) =>
         <div className="px-6 py-4 flex justify-between">
             <PostVoteClient postId={post.id} initialVotesAmt={votesAmt} initialVote={currentVote} />
             <div className="w-0 flex-1">
-                <div className="max-h-40 mt-1 text-xs text-gray-500">
+                <div className="max-h-40 mt-1 text-xs text-gray-500 justify-between flex">
                     {communityName?(<>
                     <a href={`/r/${communityName}`} className='underline text-zinc-900 text-sm underline-offset-2'>
                         r/{communityName}
                     </a>
                     <span className="px-1"></span>
                     </>): null}
+                    <div>
                     <span className="text-gray-900">
                         <a href={`/u/${post.author.username}`} className="text-blue-800">
-                        Posted by u/{post.author.name}
+                        Posted by u/<UserHoverCard user={post.author} />
                         </a>
                     </span>
                     {'  '}
                     {`(${formatTimeToNow(new Date(post.createdAt))})`}
+                    </div>
                 </div>
 
                 <a href={`/r/${communityName}/post/${post.id}`}>

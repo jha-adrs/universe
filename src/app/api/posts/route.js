@@ -22,7 +22,7 @@ export async function GET(req) {
             
             userCommunityIds = await commIds.map((comm) => comm.communityId);
         }
-        console.log(userCommunityIds, "commIds");
+        //console.log(userCommunityIds, "commIds");
         const { limit, page, communityName } = z.object({
             limit: z.string(),
             page: z.string(),

@@ -6,6 +6,8 @@ import config from "@/config/config";
 import { Button, buttonVariants } from "@/components/ui/button";
 import SubscribeLeaveToggle from "@/components/SubscribeLeaveToggle";
 import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
+import _, { capitalize } from "lodash";
 const Layout = async ({children, params:{slug}}) =>{
     const session = await getAuthSession();
 
@@ -46,7 +48,7 @@ const Layout = async ({children, params:{slug}}) =>{
             },
         }
     })
-
+    const badgeColor = community.visibility === "PUBLIC" ? "greenish": community.visibility === "PRIVATE" ? "reddish" : "outline" ;
     return (
         <div className="sm:container max-w-7xl mx-auto h-full pt-12">
             <div>
@@ -56,8 +58,9 @@ const Layout = async ({children, params:{slug}}) =>{
                     </div>
 
                     <div className="hidden md:block overflow-hidden h-fit rounded-lg border-2 border-gray-200 order-first md:order-last">
-                        <div className="px-6 py-4">
-                            <p className="font-semibold py-3">About r/{community.name}</p>
+                        <div className="px-6 py-4 justify-between flex flex-row ">
+                            <p className=" font-semibold py-3">About  r/{community.name}</p>
+                            <Badge variant={badgeColor} className="mb-4 h-5">{capitalize(community.visibility)}</Badge>
                         </div>
                         <dl className="divide-y divide-gray-100 px-6 py-4 text-sm leading-6 bg-white ">
                             <div className="flex justify-between gap-x-4 py-3">

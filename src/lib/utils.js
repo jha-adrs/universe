@@ -52,3 +52,8 @@ export function formatTimeToNow(date) {
     },
   })
 }
+
+export function getJoinedDate(date) {
+  const options = { month: 'long', year: 'numeric' };
+  return `Joined ${date?.toLocaleString('default', options)}`;
+}
