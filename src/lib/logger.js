@@ -49,28 +49,27 @@ const deepRegexReplace = (value,single_key = '') => {
 
 const winstonLogger = createLogger({
     transports: [
-        new transports.Console(),
+        new transports.Console({
+            level: 'debug',
+            format: combine(
+            timestamp(),
+            format.colorize(),
+            newFormat
+    )
+        }),
 
         new transports.MongoDB({
-            level: 'debug',
+            level: 'warn',
             db: process.env.MONGO_DB_CONNECTION_STRING,
             options:{
                 useUnifiedTopology: true
             
             },
             collection: 'universe_logs',
-            format: combine(
-                timestamp(),
-                format.json()
-            )
+            format: format.json()
         })
     ],
-    level: 'debug',
-    format: combine(
-        timestamp(),
-        format.colorize(),
-        newFormat
-    )
+    
 })
 
 
