@@ -8,6 +8,7 @@ import { z } from "zod"
 
 export async function PATCH(req){
     try {
+        logger.info("PATCH /api/community/post/vote")
         const body = await req.json()
         const {postId,voteType} = PostVoteValidator.parse(body)
         const session = await getAuthSession(req)
@@ -32,12 +33,15 @@ export async function PATCH(req){
             }
         
         })
+        logger.debug(post, "post")
 
         if(!post){
+            logger.error('Post not found')
             return new Response('Post not found', {status:404})
         }
         if(existingVote){
             if(existingVote.voteType === voteType){
+                logger.debug('Vote type is the same, removing vote')
                 await db.vote.delete({
                     where:{
                         userId_postId:{
@@ -60,7 +64,7 @@ export async function PATCH(req){
                     type:voteType
                 }
             })
-            const votesAmt = post.votes.reduce((acc, vote) => {
+            const votesAmt = await post.votes.reduce((acc, vote) => {
                 if(vote.voteType === 'UP'){
                     return acc + 1
                 }
@@ -78,12 +82,14 @@ export async function PATCH(req){
                     currentVote: voteType,
                     createdAt: post.createdAt
                 }
-                await redis.hset(`post:${postId}`, cachePayload)
+                const cacheResponse = await redis.hset(`post:${postId}`, cachePayload)
+                console.log(cacheResponse, "cache change1")
             }
             if(votesAmt < config.NEGATIVE_VOTE_THRESHOLD){
                 const cachePayload = {
 
                 }
+                logger.debug('Post has reached negative vote threshold, deleting post')
                 // TODO: Add function to decrease user karma on downvote
                 // TODO: Add function to delete post on downvote
             }
@@ -107,6 +113,7 @@ export async function PATCH(req){
                 }
                 return acc
             },0)
+            console.log(votesAmt, "votesAmt")
             if(votesAmt >= config.VOTE_THRESHOLD){
                 const cachePayload = {
                     authorUsername: post.author.username ?? '',
@@ -116,7 +123,8 @@ export async function PATCH(req){
                     currentVote: voteType,
                     createdAt: post.createdAt
                 }
-                await redis.hset(`post:${postId}`, cachePayload)
+               const cacheResponse = await redis.hset(`post:${postId}`, cachePayload)
+                console.log(cacheResponse, "cache change2")
             }
             if(votesAmt < config.NEGATIVE_VOTE_THRESHOLD){
                 const cachePayload = {

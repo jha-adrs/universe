@@ -19,7 +19,7 @@ export async function GET(req) {
                     community: true,
                 },
             });
-            
+
             userCommunityIds = await commIds.map((comm) => comm.communityId);
         }
         //console.log(userCommunityIds, "commIds");
@@ -37,9 +37,9 @@ export async function GET(req) {
 
         if (session && communityName) {
             whereClause = {
-                AND:[
-                    {community: {name: communityName}},
-                    {community: {id: {in: userCommunityIds}}},
+                AND: [
+                    { community: { name: communityName } },
+                    { community: { id: { in: userCommunityIds } } },
                 ]
             };
         } else if (!session && communityName) {
@@ -67,9 +67,9 @@ export async function GET(req) {
         const posts = await db.post.findMany({
             take: parseInt(limit),
             skip: (parseInt(page) - 1) * parseInt(limit),
-            orderBy: {
-                createdAt: "desc",
-            },
+            orderBy: [
+                { createdAt: 'desc' },
+            ],
             include: {
                 community: true,
                 votes: true,
