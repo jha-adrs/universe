@@ -59,7 +59,7 @@ export async function POST(request, response) {
             uuid() + "." + fileExtension,
             mimeType
         );
-        console.log(url, "url")
+        logger.info("Uploaded image new image", url);
         return NextResponse.json({ success: 1, url });
     } catch (error) {
         console.error("Error uploading image:", error);

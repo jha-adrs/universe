@@ -5,6 +5,7 @@ import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
 import sharp from "sharp";
 import config from "@/config/config";
+import { logger } from "@/lib/logger";
 
 const s3Client = new S3Client({
     region: process.env.AWS_REGION,
@@ -59,7 +60,7 @@ export async function POST(request, response) {
             uuid() + "." + fileExtension,
             mimeType
         );
-        console.log(url, "url")
+        logger.info("Uploaded new video", url);
         return NextResponse.json({ success: 1, url });
     } catch (error) {
         console.error("Error uploading image:", error);

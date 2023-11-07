@@ -10,7 +10,7 @@ export async function POST(req) {
             return new Response("Unauthorized", {status: 401})
         }
         const body = await req.json();
-        console.log(body);
+        logger.info("POST /api/community/post/create", body);
         const {communityId,title,content} = PostValidator.parse(body);
         const subscriptionExists = await db.subscription.findFirst({
             where:{
