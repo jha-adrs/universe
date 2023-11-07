@@ -6,6 +6,7 @@ import { Icons } from './Icons'
 import { buttonVariants } from './ui/button'
 import { getAuthSession } from '@/lib/auth'
 import UserAccountNav from './UserAccountNav'
+import { db } from '@/lib/db'
 const Navbar =async () => {
 
   // Get session
@@ -21,9 +22,9 @@ const Navbar =async () => {
          <p className="hidden md:block font-bold"> UniVerse</p>
       </Link>
       {session?.user ? (
-        <UserAccountNav user ={session.user}/>
+        <UserAccountNav user ={session.user} />
       ):(
-        <Link href='/sign-in' className={buttonVariants()}>Sign In</Link>
+        <Link href='/sign-in' className={buttonVariants({variant:"black"})}>Sign In</Link>
       )}
       
 

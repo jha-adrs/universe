@@ -1,10 +1,15 @@
+import PostFeed from '@/components/PostFeed'
+import CustomFeed from '@/components/feed/CustomFeed'
+import GeneralFeed from '@/components/feed/GeneralFeed'
 import { buttonVariants } from '@/components/ui/button'
+import { getAuthSession } from '@/lib/auth'
 import { cn } from '@/lib/utils'
 import { HomeIcon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-export default function Home() {
+export default async function Home() {
+  const session = await getAuthSession()
   return (
     <main className="">
       <h1 className="font-bold text-3xl md:text-4xl">
@@ -12,6 +17,7 @@ export default function Home() {
       </h1>
       <div className='grid grid-cols-1 md:grid-cols-3 gap-y-4 md:gap-x-4 py-6'>
         {/*Feed */}
+        {session ? (<CustomFeed session={session?.user}/>):(<GeneralFeed/>)}
         {/*Widgets */}
         {/* SubbredditCluster Info */}
 

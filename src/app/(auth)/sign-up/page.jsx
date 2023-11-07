@@ -1,8 +1,4 @@
-import { Icons } from '@/components/Icons'
 import Signup from '@/components/Signup'
-import { buttonVariants } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
-import Link from 'next/link'
 import React from 'react'
 
 const page = () => {
