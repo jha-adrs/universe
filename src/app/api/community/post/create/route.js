@@ -11,18 +11,26 @@ export async function POST(req) {
         }
         const body = await req.json();
         console.log(body);
-        const {communityId,title,content, visibility} = PostValidator.parse(body);
+        const {communityId,title,content} = PostValidator.parse(body);
         const subscriptionExists = await db.subscription.findFirst({
             where:{
                 communityId,
                 userId: session.user.id,
                 
+            },
+            include:{
+                community: true
             }
         });
 
         if(!subscriptionExists){
             return new Response("You are not a Member", {status: 400})
         }
+        let visibility;
+        if(subscriptionExists.community.visibility){
+            visibility = subscriptionExists.community.visibility === "PRIVATE" ?  "PRIVATE" :"PUBLIC"
+        }
+        //TODO: Add check for community visibility and add post accordingly
         logger.info("Creating post", {title, content, communityId, authorId: session.user.id})
         await db.post.create({
             data:{
@@ -30,7 +38,7 @@ export async function POST(req) {
                 content,
                 authorId: session.user.id,
                 communityId,
-                visibility
+                visibility: "PUBLIC"
             }
         })
 

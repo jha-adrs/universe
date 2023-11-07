@@ -5,6 +5,5 @@ export const PostValidator = z.object({
     .min(3, {message:"Title must be longer than 3 characters"})
     .max(128, {message:"Title must be at most 128 characters"}),
     communityId: z.string(),
-    content: z.any(),
-    visibility: z.enum(['PUBLIC', 'PRIVATE']),
+    content: z.any()
 })

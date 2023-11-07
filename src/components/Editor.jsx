@@ -46,8 +46,7 @@ const Editor = ({ communityId }) => {
     defaultValues: {
       communityId,
       title: '',
-      content: null,
-      visibility: 'PUBLIC'
+      content: null
     }
   })
 
@@ -169,8 +168,8 @@ const Editor = ({ communityId }) => {
   }, [isMounted, initializeEditor])
 
   const { mutate: createPost } = useMutation({
-    mutationFn: async ({ title, content, communityId, visibility }) => {
-      const payload = { title, content, communityId, visibility }
+    mutationFn: async ({ title, content, communityId }) => {
+      const payload = { title, content, communityId }
       const { data } = await axios.post('/api/community/post/create', payload)
       return data
     },
@@ -201,8 +200,7 @@ const Editor = ({ communityId }) => {
     const payload = {
       title: data.title,
       content: blocks,
-      communityId,
-      visibility: isPrivatePost ? 'PRIVATE' : 'PUBLIC'
+      communityId
     }
     createPost(payload)
 
@@ -224,10 +222,7 @@ const Editor = ({ communityId }) => {
             }}
             {...rest}
             placeholder='Title' className='w-full resize-none appearance-none overflow-hidden bg-transparent text-xl sm:text-2xl md:text-3xl font-bold focus:outline-none' />
-          <div className='relative right-0 '>
-            <Checkbox className='data-[state=checked]:bg-red-500 border border-red-500 my-3' label='Private' onCheckedChange={() => setIsPrivatePost(!isPrivatePost)} />
-            <Label htmlFor='visibility' className='text-sm text-gray-500 ml-4'>Private Post</Label>
-          </div>
+          
           <div id='editor' className='min-h-[500px] h-full w-full' />
         </div>
       </form>
