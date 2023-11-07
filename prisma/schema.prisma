@@ -121,17 +121,16 @@ model Post {
   updatedAt DateTime @updatedAt
   community   Community  @relation(fields: [communityId], references: [id])
   communityId String
-
+  visibility PostVisibility @default(PUBLIC)
   authorId String
   author   User   @relation(fields: [authorId], references: [id])
 
   comments Comment[]
   votes    Vote[]
-  visibility ContentVisibility @default(PUBLIC)
   @@index([communityId])
   @@index([authorId])
 }
-enum ContentVisibility {
+enum PostVisibility{
   PUBLIC
   PRIVATE
 }
