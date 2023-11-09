@@ -5,7 +5,7 @@ import { logger } from "@/lib/logger"
 import { redis } from "@/lib/redis"
 import { PostVoteValidator } from "@/lib/validators/vote"
 import { z } from "zod"
-
+const {redisHelpers: {setPostData}} = require('@/lib/redisHelpers')
 export async function PATCH(req) {
     try {
         logger.info("PATCH /api/community/post/vote")
@@ -76,25 +76,10 @@ export async function PATCH(req) {
             }, 0)
             logger.info(votesAmt, "votesAmt", post.votes)
             if (votesAmt >= config.VOTE_THRESHOLD) {
-                const cachePayload = {
-                    authorUsername: post.author.username ?? '',
-                    content: JSON.stringify(post.content),
-                    id: post.id,
-                    title: post.title,
-                    currentVote: voteType,
-                    createdAt: post.createdAt
-                };
-                logger.debug(cachePayload, "cachePayload")
-                
-                const redisKey = `post:${post?.id}`
-                const cacheResponse = await redis.set(redisKey, JSON.stringify(cachePayload));
-                await redis.expire(`post:${postId}`, config.REDIS_TTL);
+                const cacheResponse = await setPostData(post);
                 logger.warn(cacheResponse, "cache change1")
             }
             if (votesAmt < config.NEGATIVE_VOTE_THRESHOLD) {
-                const cachePayload = {
-
-                }
                 logger.info('Post has reached negative vote threshold, deleting post')
                 // TODO: Add function to decrease user karma on downvote
                 // TODO: Add function to delete post on downvote
@@ -121,17 +106,8 @@ export async function PATCH(req) {
             }, 0)
             
             if (votesAmt >= config.VOTE_THRESHOLD) {
-                const cachePayload = {
-                    authorUsername: post.author.username ?? '',
-                    content: JSON.stringify(post.content),
-                    id: post.id,
-                    title: post.title,
-                    createdAt: post.createdAt
-                };
-                
-                const cacheResponse = await redis.set(`post:${postId}`, JSON.stringify(cachePayload));
-                await redis.expire(`post:${postId}`, config.REDIS_TTL);
-                logger.info(cacheResponse, "cache change2", cachePayload, 'payload')
+                const cacheResponse = await setPostData(post);
+                logger.info(cacheResponse, "cache change2", 'payload')
             }
             if (votesAmt < config.NEGATIVE_VOTE_THRESHOLD) {
                 logger.info('Post has reached negative vote threshold, deleting post')

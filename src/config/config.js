@@ -25,6 +25,6 @@ config.MAX_COMMENT_DEPTH = 5
 config.VOTE_THRESHOLD = 1
 config.NEGATIVE_VOTE_THRESHOLD = -15
 
-config.REDIS_TTL = 60 * 60 * 24  // 1 day
+config.REDIS_TTL = 60 * 60   // 1 day
 
 export default config;

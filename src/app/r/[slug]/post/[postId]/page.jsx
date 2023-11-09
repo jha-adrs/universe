@@ -1,5 +1,6 @@
 import React from 'react'
-import {redis, redisHelpers, setData} from '@/lib/redis'
+import {redis } from '@/lib/redis'
+import { redisHelpers } from '@/lib/redisHelpers'
 import { db } from '@/lib/db'
 import { notFound } from 'next/navigation'
 export const dynamic = 'force-dynamic'
@@ -8,7 +9,7 @@ export const fetchCache = 'force-no-store'
 const page = async({params}) => {
   const {postId} = params
   const cachedPost = await redis.get(`post:${postId}`)
-  console.log(cachedPost)
+  console.log(cachedPost, "found in cache")
   let post;
   if(!cachedPost) {
     post = await db.post.findFirst({
