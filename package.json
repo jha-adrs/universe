@@ -78,6 +78,7 @@
     "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.47.0",
     "react-textarea-autosize": "^8.4.1",
+    "redis": "^4.6.10",
     "server-only": "^0.0.1",
     "sharp": "^0.32.6",
     "tailwind-merge": "^1.12.0",

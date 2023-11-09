@@ -4,7 +4,7 @@ import React from 'react'
 import PostFeed from '../PostFeed'
 import { getAuthSession } from '@/lib/auth'
 import { Prisma } from '@prisma/client'
-
+//import {redis} from '@/lib/redis'
 const CustomFeed = async () => {
   const session = await getAuthSession()
   //const followedCommunities = await db.$queryRaw`SELECT * FROM Subscription WHERE userId = ${session?.user.id}`
@@ -38,6 +38,7 @@ const CustomFeed = async () => {
     },
     take: config.INFINITE_SCROLL_PAGINATION_AMOUNT
   })
+  
 
   return (
     <>
