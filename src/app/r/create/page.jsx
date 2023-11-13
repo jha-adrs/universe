@@ -18,7 +18,7 @@ import {
 import Link from 'next/link'
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command'
 import { AlertTriangleIcon, ChevronDownIcon, SmartphoneIcon } from 'lucide-react'
-import { capitalize } from 'lodash'
+import _, { capitalize } from 'lodash'
 import DOMPurify from 'dompurify'
 
 const Page = () => {
@@ -37,7 +37,7 @@ const Page = () => {
                 setCommunityNameError("Community name is required");
                 return;
               }
-              if (!/^[a-z0-9-_]+$/.test(communityName)) {
+              if (!/^[A-Za-z0-9-_]+$/.test(communityName)) {
                 setCommunityNameError("Community name must be URL compatible (lower case alphabets, numbers, underscores and hyphens only)");
                 return;
               }
@@ -45,6 +45,7 @@ const Page = () => {
                 setCommunityDescriptionError("Community description is required");
                 return;
               }
+              setCommunityName(_.toLower(communityName))
 
             const payload = {
                 name: DOMPurify.sanitize(communityName),

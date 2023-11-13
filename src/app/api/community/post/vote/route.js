@@ -30,7 +30,8 @@ export async function PATCH(req) {
             },
             include: {
                 author: true,
-                votes: true
+                votes: true,
+                comments:true
             }
 
         })

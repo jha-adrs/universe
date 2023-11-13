@@ -6,6 +6,7 @@ import { Input } from './ui/input';
 import { Button, buttonVariants } from './ui/button';
 import Link from 'next/link';
 import { ImageIcon, Link1Icon } from '@radix-ui/react-icons';
+import { Calendar, CalendarCheck2, CalendarIcon } from 'lucide-react';
 
 const MiniCreatePost = ({ session }) => {
     const router = useRouter();
@@ -23,6 +24,8 @@ const MiniCreatePost = ({ session }) => {
             
             <Link href={`${pathname}/submit`} className={buttonVariants({variant:"ghost"})}><ImageIcon /> </Link>
             <Link href={`${pathname}/submit`} className={buttonVariants({variant:"ghost"})}><Link1Icon/> </Link>
+            <Link href={`${pathname}/submit`} className={buttonVariants({variant:"ghost"})}> <CalendarCheck2 className='w-4 h-4 font-light'/> </Link>
+            
             </div>
         </li>
     )

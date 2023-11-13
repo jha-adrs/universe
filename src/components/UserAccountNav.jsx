@@ -27,13 +27,14 @@ import { signOut } from 'next-auth/react'
 import { Icons } from './Icons'
 import { cn } from '@/lib/utils'
 import { BellDot, HelpCircle, HistoryIcon, InboxIcon, LogOutIcon, NewspaperIcon, Plus, UserCircle, UserCog2, Users2, Users2Icon } from 'lucide-react'
-
+import config from '@/config/config'
+import _ from 'lodash'
 export function UserAccountNav({ user, ...props }) {
     // TODO: Add custom avatar uploaded by user
     let avatarURL = user?.image
     const name = user?.name
     const username = user?.username
-    if (!avatarURL) avatarURL = `https://ui-avatars.com/api/?name=${name}&background=random&rounded=true&size=128`
+    if (!avatarURL) avatarURL = _.sample(config.AVATAR_FALLBACKS) || `https://ui-avatars.com/api/?name=${name}&background=random&rounded=true&size=128`
 
     const handleSignout = async () => {
 

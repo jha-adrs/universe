@@ -4,7 +4,7 @@ import config from '@/config/config'
 export const redisHelpers ={
     setStringData: async (key, value) => {
         logger.info("Setting redis key", key, value)
-        const response =await redis.set(key, JSON.stringify(value),"EX", config.REDIS_TTL)
+        const response =await redis.set(key, JSON.stringify(value),{ex: config.REDIS_TTL})
         //const ttl = await redis.expire(key, config.REDIS_TTL)
         return response
     },
@@ -24,9 +24,24 @@ export const redisHelpers ={
             return {response: null}
         }
 
-        const postPayload = {authorUsername: post?.author.username, content: post.content,id:post.id,title: post.title, createdAt:post.createdAt }
+        const postPayload = {
+            authorUsername: post?.author.username, 
+            content: post.content,
+            id:post.id,
+            title: post.title, 
+            createdAt:post.createdAt,
+            votes:post.votes,
+            comments: post.comments,
+        }
         const response = await redis.set(`post:${post.id}`, JSON.stringify(postPayload), {ex: config.REDIS_TTL})
         //const ttl = await redis.expire(`post:${post.id}`, config.REDIS_TTL)
         return response
-    }
+    },
+    getPostData: async (postId) => {
+        logger.info("Getting redis key post",postId)
+        const response = await redis.get(`post:${postId}`)
+        return response
+    },
 }
+
+//TODO: Remove loggers 
