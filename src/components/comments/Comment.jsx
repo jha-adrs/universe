@@ -1,7 +1,9 @@
 import React from 'react'
 
 const Comment = () => {
-    return new Promise(() => {});
+    return <div>
+        
+    </div>
 }
 
 export default Comment;

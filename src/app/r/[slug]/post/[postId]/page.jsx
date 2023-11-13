@@ -11,6 +11,7 @@ import { formatTimeToNow, wait } from '@/lib/utils'
 import EditorOutput from '@/components/EditorOutput'
 import { Skeleton } from '@/components/ui/skeleton'
 import Comment from '@/components/comments/Comment'
+import CommentsSection from '@/components/comments/CommentsSection'
 export const dynamic = 'force-dynamic'
 export const fetchCache = 'force-no-store'
 
@@ -91,7 +92,7 @@ const page = async ({ params }) => {
               </div>
             </div>
           }>
-              <Comment/>
+              <CommentsSection/>
           </Suspense>
 
         </div>
@@ -103,12 +104,12 @@ const page = async ({ params }) => {
 }
 
 function PostVoteShell() {
-  return <div className='flex items-center flex-col pr-6 w-20'>
+  return <div className=' flex items-center flex-row sm:flex-col gap-4 sm:gap-0 pr-6 sm:w-20 pb-4 sm:pb-0'>
     <div className={buttonVariants({ variant: 'ghost' })}>
       <ArrowBigUp className='w-5 h-5 text-zinc-700 animate-pulse rounded-md bg-primary/10' />
     </div>
     <div className="text-center py-2 font-medium text-sm text-zinc-900">
-      <Loader2 className='w-5 h-5 animate-spin' />
+      <Skeleton className='w-5 h-5 ' />
     </div>
     <div className={buttonVariants({ variant: 'ghost' })}>
       <ArrowBigDown className='w-5 h-5 text-zinc-700 animate-pulse rounded-md bg-primary/10' />

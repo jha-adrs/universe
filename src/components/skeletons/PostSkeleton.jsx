@@ -2,14 +2,14 @@ import React from 'react'
 import { Skeleton } from '../ui/skeleton';
 
 const PostSkeleton = ({ count }) => {
-    if (count === undefined) count = 5
+    if (count === undefined) count = 1
     if (count > 10) count = 10
     const renderPosts = () => {
         const postSk = [];
 
         for (let i = 0; i < count; i++) {
             postSk.push(
-                <div className='rounded-md bg-white shadow'>
+                <div className='rounded-md bg-white shadow m-2'>
                     <div className="px-6 py-4 flex justify-between">
                         <Skeleton className='w-6 h-6 text-zinc-500 ' />
                         <div className="w-0 flex-1">
@@ -19,7 +19,7 @@ const PostSkeleton = ({ count }) => {
 
                                 <div className=''>
                                     <span className="text-gray-900">
-                                        <Skeleton className="text-blue-800 h-4 w-8" />
+                                        <Skeleton className="text-gray-400 h-4 w-8" />
                                     </span>
                                     {'  '}
                                     <Skeleton className='h-4 w-4' />

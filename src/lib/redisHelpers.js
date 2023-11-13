@@ -30,8 +30,6 @@ export const redisHelpers ={
             id:post.id,
             title: post.title, 
             createdAt:post.createdAt,
-            votes:post.votes,
-            comments: post.comments,
         }
         const response = await redis.set(`post:${post.id}`, JSON.stringify(postPayload), {ex: config.REDIS_TTL})
         //const ttl = await redis.expire(`post:${post.id}`, config.REDIS_TTL)

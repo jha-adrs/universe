@@ -38,10 +38,9 @@ const page = async ({params}) => {
         <h1 className="font-bold text-3xl md:text-4xl h-14">
             r/{community.name}
         </h1>
-        <Suspense  fallback={<FeedSkeleton/>}>
         <MiniCreatePost session={session}/>
         <PostFeed initialPosts={community.posts} communityName={community.name}/>
-        </Suspense>
+       
         
     </>
   )
