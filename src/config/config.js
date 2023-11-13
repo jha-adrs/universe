@@ -5,7 +5,11 @@ config.HOST = 'http://localhost:3000'
 config.GOOGLE_OAUTH_CALLBACK = 'http://localhost:3000/api/auth'
 
 config.AVATAR_FALLBACKS=[
-    'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png',
+    'https://universe-aws-bucket.s3.ap-south-1.amazonaws.com/global_assets/planet_1.png',
+    'https://universe-aws-bucket.s3.ap-south-1.amazonaws.com/global_assets/planet_2.png',
+    'https://universe-aws-bucket.s3.ap-south-1.amazonaws.com/global_assets/planet_3png',
+    'https://universe-aws-bucket.s3.ap-south-1.amazonaws.com/global_assets/planet_4.png',
+    'https://universe-aws-bucket.s3.ap-south-1.amazonaws.com/global_assets/planet_5.png'
 ]
 
 config.AVAILABLE_AUTH_PROVIDERS = {
@@ -22,7 +26,9 @@ config.MAX_IMAGE_SIZE = 1048576 * 5 // 5MB
 config.MAX_POST_LENGTH = 5000
 config.MAX_COMMENT_LENGTH = 1000
 config.MAX_COMMENT_DEPTH = 5
-config.VOTE_THRESHOLD = 2
+config.VOTE_THRESHOLD = 1
 config.NEGATIVE_VOTE_THRESHOLD = -15
+
+config.REDIS_TTL = 60 * 60   // 1 day
 
 export default config;

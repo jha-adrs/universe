@@ -4,7 +4,8 @@ const { isPlainObject } = require('is-plain-object');
 const isEmpty = require('is-empty');
 const { createLogger, format, transports } = winston
 const { combine, timestamp,printf } = format
-const rTracer = require('cls-rtracer')
+const rTracer = require('cls-rtracer');
+const { default: config } = require('@/config/config');
 require('winston-mongodb')
 
 const newFormat = printf((info) => {
@@ -50,7 +51,7 @@ const deepRegexReplace = (value,single_key = '') => {
 const winstonLogger = createLogger({
     transports: [
         new transports.Console({
-            level: 'verbose',
+            level: 'info',
             format: combine(
             timestamp(),
             format.colorize(),
@@ -58,6 +59,11 @@ const winstonLogger = createLogger({
     )
         }),
 
+    ],
+    
+})
+if(process.env.NODE_ENV == 'production'){
+    winstonLogger.add(
         new transports.MongoDB({
             level: 'warn',
             db: process.env.MONGO_DB_CONNECTION_STRING,
@@ -68,9 +74,8 @@ const winstonLogger = createLogger({
             collection: 'universe_logs',
             format: format.json()
         })
-    ],
-    
-})
+    )
+}
 
 
 const wrapper = ( original ) => {
