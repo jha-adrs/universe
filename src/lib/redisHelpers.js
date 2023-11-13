@@ -25,7 +25,7 @@ export const redisHelpers ={
         }
 
         const postPayload = {
-            authorUsername: post?.author.username, 
+            author: post?.author, 
             content: post.content,
             id:post.id,
             title: post.title, 

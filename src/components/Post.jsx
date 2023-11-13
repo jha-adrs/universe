@@ -23,7 +23,7 @@ const Post = ({communityName,post,votesAmt,currentVote,commentAmt, ...props}) =>
                     </a>
                     <span className="px-1"></span>
                     </>): null}
-                    <div>
+                    <div className=''>
                     <span className="text-gray-900">
                         <a href={`/u/${post.author.username}`} className="text-blue-800">
                         Posted by u/<UserHoverCard user={post.author} />

@@ -34,6 +34,7 @@ export const metadata = {
   description: "Create a post for your community.",
 }
 const Editor = ({ communityId }) => {
+  //TODO: Add new tool for Events and Polls, Hackathon Timelines Etc
   const [isPrivatePost, setIsPrivatePost] = React.useState(false)
   const pathname = usePathname();
   const router = useRouter();

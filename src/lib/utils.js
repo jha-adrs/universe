@@ -54,6 +54,11 @@ export function formatTimeToNow(date) {
 }
 
 export function getJoinedDate(date) {
+  let response;
+  if(date instanceof Date) response = formatTimeToNow(date);
+  else if(typeof date === 'string')  response= formatTimeToNow(new Date(date));
   const options = { month: 'long', year: 'numeric' };
-  return `Joined ${date?.toLocaleString('default', options)}`;
+  return `Joined ${response}`;
 }
+
+export const wait  = (ms)=> new Promise((resolve, reject)=>setTimeout(()=>resolve(),ms || 1000))

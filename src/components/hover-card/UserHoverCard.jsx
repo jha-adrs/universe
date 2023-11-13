@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/hover-card"
 import UserAvatar from "../UserAvatar"
 import { getJoinedDate } from "@/lib/utils"
- 
+
 export function UserHoverCard({user, ...props}) {
   return (
     <HoverCard {...props}>
@@ -17,8 +17,8 @@ export function UserHoverCard({user, ...props}) {
         <Button variant="link" className='m-0 p-0'>{user?.name}</Button>
       </HoverCardTrigger>
       <HoverCardContent className="w-80">
-        <div className="flex justify-between space-x-4">
-          <UserAvatar user={user} size="md" />
+        <div className="flex justify-start space-x-4">
+          <UserAvatar user={user} sizes="sm" />
           <div className="space-y-1">
             <h4 className="text-sm font-semibold">@{user?.username}</h4>
             <p className="text-sm">
@@ -36,3 +36,4 @@ export function UserHoverCard({user, ...props}) {
     </HoverCard>
   )
 }
+

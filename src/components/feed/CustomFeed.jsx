@@ -1,9 +1,10 @@
 import config from '@/config/config'
 import { db } from '@/lib/db'
-import React from 'react'
+import React, { Suspense } from 'react'
 import PostFeed from '../PostFeed'
 import { getAuthSession } from '@/lib/auth'
 import { Prisma } from '@prisma/client'
+import FeedSkeleton from '../skeletons/FeedSkeleton'
 //import {redis} from '@/lib/redis'
 const CustomFeed = async () => {
   const session = await getAuthSession()
@@ -41,9 +42,11 @@ const CustomFeed = async () => {
   
 
   return (
-    <>
+    <Suspense  fallback={<FeedSkeleton/>}>
       <PostFeed initialPosts={posts} />
-    </>
+    </Suspense>
+      
+    
 
 
   )

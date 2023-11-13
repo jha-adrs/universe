@@ -14,7 +14,7 @@ const UserAvatar = ({ user, ...props }) => {
   // TODO: Round the corners of the avatar
   return (
     <Avatar className='rounded-full' >
-      <AvatarImage className='rounded-full '  src={`${avatarURL}`} alt={`@${username}`}  {...props}/>
+      <AvatarImage className='rounded-full '  src={`${avatarURL}`} alt={`@${username}`}  {...props} s/>
       <AvatarFallback>{name?.slice(0, 2)}</AvatarFallback>
     </Avatar>
 

@@ -3,10 +3,12 @@ import config from '@/config/config';
 import { useIntersection } from '@mantine/hooks'
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
-import React, { useEffect, useRef } from 'react'
+import React, { Suspense, useEffect, useRef } from 'react'
 import { Loader2 } from 'lucide-react';
 import axios from 'axios';
 import dynamic from 'next/dynamic';
+import FeedSkeleton from './skeletons/FeedSkeleton';
+import { wait } from '@/lib/utils';
 const Post = dynamic(() => import('./Post'), { ssr: false })
 
 const PostFeed = ({ initialPosts, communityName }) => {
@@ -43,9 +45,10 @@ const PostFeed = ({ initialPosts, communityName }) => {
     }, [entry, fetchNextPage])
   
     const posts = data?.pages.flatMap((page) => page) ?? initialPosts
-  
+     
     return (
-      <ul className='flex flex-col col-span-2 space-y-6'>
+      
+        <ul className='flex flex-col col-span-2 space-y-6'>
         {posts.map((post, index) => {
           const votesAmt = post.votes.reduce((acc, vote) => {
             if (vote.type === 'UP') return acc + 1
