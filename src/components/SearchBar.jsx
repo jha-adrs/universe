@@ -12,9 +12,9 @@ import {
     CommandInput,
     CommandItem,
     CommandList,
-} from '@/components/ui/Command'
+} from '@/components/ui/command'
 import { useOnClickOutside } from '@/hooks/use-on-click-outside'
-import { PenBox, StickyNoteIcon, User, Users } from 'lucide-react'
+import { PenBox, User, Users } from 'lucide-react'
 
 
 const SearchBar = ({ }) => {
