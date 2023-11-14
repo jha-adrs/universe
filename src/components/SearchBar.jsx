@@ -12,9 +12,9 @@ import {
     CommandInput,
     CommandItem,
     CommandList,
-} from '@/components/ui/Command'
+} from '@/components/ui/command'
 import { useOnClickOutside } from '@/hooks/use-on-click-outside'
-import { PenBox, StickyNoteIcon, User, Users } from 'lucide-react'
+import { PenBox, User, Users } from 'lucide-react'
 
 
 const SearchBar = ({ }) => {
@@ -82,7 +82,7 @@ const SearchBar = ({ }) => {
                                     key={community.id}
                                     value={community.name}>
                                     <Users className='mr-2 h-4 w-4' />
-                                    <a href={`/r/${community.id}`}>r/{community.name}</a>
+                                    <a href={`/r/${community.name}`}>r/{community.name}</a>
                                 </CommandItem>
                             ))}
                         </CommandGroup>

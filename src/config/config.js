@@ -15,7 +15,7 @@ config.AVATAR_FALLBACKS=[
 config.AVAILABLE_AUTH_PROVIDERS = {
     magic_link:1,
     google:1,
-    github:0,
+    github:1,
     microsoft:0
 }
 
