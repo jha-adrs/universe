@@ -30,5 +30,6 @@ config.VOTE_THRESHOLD = 1
 config.NEGATIVE_VOTE_THRESHOLD = -15
 
 config.REDIS_TTL = 60 * 60   // 1 day
+config.MAX_COMMENTS_PER_POST_PER_USER = 10
 
 export default config;

@@ -31,7 +31,7 @@ export default async function Home() {
 
           <div className="my-3 divide-y px-6 py-4 text-sm leading-6 ">
             <div className="flex justify-between gap-x-4 py-3">
-              <p className="text-zinc-600">Your Personal Feed need to add something more I guess</p>
+              <p className="text-zinc-600">Your customized personal feed, based on communities you follow.</p>
             </div>
 
             <Link className={buttonVariants({className:'w-full mt-4 mb-6 ', variant:"black"})} href='/r/create'>

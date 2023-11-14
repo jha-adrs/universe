@@ -92,7 +92,7 @@ const page = async ({ params }) => {
               </div>
             </div>
           }>
-              <CommentsSection/>
+              <CommentsSection postId={post.id}/>
           </Suspense>
 
         </div>
