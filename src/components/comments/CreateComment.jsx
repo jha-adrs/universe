@@ -57,7 +57,7 @@ const CreateComment = ({ postId, user,replyToId, ...props }) => {
     return (
         <div className='grid w-full gap-1.5'>
             <Label htmlFor='comment' className='text-sm font-medium'>
-                Comment as {user?.username}
+                Comment as @{user?.username}
             </Label>
             <div className="mt-2">
                 <Textarea
