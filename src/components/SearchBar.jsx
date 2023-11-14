@@ -14,7 +14,7 @@ import {
     CommandList,
 } from '@/components/ui/Command'
 import { useOnClickOutside } from '@/hooks/use-on-click-outside'
-import { PenBox, StickyNoteIcon, Users } from 'lucide-react'
+import { PenBox, StickyNoteIcon, User, Users } from 'lucide-react'
 
 
 const SearchBar = ({ }) => {
@@ -28,7 +28,7 @@ const SearchBar = ({ }) => {
     })
 
     const request = debounce(async () => {
-        refetch()
+        await refetch()
     }, 300)
 
     const debounceRequest = useCallback(() => {
@@ -116,7 +116,7 @@ const SearchBar = ({ }) => {
                                     }}
                                     key={users.id}
                                     value={users.username}>
-                                    <Users className='mr-2 h-4 w-4' />
+                                    <User className='mr-2 h-4 w-4' />
                                     <a href={`/u/${users.id}`}>u/{users.username}</a>
                                 </CommandItem>
                             ))}

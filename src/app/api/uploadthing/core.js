@@ -7,7 +7,7 @@ const auth = (req) => ({ id: "fakeId" }); // Fake auth function
  
 // FileRouter for your app, can contain multiple FileRoutes
 export const ourFileRouter = {
-  imageUploader: f({ image: { maxFileSize: "4MB" }, video: { maxFileSize: "4MB" } })
+  imageUploader: f({ image: { maxFileSize: "4MB" } })
     .middleware(async ({ req }) => {
         logger.info("middleware", req , f);
       const user = await auth(req);

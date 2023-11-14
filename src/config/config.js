@@ -1,8 +1,8 @@
 // Stores SERVER_URL and other configuration variables
 let config={}
-config.HOST = 'http://localhost:3000'
-// http://localhost:3000/api/auth/...nextauth
-config.GOOGLE_OAUTH_CALLBACK = 'http://localhost:3000/api/auth'
+// config.HOST = 'http://localhost:3000'
+// // http://localhost:3000/api/auth/...nextauth
+// config.GOOGLE_OAUTH_CALLBACK = 'http://localhost:3000/api/auth'
 
 config.AVATAR_FALLBACKS=[
     'https://universe-aws-bucket.s3.ap-south-1.amazonaws.com/global_assets/planet_1.png',
@@ -15,8 +15,8 @@ config.AVATAR_FALLBACKS=[
 config.AVAILABLE_AUTH_PROVIDERS = {
     magic_link:1,
     google:1,
-    github:1,
-    microsoft:1
+    github:0,
+    microsoft:0
 }
 
 config.INFINITE_SCROLL_PAGINATION_AMOUNT = 5
@@ -31,5 +31,20 @@ config.NEGATIVE_VOTE_THRESHOLD = -15
 
 config.REDIS_TTL = 60 * 60   // 1 day
 config.MAX_COMMENTS_PER_POST_PER_USER = 10
+
+config.SIDEBAR_ITEMS=[
+    {
+      title: "Profile",
+      href: "/settings/profile",
+    },
+    {
+      title: "Notifications",
+      href: "/settings/notifications",
+    },
+    {
+      title: "Communities",
+      href: "/settings/communities",
+    },
+  ]
 
 export default config;

@@ -33,10 +33,7 @@ generator client {
   provider     = "postgresql" 
    url          = env("AWS_POSTGRES_DB_CONNECTION_STRING")
    relationMode = "foreignKeys"
-   
  }
-
-
 model Account {
   id                String  @id @default(cuid())
   userId            String
@@ -76,7 +73,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
-
+  bio           String?
   posts        Post[]
   comments     Comment[]
   commentVotes CommentVote[]
