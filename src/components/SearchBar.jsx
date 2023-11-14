@@ -87,18 +87,37 @@ const SearchBar = ({ }) => {
                             ))}
                         </CommandGroup>
                     ) : null}
+
                     {(queryResults?.posts?.length ?? 0) > 0 ? (
                         <CommandGroup heading='Posts'>
                             {queryResults?.posts?.map((post) => (
                                 <CommandItem
                                     onSelect={(e) => {
-                                        router.push(`/r/${e}`)
+                                        router.push(`/r/${post.community.name}/post/${post.id}`)
                                         router.refresh()
                                     }}
                                     key={post.id}
                                     value={post.title}>
                                     <PenBox className='mr-2 h-4 w-4' />
                                     <a href={`/r/${post.community.name}/post/${post.id}`}>{post.title}</a>
+                                </CommandItem>
+                            ))}
+                        </CommandGroup>
+                    ) : null}
+
+
+                    {(queryResults?.users?.length ?? 0) > 0 ? (
+                        <CommandGroup heading='Users'>
+                            {queryResults?.users?.map((users) => (
+                                <CommandItem
+                                    onSelect={(e) => {
+                                        router.push(`/u/${e}`)
+                                        router.refresh()
+                                    }}
+                                    key={users.id}
+                                    value={users.username}>
+                                    <Users className='mr-2 h-4 w-4' />
+                                    <a href={`/u/${users.id}`}>u/{users.username}</a>
                                 </CommandItem>
                             ))}
                         </CommandGroup>
