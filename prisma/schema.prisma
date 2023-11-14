@@ -3,6 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
 }
 
 //MySQL
@@ -32,7 +33,9 @@ generator client {
   provider     = "postgresql" 
    url          = env("AWS_POSTGRES_DB_CONNECTION_STRING")
    relationMode = "foreignKeys"
+   
  }
+
 
 model Account {
   id                String  @id @default(cuid())
