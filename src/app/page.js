@@ -22,7 +22,7 @@ export default async function Home() {
         {/* SubbredditCluster Info */}
 
         <div className="overflow-hidden h-fit rounded-lg border border-gray-200  order-first md:order-last">
-          <div className='bg-customblue dark:bg-accent px-6 py-4'>
+          <div className='bg-emerald-200 dark:bg-accent px-6 py-4'>
             <p className="font-semibold py-3 flex items-center gap-1.5">
               <HomeIcon className='w-4 h-4' />
               Home
@@ -31,7 +31,7 @@ export default async function Home() {
 
           <div className="my-3 divide-y px-6 py-4 text-sm leading-6 ">
             <div className="flex justify-between gap-x-4 py-3">
-              <p className="text-zinc-600">Your Personal Feed need to add something more I guess</p>
+              <p className="text-zinc-600">Your customized personal feed, based on communities you follow.</p>
             </div>
 
             <Link className={buttonVariants({className:'w-full mt-4 mb-6 ', variant:"black"})} href='/r/create'>

@@ -1,7 +1,8 @@
 import config from '@/config/config'
 import { db } from '@/lib/db'
-import React from 'react'
+import React, { Suspense } from 'react'
 import PostFeed from '../PostFeed'
+import FeedSkeleton from '../skeletons/FeedSkeleton'
 
 const GeneralFeed = async () => {
 
@@ -22,8 +23,9 @@ const GeneralFeed = async () => {
         take: config.INFINITE_SCROLL_PAGINATION_AMOUNT
     })
     return (
-
-        <PostFeed initialPosts={posts} />
+        <Suspense fallback={<FeedSkeleton/>}>
+            <PostFeed initialPosts={posts} />
+        </Suspense>
 
     )
 }

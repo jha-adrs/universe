@@ -3,6 +3,7 @@ import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import { nanoid } from 'nanoid'
 import { getServerSession } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
+//import { uploadFiles } from './uploadthing'
 
 export const authOptions = {
     adapter: PrismaAdapter(db),
@@ -68,3 +69,14 @@ export const authOptions = {
     },
 }
 export const getAuthSession = () =>getServerSession(authOptions)
+// TODO: Get this working
+// async function fetchImageAndConvertToFormData(url) {
+//     const response = await fetch(url);
+//     const blob = await response.blob();
+  
+//     // const formData = new FormData();
+//     // formData.append('file', blob);
+//     const [res] = await uploadFiles([blob],'imageUploader');
+//     console.log(res);
+//     return res.fileUrl;
+//   }

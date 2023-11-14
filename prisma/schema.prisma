@@ -3,6 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
 }
 
 //MySQL
@@ -14,12 +15,12 @@ generator client {
 // }
 
 // Supabase
-datasource db {
- provider     = "postgresql" 
-  url          = env("AWS_POSTGRES_DB_CONNECTION_STRING")
-  //directUrl = env("DIRECT_URL")
-  relationMode = "foreignKeys"
-}
+// datasource db {
+//  provider     = "postgresql" 
+//   url          = env("DATABASE_URL")
+//   directUrl = env("DIRECT_URL")
+//   relationMode = "foreignKeys"
+// }
 // VERCEL
 // datasource db {
 //   provider = "postgresql"
@@ -27,7 +28,12 @@ datasource db {
 //   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 //   relationMode = "foreignKeys"
 // }
-
+// AWS
+ datasource db {
+  provider     = "postgresql" 
+   url          = env("AWS_POSTGRES_DB_CONNECTION_STRING")
+   relationMode = "foreignKeys"
+ }
 model Account {
   id                String  @id @default(cuid())
   userId            String
@@ -67,7 +73,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
-
+  bio           String?
   posts        Post[]
   comments     Comment[]
   commentVotes CommentVote[]

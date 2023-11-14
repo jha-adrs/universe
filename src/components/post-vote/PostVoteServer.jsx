@@ -3,18 +3,21 @@ import { notFound } from 'next/navigation'
 import PostVoteClient from './PostVoteClient'
 import { logger } from '@/lib/logger'
 import { getAuthSession } from '@/lib/auth'
+import { wait } from '@/lib/utils'
+
 const PostVoteServer =async ({
     postId,
     initialVotesAmt,
     initialVote,
     getData
 }) => {
-  //console.log("getData",getData, "initialVotesAmt",initialVotesAmt, "initialVote",initialVote)
+  
   const session = await  getAuthSession()
-
+  
   let _votesAmt = 0
   let _currentVote= undefined
   if(getData){
+    await wait(2000)
     const post = await getData()
     if(!post){
       return notFound()
@@ -24,7 +27,7 @@ const PostVoteServer =async ({
       if(vote.type =="DOWN") return acc-1
       return acc
     },0)
-    _currentVote = post.votes.find(vote=>vote.userId === session.user.id)
+    _currentVote = post.votes.find(vote=>vote.userId === session?.user.id)
     logger.info("votesAmt",_votesAmt,"currentVote", _currentVote, "session",session)
   }else{
     logger.warn("getData is undefined")

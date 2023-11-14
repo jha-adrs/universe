@@ -24,7 +24,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod'
 import { PostValidator } from '@/lib/validators/post';
 import { uploadFiles } from '@/lib/uploadthing';
-import { toast } from './ui/use-toast';
+import { useToast } from './ui/use-toast';
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { useRouter, usePathname } from 'next/navigation'
@@ -34,6 +34,7 @@ export const metadata = {
   description: "Create a post for your community.",
 }
 const Editor = ({ communityId }) => {
+  //TODO: Add new tool for Events and Polls, Hackathon Timelines Etc
   const [isPrivatePost, setIsPrivatePost] = React.useState(false)
   const pathname = usePathname();
   const router = useRouter();
@@ -49,7 +50,7 @@ const Editor = ({ communityId }) => {
       content: null
     }
   })
-
+  const {toast} = useToast()
   const ref = useRef()
   const [isMounted, setIsMounted] = React.useState(false)
   const _titleRef = useRef(null)

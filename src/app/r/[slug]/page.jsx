@@ -1,10 +1,11 @@
 import MiniCreatePost from '@/components/MiniCreatePost';
 import PostFeed from '@/components/PostFeed';
+import FeedSkeleton from '@/components/skeletons/FeedSkeleton';
 import config from '@/config/config';
 import { getAuthSession } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { notFound } from 'next/navigation';
-import React from 'react'
+import React, { Suspense } from 'react'
 
 const page = async ({params}) => {
     const { slug } = params;
@@ -39,6 +40,8 @@ const page = async ({params}) => {
         </h1>
         <MiniCreatePost session={session}/>
         <PostFeed initialPosts={community.posts} communityName={community.name}/>
+       
+        
     </>
   )
 }

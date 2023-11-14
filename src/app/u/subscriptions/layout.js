@@ -36,7 +36,7 @@ const Layout = async ({ children }) => {
                             
                             </div>
                             <div className="flex flex-row">
-                                <p className="text-blue-900 ">Created By: u/{subscription.user.name} </p>
+                                <p className="text-blue-900 ">Created By: u/{subscription.user.username} </p>
                             </div>
                             </a>
                         </div>

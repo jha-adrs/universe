@@ -65,7 +65,7 @@ const winstonLogger = createLogger({
 if(process.env.NODE_ENV == 'production'){
     winstonLogger.add(
         new transports.MongoDB({
-            level: 'warn',
+            level: 'info',
             db: process.env.MONGO_DB_CONNECTION_STRING,
             options:{
                 useUnifiedTopology: true

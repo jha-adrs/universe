@@ -66,7 +66,7 @@ export function UserAccountNav({ user, ...props }) {
     return (
         <DropdownMenu >
             <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="border-2 ">
+                <Button variant="outline" className="border-2  mt-0.5 ">
                     <Avatar className=' w-7 h-7'>
                         <AvatarImage src={`${avatarURL}`} alt={`@${username}`} />
                         <AvatarFallback>{name?.slice(0, 2)}</AvatarFallback>
