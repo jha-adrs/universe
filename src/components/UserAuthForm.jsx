@@ -7,6 +7,7 @@ import { signIn } from 'next-auth/react'
 import config from '@/config/config'
 import { useToast } from './ui/use-toast'
 import { Input } from "@/components/ui/input"
+//import { logger } from '@/lib/logger'
 const UserAuthForm = ({ className, ...props }) => {
     const [isLoading, setIsLoading] = React.useState(false);
     const [email, setEmail] = React.useState("");
@@ -18,8 +19,9 @@ const UserAuthForm = ({ className, ...props }) => {
         setIsLoading(true);
 
         try {
-            signIn('email', {callbackUrl: config.clientUrl})
-            throw new Error("Not implemented");
+           const res =  signIn('email',{callbackUrl: '/', email: email})
+           console.log(res);
+            //throw new Error("Not implemented");
             setIsLoading(false);
         } catch (err) {
             toast({
@@ -33,6 +35,20 @@ const UserAuthForm = ({ className, ...props }) => {
         setIsLoading(true);
         try {
             signIn('google', { callbackUrl: config.clientUrl })
+        } catch (err) {
+            toast({
+                variant: "destructive",
+                title: "Uh oh! Something went wrong.",
+                description: "There was a problem with your request.",
+            })
+            setIsLoading(false);
+        }
+    }
+    const loginWithGithub = () => {
+        setIsLoading(true);
+        try {
+            const res = signIn('github',{callbackUrl: '/'})
+            console.log(res);
         } catch (err) {
             toast({
                 variant: "destructive",
@@ -60,7 +76,7 @@ const UserAuthForm = ({ className, ...props }) => {
                 <Button onClick={loginWithGoogle} variant='outline' className={cn('flex m-2', className)} disabled={isLoading || !availableProviders['google']}>
                     {isLoading ? <Icons.spinner className='w-5 h-5 mr-2 animate-spin' /> : <Icons.google className='w-5 h-5 mr-2' />} Google
                 </Button>
-                <Button variant='outline' className={cn('flex m-2', className)} disabled={isLoading || !availableProviders['github']}>
+                <Button onClick={loginWithGithub} variant='outline' className={cn('flex m-2', className)} disabled={isLoading || !availableProviders['github']}>
                     {isLoading ? <Icons.spinner className='w-5 h-5 mr-2 animate-spin' /> : <Icons.github className='w-5 h-5 mr-2' />}Github</Button>
                 <Button variant='outline' className={cn('flex m-2', className)} disabled={isLoading || !availableProviders['microsoft']}>
                     {isLoading ? <Icons.spinner className='w-5 h-5 mr-2 animate-spin' /> : <Icons.microsoft className='w-5 h-5 mr-2' />}Microsoft</Button>

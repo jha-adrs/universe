@@ -62,6 +62,10 @@ export async function GET(req) {
                     id: { in: userCommunityIds },
                 },
             };
+        }else{
+            whereClause = {
+                visibility: "PUBLIC",
+            };
         }
 
         const posts = await db.post.findMany({
