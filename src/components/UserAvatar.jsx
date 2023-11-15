@@ -7,7 +7,7 @@ const UserAvatar = ({ user, ...props }) => {
   let avatarURL = user?.image
   //let avatarURL = null
   const name = user?.name || 'AN'
-  const username = user?.username || anonymous
+  const username = user?.username || "anonymous"
   if (!avatarURL) avatarURL = _.sample(config.AVATAR_FALLBACKS) || `https://ui-avatars.com/api/?name=${name}&background=random&rounded=true&size=128`
   // TODO: Add Link to User Profile
   // TODO: Add custom avatar uploaded by user

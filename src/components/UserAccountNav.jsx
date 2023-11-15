@@ -75,7 +75,7 @@ export function UserAccountNav({ user, ...props }) {
                     <CaretDownIcon className='w-5 h-5 ml-2' />
                 </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56">
+            <DropdownMenuContent className="w-56 dark:text-zinc-300 dark:bg-black">
                 <DropdownMenuLabel className="rounded">My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
@@ -121,7 +121,7 @@ export function UserAccountNav({ user, ...props }) {
                         event.preventDefault()
                         handleSignout()
                     }}  
-                    className='flex flex-row place-items-center focus:bg-rose-300' >
+                    className='flex flex-row place-items-center focus:bg-rose-300 dark:focus:bg-rose-600 dark:bg-black dark:text-white' >
                    <LogOutIcon className='mr-2'/> Log out
                 </DropdownMenuItem>
             </DropdownMenuContent>

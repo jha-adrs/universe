@@ -14,7 +14,7 @@ export function UserHoverCard({user, ...props}) {
   return (
     <HoverCard {...props}>
       <HoverCardTrigger asChild>
-        <Button variant="link" className='m-0 p-0'>{user?.username}</Button>
+        <Button variant="link" className='m-0 p-0  dark:text-white'>{user?.username}</Button>
       </HoverCardTrigger>
       <HoverCardContent className="w-80">
         <div className="flex justify-start space-x-4">

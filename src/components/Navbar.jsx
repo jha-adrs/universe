@@ -15,7 +15,7 @@ const Navbar =async () => {
   
 
   return (
-    <div className='fixed top-0 inset-x-0 h-fit z-10  py-2 bg:white text-slate-950 dark:bg:slate-700 dark:text-white bg-slate-50 dark:bg-slate-900'>
+    <div className='fixed top-0 inset-x-0 h-fit z-10  py-2 bg:white text-slate-950 dark:bg:slate-700 dark:text-white bg-slate-50 dark:bg-black'>
       <div className="container max-w-7xl h-full mx-auto flex items-between justify-center gap-2">
       
       <Link href='/' className='flex gap-2 items-center mr-5'>

@@ -26,14 +26,9 @@
     )
     rgb(var(--background-start-rgb));
 }*/
+
 @layer base {
   :root {
-    --custom-cyan:180, 39%, 93%;
-    --custom-blue:205, 100%, 85%;
-    --custom-red:17, 76%, 76%;
-    --custom-flame:17, 76%, 49%;
-    --custom-magenta:327, 89%, 44%;
-    --custom-bg-blue:226, 84%, 17%;
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;

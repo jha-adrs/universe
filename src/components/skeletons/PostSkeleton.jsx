@@ -9,7 +9,7 @@ const PostSkeleton = ({ count }) => {
 
         for (let i = 0; i < count; i++) {
             postSk.push(
-                <div className='rounded-md bg-white shadow m-2'>
+                <div className='rounded-md bg-white dark:bg-zinc-800 dark:text-white shadow m-2'>
                     <div className="px-6 py-4 flex justify-between">
                         <Skeleton className='w-6 h-6 text-zinc-500 ' />
                         <div className="w-0 flex-1">
@@ -27,11 +27,11 @@ const PostSkeleton = ({ count }) => {
                             </div>
                             <Skeleton className="text-lg font-semibold py-2 leading-6 text-gray-900" />
                             <div className='relative text-sm max-h-40 w-full overflow-clip'>
-                                <Skeleton className="absolute bottom-0 left-0 h-24 w-full bg-gradient-to-t from-white to-transparent" />
+                                <Skeleton className="absolute bottom-0 left-0 h-24 w-full bg-transparent" />
                             </div>
                         </div>
                     </div>
-                    <div className="bg-gray-50 z-20 text-sm p-4 sm:px-6">
+                    <div className="bg-gray-50 dark:bg-zinc-800 dark:text-white z-20 text-sm p-4 sm:px-6">
                         <Skeleton className='w-fit flex items-center gap-2' />
                     </div>
                 </div>

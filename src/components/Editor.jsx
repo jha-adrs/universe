@@ -211,7 +211,7 @@ const Editor = ({ communityId }) => {
 
   const { ref: titleRef, ...rest } = register('title')
   return (
-    <div className='w-full p-4 bg-zinc-50 rounded-lg border border-zinc-200'>
+    <div className='w-full p-4 bg-zinc-50 rounded-lg border border-zinc-200 dark:bg-zinc-800 dark:text-white'>
       <form id='community-post-form' className='w-fit m-5' onSubmit={handleSubmit(onSubmit)}>
 
         <div className="prose prose-stone dark:prose-invert">
@@ -224,7 +224,7 @@ const Editor = ({ communityId }) => {
             {...rest}
             placeholder='Title' className='w-full resize-none appearance-none overflow-hidden bg-transparent text-xl sm:text-2xl md:text-3xl font-bold focus:outline-none' />
           
-          <div id='editor' className='min-h-[500px] h-full w-full' />
+          <div id='editor' className='min-h-[500px] h-full w-full dark:bg-zinc-800 dark:text-white' />
         </div>
       </form>
 

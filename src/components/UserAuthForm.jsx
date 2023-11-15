@@ -34,7 +34,7 @@ const UserAuthForm = ({ className, ...props }) => {
     const loginWithGoogle = () => {
         setIsLoading(true);
         try {
-            signIn('google', { callbackUrl: config.clientUrl })
+            signIn('google', )
         } catch (err) {
             toast({
                 variant: "destructive",
@@ -63,7 +63,7 @@ const UserAuthForm = ({ className, ...props }) => {
         <div>
             <div className="relative flex justify-center text-xs flex-col">  
             <Input type='email' placeholder='Email' className='w-full' onChange={(e)=>{setEmail(e.target.value)}}/>
-            <Button variant='blackwithred' onClick={loginWithMagicLink} className={cn('flex justify-center m-2', className)} disabled={isLoading || !availableProviders['magic_link']}>
+            <Button variant='default' onClick={loginWithMagicLink} className={cn('flex justify-center m-2 dark:border-white ', className)} disabled={isLoading || !availableProviders['magic_link']}>
                 {isLoading ? (<Icons.spinner className='w-5 h-5 mr-2 animate-spin' />) : 'Sign in using magic link'}
             </Button>
             </div>

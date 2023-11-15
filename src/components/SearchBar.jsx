@@ -69,7 +69,7 @@ const SearchBar = ({ }) => {
             />
 
             {input.length > 0 && (
-                <CommandList className='absolute bg-white top-full inset-x-0 shadow rounded-b-md'>
+                <CommandList className='absolute bg-white dark:bg-zinc-800 dark:text-white dark:border-1 border-white top-full inset-x-0 shadow rounded-b-md'>
                     {isFetched && <CommandEmpty>No results found.</CommandEmpty>}
                     {(queryResults?.communities?.length ?? 0) > 0 ? (
                         <CommandGroup heading='Communities'>

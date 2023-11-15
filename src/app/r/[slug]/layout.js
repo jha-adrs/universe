@@ -66,21 +66,21 @@ const Layout = async ({children, params:{slug}}) =>{
                             <p className=" font-semibold py-3">About  r/{community.name}</p>
                             <Badge variant={badgeColor} className="mb-4 h-5">{capitalize(community.visibility)}</Badge>
                         </div>
-                        <dl className="divide-y divide-gray-100 px-6 py-4 text-sm leading-6 bg-white ">
+                        <dl className="divide-y divide-gray-100 px-6 py-4 text-sm leading-6 bg-white dark:bg-zinc-800 dark:text-white ">
                             <div className="flex justify-between gap-x-4 py-3">
-                                <dt className="text-gray-500">Created</dt>
-                                <dd className="text-gray-700"><time dateTime={community.createdAt.toDateString()}>{format(community.createdAt,'MMMM d, yyyy')}</time></dd>
+                                <dt className="text-gray-500 dark:text-zinc-300">Created</dt>
+                                <dd className="text-gray-700 dark:text-zinc-300"><time dateTime={community.createdAt.toDateString()}>{format(community.createdAt,'MMMM d, yyyy')}</time></dd>
                                 
                             </div>
 
                             <div className="flex justify-between gap-x-4 py-3">
-                                <dt className="text-gray-500">Members</dt>
-                                <dd className="text-gray-700">{memberCount}</dd>
+                                <dt className="text-gray-500 dark:text-zinc-300">Members</dt>
+                                <dd className="text-gray-700 dark:text-zinc-300">{memberCount}</dd>
                                 
                             </div>
                             <div className="flex justify-between gap-x-4 py-3">
-                                <dt className="text-gray-500">Description</dt>
-                                <dd className="text-gray-700">{community.description}</dd>
+                                <dt className="text-gray-500 dark:text-zinc-300">Description</dt>
+                                <dd className="text-gray-700 dark:text-zinc-300">{community.description}</dd>
                                 
                             </div>
                             {community.creatorId === session?.user?.id ? (<div className="flex justify-between gap-x-4 py-3">
