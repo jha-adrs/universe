@@ -15,9 +15,9 @@ const MiniCreatePost = ({ session }) => {
 
     return (
         <li className='overflow-hidden rounded-md bg-white shadow list-none dark:bg-zinc-800 dark:text-white'>
-            <div className='h-fit px-6 py-4 flex justify-between gap-6'>
+            <div className='h-fit px-6 py-4 flex justify-between items-center gap-6'>
                 <div className="relative">
-                    <UserAvatar user={session?.user} className='rounded-full w-10 h-10' />
+                    <UserAvatar user={session?.user} className='rounded-full w-12  ' />
                     <span className="absolute bottom-0 right-0 rounded-full w-2 h-2 bg-green-500 outline list-outside-1 outline-white dark:outline-none" />
                 </div>
             <Input readOnly onClick={()=> router.push(pathname+'/submit')} placeholder="Create a Post" className='dark:border-2 dark:border-gray-300'/>

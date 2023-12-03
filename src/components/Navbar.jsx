@@ -8,30 +8,34 @@ import { getAuthSession } from '@/lib/auth'
 import UserAccountNav from './UserAccountNav'
 import { db } from '@/lib/db'
 import SearchBar from './SearchBar'
-const Navbar =async () => {
+const Navbar = async () => {
 
   // Get session
   const session = await getAuthSession()
-  
+
 
   return (
     <div className='fixed top-0 inset-x-0 h-fit z-10  py-2 bg:white text-slate-950 dark:bg:slate-700 dark:text-white bg-slate-50 dark:bg-black'>
-      <div className="container max-w-7xl h-full mx-auto flex items-between justify-center gap-2">
-      
-      <Link href='/' className='flex gap-2 items-center mr-5'>
-        <Icons.logo className='w-15 h-15 sm:h-10 sm:w-10' />
-         <p className="hidden md:block font-bold"> UniVerse</p>
-      </Link>
-      {session?.user ? (
-        <UserAccountNav user ={session.user} />
-      ):(
-        <Link href='/sign-in' className={buttonVariants({variant:"black"})}>Sign In</Link>
-      )}
-      
-        <SearchBar/>
-      <ThemeSwitcher/>
+      <div className="container max-w-7xl h-full mx-auto flex items-center justify-between gap-2">
+
+        <Link href='/' className='flex gap-2 items-center mr-5'>
+          <Icons.logo className='w-15 h-15 sm:h-10 sm:w-10' />
+          <p className="hidden md:block font-bold"> UniVerse</p>
+        </Link>
+        <SearchBar />
+        <div className='flex gap-x-4 items-center'>
+          {session?.user ? (
+            <UserAccountNav user={session.user} />
+          ) : (
+            <Link href='/sign-in' className={buttonVariants({ variant: "black" })}>Sign In</Link>
+          )}
+
+
+          <ThemeSwitcher />
+        </div>
+
       </div>
-      
+
     </div>
   )
 }
