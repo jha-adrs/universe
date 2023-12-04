@@ -8,6 +8,8 @@ import { getAuthSession } from '@/lib/auth'
 import UserAccountNav from './UserAccountNav'
 import { db } from '@/lib/db'
 import SearchBar from './SearchBar'
+import { Bot, BotIcon, BrainCircuit } from 'lucide-react'
+import TooltipWrapper from './TooltipWrapper'
 const Navbar = async () => {
 
   // Get session
@@ -23,14 +25,16 @@ const Navbar = async () => {
           <p className="hidden md:block font-bold"> UniVerse</p>
         </Link>
         <SearchBar />
+        
         <div className='flex gap-x-4 items-center'>
+        <Link href='/chat' className={buttonVariants({ variant: "outline" })}>
+          <TooltipWrapper text="Chat" side="bottom" Component={BotIcon} />
+        </Link>
           {session?.user ? (
             <UserAccountNav user={session.user} />
           ) : (
             <Link href='/sign-in' className={buttonVariants({ variant: "black" })}>Sign In</Link>
           )}
-
-
           <ThemeSwitcher />
         </div>
 
