@@ -133,9 +133,7 @@ const Page = () => {
             {/** Upper nav */}
             <div className=' items-center  w-full bg-transparent dark:bg-transparent h-10 justify-between flex'>
                 <div className='mx-4 inline-flex gap-x-8 cursor-pointer'>
-                    <TooltipWrapper Component={Home} text='Home' className='w-4 h-4 text-primary dark:text-white cursor-pointer' onClick={() => {
-                        router.push('/');
-                    }} />
+                    
                     <TooltipWrapper Component={PenSquare} text='New Chat' className='w-4 h-4 text-primary dark:text-white cursor-pointer' onClick={
                         () => {
                             window.location.reload();
@@ -150,11 +148,7 @@ const Page = () => {
                 </div>
                 <div className='mx-4 inline-flex gap-x-8 cursor-pointer'>
                     <TooltipWrapper Component={ShieldQuestion} text='Help' className='w-4 text-primary h-4 dark:text-white cursor-pointer' />
-                    <TooltipWrapper Component={LogOut} text='Logout' className='w-4 h-4 text-primary  dark:text-white cursor-pointer' onClick={
-                        () => {
-                            router.push('/api/auth/logout');
-                        }
-                    } />
+                    
                 </div>
             </div>
 

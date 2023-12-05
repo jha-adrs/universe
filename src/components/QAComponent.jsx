@@ -105,7 +105,7 @@ const MiniTextComponent = ({ type, text, isLoading, loadingQuestionuuid , curren
         </p>
     </div>
     const userDiv = <div className='w-6 h-6 rounded-full bg-purple-700 flex items-center justify-center'>
-        <p className='font-light text-xs p-0 m-0'>
+        <p className='font-light text-white text-xs p-0 m-0'>
             U
         </p>
     </div>;
@@ -117,10 +117,10 @@ const MiniTextComponent = ({ type, text, isLoading, loadingQuestionuuid , curren
                 <div className="flex flex-col">
                     <div className="flex">
                         {type == 'question' ? userDiv : chatbotDiv}
-                        <p className='text-gray-300 text-sm font-extrabold ml-2'>{type == 'question' ? "You" : "UniChat"}</p>
+                        <p className='text-zinc-800 dark:text-gray-300 text-sm font-extrabold ml-2'>{type == 'question' ? "You" : "UniChat"}</p>
                     </div>
                     <div className='ml-6'>
-                        <p className='text-gray-300 text-sm font-medium ml-2 w-full overflow-auto break-all no-scrollbar'>
+                        <p className='text-zinc-800 dark:text-gray-300 text-sm font-medium ml-2 w-full overflow-auto break-all no-scrollbar'>
                         {( type!=="question" && (loadingQuestionuuid == currentuuid)) ? <Loader2 className='animate-spin' /> : text}
                         </p>
                     </div>
