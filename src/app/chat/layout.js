@@ -1,11 +1,21 @@
+import { useCustomToasts } from '@/hooks/use-custom-toasts';
+import { getAuthSession } from '@/lib/auth'
+import React from 'react'
 
+const Layout =async ({children, params}) => {
+    const loginToast = useCustomToasts();
+    // Fetch the current user
+    const session = await getAuthSession();
+    if(!session || !session.user) {
+       return loginToast();
+    }
+    params.user = session.user;
 
-const layout = ({children}) => {
   return (
-    <div className=" flex h-[90%]  justify-center items-center -mt-8 ">
+    <>
       {children}
-    </div>
+    </>
   )
 }
 
-export default layout
+export default Layout

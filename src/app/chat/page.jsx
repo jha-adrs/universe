@@ -1,5 +1,5 @@
 "use client"
-import {  BrainCircuit, Home, LogIn, LogOut, Search, ShieldQuestion, PenSquare } from 'lucide-react'
+import { BrainCircuit, Home, LogIn, LogOut, Search, ShieldQuestion, PenSquare } from 'lucide-react'
 import React, { useCallback, useState } from 'react'
 import QAComponent from '@/components/QAComponent'
 import { z } from "zod"
@@ -40,7 +40,7 @@ const answerReplacer = (answersArray, uuid, answer, timestamp = Date.now()) => {
 }
 
 
-const Page = () => {
+const Page = ({ params }) => {
     const [answers, setAnswers] = useState([]);
     const [questions, setQuestions] = useState([]);
     const [textInput, setTextInput] = useState('');
@@ -80,12 +80,14 @@ const Page = () => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${accessToken}`
                 },
                 body: JSON.stringify({
                     query: text,
-                    user_id: user_id,
                     stream: false,
+                    context: {
+                        questions : questions?.map((question)=>question.question),
+                        answers : answers?.map((answer)=>answer.answer),
+                    }
                 }),
             });
             if (response.success === 0) {
@@ -129,40 +131,38 @@ const Page = () => {
     };
 
     return (
-        <div className='overflow-clip bg-transparent w-full  rounded-lg '>
-            {/** Upper nav */}
-            <div className=' items-center  w-full bg-transparent dark:bg-transparent h-10 justify-between flex'>
-                <div className='mx-4 inline-flex gap-x-8 cursor-pointer'>
-                    
-                    <TooltipWrapper Component={PenSquare} text='New Chat' className='w-4 h-4 text-primary dark:text-white cursor-pointer' onClick={
-                        () => {
-                            window.location.reload();
-                        }
+        <div className="flex flex-col w-full h-fit  no-scrollbar items-center justify-between">
+            {/**Upper Icons */}
+            <div className='flex w-full h-6 items-center justify-between'>
+                <TooltipWrapper text={'New Chat'} Component={PenSquare} className="w-4 h-4 " onClick={()=>{
+                    setAnswers([]);
+                    setQuestions([]);
+                    setRerender(0);
+                    setTextInput('');
+                    setIsAnswerFetching(false);
+                    setLoadingQuestionuuid('');
 
-                    } />
-                </div>
+                }} />
                 <div>
                     <p className="font-bold text-lg gap-x-2 inline-flex items-center">
-                        <TooltipWrapper Component={BrainCircuit} text="Home" className="w-5 h-6 text-white dark:text-white  cursor-pointer" />  UniChat
+                        <TooltipWrapper Component={BrainCircuit} text="Home" className="w-5 h-5 cursor-pointer" onClick={()=>{
+                            router.push('/');
+                        }} />  UniChat
                     </p>
                 </div>
-                <div className='mx-4 inline-flex gap-x-8 cursor-pointer'>
-                    <TooltipWrapper Component={ShieldQuestion} text='Help' className='w-4 text-primary h-4 dark:text-white cursor-pointer' />
-                    
-                </div>
+                <TooltipWrapper text={'Help'} Component={ShieldQuestion} className="w-4 h-4 " 
+                />
             </div>
-
-            {/** Main */}
-            {/*Dont give padding here or margin */}
-            <div className="bg-transparent h-screen items-center ">
+            {/**Chat */}
+            <div className='h-full w-full '>
                 <QAComponent key={rerender} questions={questions} isAnswerFetching={isAnswerFetching} answers={answers} loadingQuestionuuid={loadingQuestionuuid} />
             </div>
+            {/**Search bar at sticky position */}
 
-            {/*Lower Input component*/}
-            <div className="absolute inset-0 z-20 top-[90%] w-full h-[10%] rounded-t-lg flex items-center justify-center">
-                <div className='w-[75%] sm:w-[60%] md:w-[50%] bg-transparent dark:bg-zinc-800 rounded-lg h-12  max-h-32'>
-                    <div className=' flex flex-row w-full flex-grow items-center border-2 border-black rounded-lg'>
-                        <Search className='w-4 h-4 text-primary dark:text-white  my-2 mx-2' />
+            <div className='fixed flex bottom-5  h-12 w-[90%] sm:w-[75%] md:w-[60%] lg:w-[50%] items-center justify-center   '>
+                <div className='relative w-full bg-transparent items-center dark:bg-zinc-800 rounded-lg h-12 '>
+                    <div className='relative flex flex-row w-full  items-center  rounded-lg'>
+                        <Search className='w-6 h-6 text-primary dark:text-white   ml-2' />
                         <input style={{ resize: 'none', outline: 'none', overflow: 'hidden' }}
                             placeholder='Ask UniChat...' name="" id="" cols="30" rows="1"
                             onChange={(e) => setTextInput(e.target.value)}
@@ -181,8 +181,10 @@ const Page = () => {
                 </div>
             </div>
 
+
         </div>
     )
 }
 
 export default Page
+

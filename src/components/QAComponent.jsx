@@ -25,7 +25,7 @@ const QAComponent = ({ questions, isAnswerFetching, answers,loadingQuestionuuid 
     }, [questions, answers])
 
     return (
-        <div className='py-10 h-full'>
+        <div className='py-5 h-full'>
             {
                 questions?.length === 0 ? <InitialComponent /> : <QAPopulatedComponent questions={questions} answers={answers} isAnswerFetching={isAnswerFetching} loadingQuestionuuid={loadingQuestionuuid} />
             }
@@ -66,9 +66,9 @@ const QAPopulatedComponent = ({ questions, answers, isAnswerFetching,loadingQues
         scrollToBottom();
     }, [questions, answers])
     return (
-        <div className="flex w-full h-full justify-center">
-            <div className='flex flex-col h-full w-[75%] sm:w-[60%] md:w-[50%] '>
-                <div className='px-5 py-5 justify-start  w-full h-full max-h-[80%] overflow-y-auto no-scrollbar' >
+        <div className="fixed flex w-full  justify-center h-[80%] ">
+            <div className='flex flex-col h-full w-[85%] sm:w-[80%] md:w-[65%] '>
+                <div className=' py-5 justify-start  w-full h-full max-h-[80%] overflow-y-auto no-scrollbar' >
                     {questions?.map((question, index) => {
                         // For each question and answer, we need to render a QAComponent
                         // We need to check if the answer is present or not
@@ -117,10 +117,10 @@ const MiniTextComponent = ({ type, text, isLoading, loadingQuestionuuid , curren
                 <div className="flex flex-col">
                     <div className="flex">
                         {type == 'question' ? userDiv : chatbotDiv}
-                        <p className='text-zinc-800 dark:text-gray-300 text-sm font-extrabold ml-2'>{type == 'question' ? "You" : "UniChat"}</p>
+                        <p className='text-zinc-800 dark:text-gray-300 text-md font-extrabold ml-2'>{type == 'question' ? "You" : "UniChat"}</p>
                     </div>
                     <div className='ml-6'>
-                        <p className='text-zinc-800 dark:text-gray-300 text-sm font-medium ml-2 w-full overflow-auto break-all no-scrollbar'>
+                        <p className='text-zinc-800 dark:text-gray-300 text-md font-medium ml-2 w-full overflow-auto break-all no-scrollbar'>
                         {( type!=="question" && (loadingQuestionuuid == currentuuid)) ? <Loader2 className='animate-spin' /> : text}
                         </p>
                     </div>
