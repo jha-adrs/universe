@@ -18,7 +18,7 @@ export const fetchCache = 'force-no-store'
 const page = async ({ params }) => {
   const { postId } = params
   const cachedPost = await redisHelpers.getPostData(postId)
-  console.log("Found in cache", postId)
+  
   let post;
   if (!cachedPost) {
     post = await db.post.findFirst({

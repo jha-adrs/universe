@@ -16,7 +16,7 @@ config.AVAILABLE_AUTH_PROVIDERS = {
     magic_link:1,
     google:1,
     github:1,
-    microsoft:0
+    microsoft:1
 }
 
 config.INFINITE_SCROLL_PAGINATION_AMOUNT = 5

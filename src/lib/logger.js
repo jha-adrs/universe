@@ -4,7 +4,7 @@ const { isPlainObject } = require('is-plain-object');
 const isEmpty = require('is-empty');
 const { createLogger, format, transports } = winston
 const { combine, timestamp,printf } = format
-const rTracer = require('cls-rtracer');
+//const rTracer = require('cls-rtracer');
 const { default: config } = require('@/config/config');
 require('winston-mongodb')
 

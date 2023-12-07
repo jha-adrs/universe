@@ -10,6 +10,7 @@ import { db } from '@/lib/db'
 import SearchBar from './SearchBar'
 import { Bot, BotIcon, BrainCircuit } from 'lucide-react'
 import TooltipWrapper from './TooltipWrapper'
+import { cn } from '@/lib/utils'
 const Navbar = async () => {
 
   // Get session
@@ -33,7 +34,7 @@ const Navbar = async () => {
           {session?.user ? (
             <UserAccountNav user={session.user} />
           ) : (
-            <Link href='/sign-in' className={buttonVariants({ variant: "black" })}>Sign In</Link>
+            <Link href='/sign-in' className={cn(buttonVariants({ variant: "default" }),"")}>Sign In</Link>
           )}
           <ThemeSwitcher />
         </div>

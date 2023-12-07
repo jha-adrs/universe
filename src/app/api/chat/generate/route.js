@@ -48,6 +48,6 @@ export async function POST(req){
 
     } catch (error) {
         logger.error(error)
-        return new Response(JSON.stringify({ success: 0, error: error.message }), { status: 500 })
+        return new Response(JSON.stringify({ success: 0, error: "Something went wrong!" }), { status: 500 })
     }
 }

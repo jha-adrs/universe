@@ -20,7 +20,6 @@ const customScrollBar = {
 
 const QAComponent = ({ questions, isAnswerFetching, answers,loadingQuestionuuid }) => {
     useEffect(() => {
-        console.log('QAComponent', questions, answers)
 
     }, [questions, answers])
 
@@ -109,7 +108,6 @@ const MiniTextComponent = ({ type, text, isLoading, loadingQuestionuuid , curren
             U
         </p>
     </div>;
-    console.log('MiniTextComponent', isLoading, loadingQuestionuuid, currentuuid)
     if (text === null && !isLoading ) return (<></>)
     return (
         <>

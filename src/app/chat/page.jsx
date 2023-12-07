@@ -1,12 +1,14 @@
 "use client"
 import { BrainCircuit, Home, LogIn, LogOut, Search, ShieldQuestion, PenSquare } from 'lucide-react'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import QAComponent from '@/components/QAComponent'
 import { z } from "zod"
 import { v4 as uuidv4 } from 'uuid';
 import { useRouter } from 'next/navigation'
 import TooltipWrapper from "@/components/TooltipWrapper"
-
+import { useCustomToasts } from '@/hooks/use-custom-toasts'
+import { getSession } from 'next-auth/react'
+import { debounce } from 'lodash'
 
 
 const questionSchema = z.object({
@@ -47,14 +49,15 @@ const Page = ({ params }) => {
     const [isAnswerFetching, setIsAnswerFetching] = useState(false);
     const [rerender, setRerender] = useState(0);
     const [loadingQuestionuuid, setLoadingQuestionuuid] = useState('');
-
+    const [debouncedTextInput, setDebouncedTextInput] = useState('');
     const router = useRouter();
-
+    const {loginToast} = useCustomToasts();
+    
 
     const handleAnswering = (textInput) => {
 
         console.log('handleAnswering', textInput);
-        setIsAnswerFetching(true);
+        
         const uuid = uuidv4();
         const timestamp = Date.now();
         // Store the current input value in a variable
@@ -68,12 +71,18 @@ const Page = ({ params }) => {
         answerQuestion(textInput, uuid);
 
 
+
     }
 
     const answerQuestion = async (text, uuid) => {
         try {
             console.log('answerQuestion', text, uuid);
-
+            const session = await getSession();
+            if (!session) {
+                setIsAnswerFetching(false);
+                loginToast();
+                return;
+            }
             setIsAnswerFetching(true);
             setLoadingQuestionuuid(uuid);
             const response = await fetch(`api/chat/generate`, {
@@ -129,7 +138,11 @@ const Page = ({ params }) => {
             setLoadingQuestionuuid('');
         }
     };
-
+    useEffect(() => {
+        const updateDebouncedTextInput = debounce(() => setDebouncedTextInput(textInput), 50);
+        updateDebouncedTextInput();
+        return updateDebouncedTextInput.cancel;
+      }, [textInput]);
     return (
         <div className="flex flex-col w-full h-fit  no-scrollbar items-center justify-between">
             {/**Upper Icons */}
@@ -155,23 +168,29 @@ const Page = ({ params }) => {
             </div>
             {/**Chat */}
             <div className='h-full w-full '>
-                <QAComponent key={rerender} questions={questions} isAnswerFetching={isAnswerFetching} answers={answers} loadingQuestionuuid={loadingQuestionuuid} />
+                <QAComponent  questions={questions} isAnswerFetching={isAnswerFetching} answers={answers} loadingQuestionuuid={loadingQuestionuuid} />
             </div>
             {/**Search bar at sticky position */}
 
             <div className='fixed flex bottom-5  h-12 w-[90%] sm:w-[75%] md:w-[60%] lg:w-[50%] items-center justify-center   '>
                 <div className='relative w-full bg-transparent items-center dark:bg-zinc-800 rounded-lg h-12 '>
-                    <div className='relative flex flex-row w-full  items-center  rounded-lg'>
+                    <div className='relative flex flex-row w-full  items-center  rounded-lg border border-zinc-500 shadow-sm dark:shadow-transparent'>
                         <Search className='w-6 h-6 text-primary dark:text-white   ml-2' />
                         <input style={{ resize: 'none', outline: 'none', overflow: 'hidden' }}
                             placeholder='Ask UniChat...' name="" id="" cols="30" rows="1"
                             onChange={(e) => setTextInput(e.target.value)}
-                            value={textInput}
+                            value={debouncedTextInput}
                             className='m-0 w-full resize-none border-0 bg-transparent py-[10px] pr-10 focus:ring-0 focus-visible:ring-0 md:py-3.5 md:pr-12 placeholder-black/50 dark:placeholder-white/50 pl-3 md:pl-4'
                             autoFocus />
                         <button className='rounded-lg bg-zinc-100 dark:bg-zinc-700 mr-3 hover:bg-zinc-200 dark:hover:bg-zinc-600'
                             onClick={(e) => {
                                 handleAnswering(textInput);
+                            }}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    console.log(e.key)
+                                    handleAnswering(textInput);
+                                }
                             }}
                             disabled={textInput.length === 0 || isAnswerFetching}
                         >

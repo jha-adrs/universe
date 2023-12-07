@@ -58,12 +58,19 @@ const UserAuthForm = ({ className, ...props }) => {
             setIsLoading(false);
         }
     }
+    const loginWithMicrosoft = () => {
+        return toast({
+            variant: "destructive",
+            title: "Oops! Not implemented yet",
+            description: "This feature is not implemented yet.",
+        })
+    }
 
     return (
         <div>
             <div className="relative flex justify-center text-xs flex-col">  
             <Input type='email' placeholder='Email' className='w-full' onChange={(e)=>{setEmail(e.target.value)}}/>
-            <Button variant='default' onClick={loginWithMagicLink} className={cn('flex justify-center m-2 dark:border-white ', className)} disabled={isLoading || !availableProviders['magic_link']}>
+            <Button variant='black' onClick={loginWithMagicLink} className={cn('flex justify-center m-2 dark:border-white ', className)} disabled={isLoading || !availableProviders['magic_link']}>
                 {isLoading ? (<Icons.spinner className='w-5 h-5 mr-2 animate-spin' />) : 'Sign in using magic link'}
             </Button>
             </div>
@@ -72,14 +79,14 @@ const UserAuthForm = ({ className, ...props }) => {
                     Or continue with
                 </span>
             </div>
-            <div className="flex flex-col md:flex-row justify-center items-stretch m-2">
+            <div className="flex flex-row justify-center items-stretch m-2">
                 <Button onClick={loginWithGoogle} variant='outline' className={cn('flex m-2', className)} disabled={isLoading || !availableProviders['google']}>
-                    {isLoading ? <Icons.spinner className='w-5 h-5 mr-2 animate-spin' /> : <Icons.google className='w-5 h-5 mr-2' />} Google
+                    {isLoading ? <Icons.spinner className='w-5 h-5 mr-2 animate-spin' /> : <Icons.google className='w-5 h-5 mr-2' />} <p className='hidden md:block'>Google</p>
                 </Button>
                 <Button onClick={loginWithGithub} variant='outline' className={cn('flex m-2', className)} disabled={isLoading || !availableProviders['github']}>
-                    {isLoading ? <Icons.spinner className='w-5 h-5 mr-2 animate-spin' /> : <Icons.github className='w-5 h-5 mr-2' />}Github</Button>
-                <Button variant='outline' className={cn('flex m-2', className)} disabled={isLoading || !availableProviders['microsoft']}>
-                    {isLoading ? <Icons.spinner className='w-5 h-5 mr-2 animate-spin' /> : <Icons.microsoft className='w-5 h-5 mr-2' />}Microsoft</Button>
+                    {isLoading ? <Icons.spinner className='w-5 h-5 mr-2 animate-spin' /> : <Icons.github className='w-5 h-5 mr-2' />}<p className='hidden md:block'>Github</p></Button>
+                <Button onClick={loginWithMicrosoft} variant='outline' className={cn('flex m-2', className)} disabled={isLoading || !availableProviders['microsoft']}>
+                    {isLoading ? <Icons.spinner className='w-5 h-5 mr-2 animate-spin' /> : <Icons.microsoft className='w-5 h-5 mr-2' />}<p className='hidden md:block'>Microsoft</p></Button>
             </div>
         </div>
     )
