@@ -16,10 +16,10 @@ config.AVAILABLE_AUTH_PROVIDERS = {
     magic_link:1,
     google:1,
     github:1,
-    microsoft:0
+    microsoft:1
 }
 
-config.INFINITE_SCROLL_PAGINATION_AMOUNT = 5
+config.INFINITE_SCROLL_PAGINATION_AMOUNT = 10
 config.ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/gif']
 config.ALLOWED_VIDEO_TYPES = ['video/mp4', 'video/webm']
 config.MAX_IMAGE_SIZE = 1048576 * 5 // 5MB
@@ -46,5 +46,7 @@ config.SIDEBAR_ITEMS=[
       href: "/settings/communities",
     },
   ]
+
+config.NEXTAPP_DOMAIN='http://localhost:3000'
 
 export default config;

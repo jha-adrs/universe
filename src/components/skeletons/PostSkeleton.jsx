@@ -1,38 +1,38 @@
 import React from 'react'
 import { Skeleton } from '../ui/skeleton';
+import { ArrowBigDown, ArrowBigUp } from 'lucide-react';
+import { buttonVariants } from '../ui/button';
 
 const PostSkeleton = ({ count }) => {
     if (count === undefined) count = 1
-    if (count > 10) count = 10
+    if (count > 8) count = 4
     const renderPosts = () => {
         const postSk = [];
 
         for (let i = 0; i < count; i++) {
             postSk.push(
-                <div className='rounded-md bg-white shadow m-2'>
-                    <div className="px-6 py-4 flex justify-between">
-                        <Skeleton className='w-6 h-6 text-zinc-500 ' />
-                        <div className="w-0 flex-1">
-                            <div className="max-h-40 mt-1 text-xs text-gray-500 justify-between flex">
-                                <Skeleton className='underline text-zinc-900 text-sm underline-offset-2' />
-                                <span className="px-1"></span>
-
-                                <div className=''>
-                                    <span className="text-gray-900">
-                                        <Skeleton className="text-gray-400 h-4 w-8" />
-                                    </span>
-                                    {'  '}
-                                    <Skeleton className='h-4 w-4' />
-                                </div>
+                <div key={i} className='rounded-md bg-white shadow dark:bg-zinc-800 dark:text-white'>
+                    <div className="px-4 py-3 flex flex-col sm:flex-row">
+                        <div className=' flex items-center flex-row sm:flex-col gap-4 sm:gap-0 pr-6 sm:w-20 pb-4 sm:pb-0'>
+                            <div className={buttonVariants({ variant: 'ghost' })}>
+                                <ArrowBigUp className='w-5 h-5 text-zinc-700 dark:text-zinc-300 animate-pulse rounded-md bg-primary/10' />
                             </div>
-                            <Skeleton className="text-lg font-semibold py-2 leading-6 text-gray-900" />
-                            <div className='relative text-sm max-h-40 w-full overflow-clip'>
-                                <Skeleton className="absolute bottom-0 left-0 h-24 w-full bg-gradient-to-t from-white to-transparent" />
+                            <div className="text-center py-2 font-medium text-sm text-zinc-900 dark:text-zinc-300">
+                                <Skeleton className='w-5 h-5 ' />
+                            </div>
+                            <div className={buttonVariants({ variant: 'ghost' })}>
+                                <ArrowBigDown className='w-5 h-5 text-zinc-700 dark:text-zinc-300 animate-pulse rounded-md bg-primary/10' />
                             </div>
                         </div>
-                    </div>
-                    <div className="bg-gray-50 z-20 text-sm p-4 sm:px-6">
-                        <Skeleton className='w-fit flex items-center gap-2' />
+                        <div className="flex-1 mt-3 sm:mt-0 ">
+                            <div className="text-xs gap-y-2 text-gray-500 dark:bg-zinc-800 dark:text-white">
+                                <Skeleton className='w-36 h-5 my-2' />
+                                <Skeleton className='w-10 h-5 my-2' />
+                            </div>
+                            <div className='relative text-sm max-h-40 '>
+                                <Skeleton className='dark:bg-zinc-800 dark:text-white w-full h-36' />
+                            </div>
+                        </div>
                     </div>
                 </div>
             );
@@ -44,4 +44,5 @@ const PostSkeleton = ({ count }) => {
     return <div>{renderPosts()}</div>;
 };
 
-export default PostSkeleton
+export default PostSkeleton// replace with your actual Skeleton component
+

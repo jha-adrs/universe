@@ -112,7 +112,7 @@ const Page = () => {
     
     return (
         <div className='container flex items-center h-full max-3xl mx-auto'>
-            <div className="relative bg-white  dark:text-white dark:bg-slate-700 w-full h-fit p-4 rounded-lg space-y-6">
+            <div className="relative bg-white  dark:text-white dark:bg-zinc-800  w-full h-fit p-4 rounded-lg space-y-6">
                 <div className="flex justify-between items-center ">
                     <h1 className="text-xl font-semibold">
                         Create a new community

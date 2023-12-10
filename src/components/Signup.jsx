@@ -14,7 +14,7 @@ const Signup = () => {
                 </p>
                 <UserAuthForm />
                 <p className="px-8 text-center text-sm">
-                    Already a member? {' '}<Link href='/sign-in' className=' text-slate-950 dark:bg:slate-700 dark:text-white bg-slate-50 dark:bg-slate-900 underline'>Login in</Link>
+                    Already a member? {' '}<Link href='/sign-in' className=' text-slate-950 dark:bg:slate-700 dark:text-white bg-slate-50 dark:bg-slate-900 underline'>Login</Link>
                 </p>
             </div>
         </div>

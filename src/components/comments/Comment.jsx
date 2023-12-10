@@ -52,8 +52,8 @@ const Comment = ({ comment, author, votesAmt, postId, currentVote,isCommentReply
         <div className="flex items-center">
             <UserAvatar user={comment?.author} className='h-6 w-6 rounded-full' />
             <div className='ml-2 flex items-center gap-x-2'>
-                <span className="text-gray-900 max-h-40 mt-1 truncate text-xs font-medium">
-                    <a href={`/u/${comment?.author.username}`} className="text-blue-800">
+                <span className="text-gray-900 max-h-40 mt-1 truncate text-xs font-medium dark:text-zinc-300">
+                    <a href={`/u/${comment?.author.username}`} className="text-blue-800 dark:text-zinc-300">
                         u/ <UserHoverCard user={comment.author} />
                     </a>
                     {'  '}
@@ -63,7 +63,7 @@ const Comment = ({ comment, author, votesAmt, postId, currentVote,isCommentReply
 
             </div>
         </div>
-        <p className="text-sm text-zinc-90 mt-2">
+        <p className="text-sm text-zinc-90 dark:text-zinc-100 mt-2">
             {comment.text}
         </p>
 
@@ -77,7 +77,7 @@ const Comment = ({ comment, author, votesAmt, postId, currentVote,isCommentReply
                 <div className='grid w-full gap-1.5'>
                     <Label >Your comment</Label>
                     <div className='grid w-full gap-1.5'>
-                        <Label htmlFor='comment' className='text-sm font-medium text-gray-600'>
+                        <Label htmlFor='comment' className='text-sm font-medium text-gray-600 dark:text-zinc-300'>
                             Comment as @{session?.user?.username}
                         </Label>
                         <div className="mt-2">

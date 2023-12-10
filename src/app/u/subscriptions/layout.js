@@ -22,7 +22,7 @@ const Layout = async ({ children }) => {
         })
     }
     return (
-        <div className='overflow-hidden rounded-md bg-white shadow list-none'>
+        <div className='overflow-hidden rounded-md bg-white shadow  dark:bg-zinc-800 dark:text-white list-none'>
             <p className='font-bold text-2xl md:text-4xl p-4'>Your communities</p>
             <Separator />
             <div className='w-full h-full  cursor-pointer'>
@@ -36,7 +36,7 @@ const Layout = async ({ children }) => {
                             
                             </div>
                             <div className="flex flex-row">
-                                <p className="text-blue-900 ">Created By: u/{subscription.user.username} </p>
+                                <p className="text-blue-900 dark:text-zinc-300 ">Created By: u/{subscription.user.username} </p>
                             </div>
                             </a>
                         </div>
