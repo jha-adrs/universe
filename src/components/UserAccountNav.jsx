@@ -82,8 +82,8 @@ export function UserAccountNav({ user, ...props }) {
                     <DropdownMenuItem>
                         <Link href='/' className='flex flex-row place-items-center'><NewspaperIcon className='mr-2'/> Feed</Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
-                        <Link href='/profile' className='flex flex-row place-items-center'><UserCircle className='mr-2'/> Profile</Link>
+                    <DropdownMenuItem disabled={!username}>
+                        <Link href={`${config.NEXTAPP_DOMAIN}/u/${username}`} className='flex flex-row place-items-center'><UserCircle className='mr-2'/> Profile</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
                         <Link href='/settings' className='flex flex-row place-items-center'><UserCog2 className='mr-2'/> Settings</Link>

@@ -69,8 +69,8 @@ const UserAuthForm = ({ className, ...props }) => {
     return (
         <div>
             <div className="relative flex justify-center text-xs flex-col">  
-            <Input type='email' placeholder='Email' className='w-full' onChange={(e)=>{setEmail(e.target.value)}}/>
-            <Button variant='black' onClick={loginWithMagicLink} className={cn('flex justify-center m-2 dark:border-white ', className)} disabled={isLoading || !availableProviders['magic_link']}>
+            <Input  type='email' placeholder='Email' className='w-full bg-white dark:bg-black' onChange={(e)=>{setEmail(e.target.value)}}/>
+            <Button variant='blackwithred' onClick={loginWithMagicLink} className={cn('flex justify-center my-2 dark:border-white ', className)} disabled={isLoading || !availableProviders['magic_link']}>
                 {isLoading ? (<Icons.spinner className='w-5 h-5 mr-2 animate-spin' />) : 'Sign in using magic link'}
             </Button>
             </div>

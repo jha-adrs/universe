@@ -23,16 +23,18 @@ export async function GET(req) {
             userCommunityIds = await commIds.map((comm) => comm.communityId);
         }
         //console.log(userCommunityIds, "commIds");
-        const { limit, page, communityName } = z.object({
+        const { limit, page, communityName, username } = z.object({
             limit: z.string(),
             page: z.string(),
             communityName: z.string().nullish().optional(),
+            username: z.string().nullish().optional(),
         }).parse({
             communityName: url.searchParams.get("communityName"),
             limit: url.searchParams.get("limit"),
             page: url.searchParams.get("page"),
+            username: url.searchParams.get("username"),
         });
-
+        logger.info("GET /api/posts", { limit, page, communityName, username });
         let whereClause = {};
 
         if (session && communityName) {
@@ -66,6 +68,14 @@ export async function GET(req) {
             whereClause = {
                 visibility: "PUBLIC",
             };
+        }
+        if(username){
+            whereClause = {
+                AND: [
+                    {authorId:username},
+                    {visibility:"PUBLIC"}
+                ]
+            }
         }
 
         const posts = await db.post.findMany({
