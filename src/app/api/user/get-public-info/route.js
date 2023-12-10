@@ -43,7 +43,7 @@ export async function POST(req) {
             orderBy: [
                 { createdAt: 'desc' },
             ],
-            take: 10,
+            take: 20,
             include:{
                 community:true,
                 author:true,

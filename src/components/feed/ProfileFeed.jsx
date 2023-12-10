@@ -1,16 +1,13 @@
 "use client"
 import config from '@/config/config';
 import { useIntersection } from '@mantine/hooks'
-import { useInfiniteQuery } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import React, { Suspense, useEffect, useRef } from 'react'
 import { Frown, Loader2, Meh } from 'lucide-react';
-import axios from 'axios';
 import dynamic from 'next/dynamic';
-import FeedSkeleton from './skeletons/FeedSkeleton';
-const Post = dynamic(() => import('./Post'), { ssr: false })
-
-const PostFeed = ({ initialPosts, communityName, username }) => {
+const Post = dynamic(() => import('../Post'), { ssr: false })
+// TODO: Implement infinite scroll
+const ProfileFeed = ({ initialPosts, communityName, username }) => {
   const lastPostRef = useRef(null)
   const { ref, entry } = useIntersection({
     root: lastPostRef.current,
@@ -18,32 +15,8 @@ const PostFeed = ({ initialPosts, communityName, username }) => {
   })
   const { data: session } = useSession()
 
-  const { data, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
-    ['infinite-query'],
-    async ({ pageParam = 1 }) => {
-      const query =
-        `/api/posts?limit=${config.INFINITE_SCROLL_PAGINATION_AMOUNT}&page=${pageParam}` +
-        (!!communityName ? `&communityName=${communityName}` : '') + (!!username ? `&username=${username}` : '')
 
-      const { data } = await axios.get(query)
-      return data
-    },
-
-    {
-      getNextPageParam: (_, pages) => {
-        return pages.length + 1
-      },
-      initialData: { pages: [initialPosts], pageParams: [1] },
-    }
-  )
-
-  useEffect(() => {
-    if (entry?.isIntersecting && !isFetchingNextPage) {
-      fetchNextPage() // Load more posts when the last post comes into view
-    }
-  }, [entry, fetchNextPage])
-
-  const posts = data?.pages.flatMap((page) => page) ?? initialPosts
+  const posts =  initialPosts?.length > 0 ? initialPosts : []
 
   return (
     <>
@@ -60,20 +33,6 @@ const PostFeed = ({ initialPosts, communityName, username }) => {
                 (vote) => vote.userId === session?.user.id
               )
 
-              if (index === posts.length - 1 && posts.length > 1 && posts.length > config.INFINITE_SCROLL_PAGINATION_AMOUNT ) {
-                // Add a ref to the last post in the list
-                return (
-                  <li key={post.id} ref={ref}>
-                    <Post
-                      post={post}
-                      commentAmt={post.comments.length}
-                      communityName={post.community.name}
-                      votesAmt={votesAmt}
-                      currentVote={currentVote}
-                    />
-                  </li>
-                )
-              } else {
                 return (
                   <Post
                     key={post.id}
@@ -84,21 +43,16 @@ const PostFeed = ({ initialPosts, communityName, username }) => {
                     currentVote={currentVote}
                   />
                 )
-              }
+              
             })}
 
-            {isFetchingNextPage && (
-              <li className='flex justify-center'>
-                <Loader2 className='w-6 h-6 text-zinc-500 animate-spin' />
-              </li>
-            )}
           </ul>
       
     </>
   )
 }
 
-export default PostFeed
+export default ProfileFeed
 
 
 const NoPosts = () => {

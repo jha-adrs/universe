@@ -71,10 +71,8 @@ export async function GET(req) {
         }
         if(username){
             whereClause = {
-                AND: [
-                    {authorId:username},
-                    {visibility:"PUBLIC"}
-                ]
+                    authorId:username,
+                    visibility:"PUBLIC"
             }
         }
 
@@ -92,7 +90,10 @@ export async function GET(req) {
             },
             where: whereClause,
         });
-
+        const postCount = await db.post.count({
+            where: whereClause,
+        });
+        logger.info("GET /api/posts response", { posts, postCount });
         return new Response(JSON.stringify(posts), {
             headers: {
                 "content-type": "application/json",

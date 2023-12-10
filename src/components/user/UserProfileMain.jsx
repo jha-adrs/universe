@@ -17,6 +17,7 @@ import Image from "next/image"
 import PostFeed from "../PostFeed"
 import { Suspense } from "react"
 import FeedSkeleton from "../skeletons/FeedSkeleton"
+import ProfileFeed from "../feed/ProfileFeed"
 
 
 export default function UserProfileMain({ data, username }) {
@@ -69,7 +70,7 @@ export default function UserProfileMain({ data, username }) {
             <CardContent className="space-y-2">
               <div className="flex flex-col w-full h-full rounded-t-lg  ">
                 <Suspense fallback={<FeedSkeleton />}>
-                  <PostFeed initialPosts={data?.posts} username={username} />
+                  <ProfileFeed initialPosts={data?.posts} username={username} />
                 </Suspense>
               </div>
             </CardContent>
