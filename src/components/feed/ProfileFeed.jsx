@@ -20,33 +20,37 @@ const ProfileFeed = ({ initialPosts, communityName, username }) => {
 
   return (
     <>
-      
+      {
+        posts?.length > 0 ? (
+            
           <ul className='flex flex-col col-span-2 space-y-6'>
-            {posts.map((post, index) => {
-              const votesAmt = post.votes.reduce((acc, vote) => {
-                if (vote.type === 'UP') return acc + 1
-                if (vote.type === 'DOWN') return acc - 1
-                return acc
-              }, 0)
+          {posts.map((post, index) => {
+            const votesAmt = post.votes.reduce((acc, vote) => {
+              if (vote.type === 'UP') return acc + 1
+              if (vote.type === 'DOWN') return acc - 1
+              return acc
+            }, 0)
 
-              const currentVote = post.votes.find(
-                (vote) => vote.userId === session?.user.id
+            const currentVote = post.votes.find(
+              (vote) => vote.userId === session?.user.id
+            )
+
+              return (
+                <Post
+                  key={post.id}
+                  post={post}
+                  commentAmt={post.comments.length}
+                  communityName={post.community.name}
+                  votesAmt={votesAmt}
+                  currentVote={currentVote}
+                />
               )
+            
+          })}
 
-                return (
-                  <Post
-                    key={post.id}
-                    post={post}
-                    commentAmt={post.comments.length}
-                    communityName={post.community.name}
-                    votesAmt={votesAmt}
-                    currentVote={currentVote}
-                  />
-                )
-              
-            })}
-
-          </ul>
+        </ul>
+        ) : (<NoPosts />)
+      }
       
     </>
   )

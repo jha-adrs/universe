@@ -26,7 +26,7 @@ const CreateComment = ({ postId, user,replyToId, ...props }) => {
                 replyToId
             }
             const {data} = await axios.patch(`/api/community/post/comment`,payload)
-            console.log(data)
+            window.location.reload();
             return data;
         },
         onError: (err) => {

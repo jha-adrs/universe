@@ -103,7 +103,7 @@ const page = async ({ params }) => {
   )
 }
 
-function PostVoteShell() {
+export function PostVoteShell() {
   return <div className=' flex items-center flex-row sm:flex-col gap-4 sm:gap-0 pr-6 sm:w-20 pb-4 sm:pb-0'>
     <div className={buttonVariants({ variant: 'ghost' })}>
       <ArrowBigUp className='w-5 h-5 text-zinc-700 dark:text-zinc-300 animate-pulse rounded-md bg-primary/10' />
@@ -119,6 +119,5 @@ function PostVoteShell() {
 
   </div>
 }
-
 
 export default page
