@@ -112,7 +112,7 @@ const SubscribeLeaveToggle = ({subscriptionStatus,communityId, ...props}) => {
 
     return subscriptionStatus ? (
         <Button className="w-full mt-1 mb-4" variant="destructive" onClick={()=>leave()} {...props}>
-            {isLeaveLoading ? <Icons.spinner className='animate-spin' /> : "Un-subscribe"}
+            {isLeaveLoading ? <Icons.spinner className='animate-spin' /> : "Leave"}
         </Button>
     ):
     (

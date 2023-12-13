@@ -1,9 +1,12 @@
+import('server-only')
 import CommunityAvatar from '@/components/CommunityAvatar'
 import PostFeed from '@/components/PostFeed'
 import CustomFeed from '@/components/feed/CustomFeed'
 import GeneralFeed from '@/components/feed/GeneralFeed'
 import { buttonVariants } from '@/components/ui/button'
 import { getAuthSession } from '@/lib/auth'
+import { db } from '@/lib/db'
+import { logger } from '@/lib/logger'
 import { cn } from '@/lib/utils'
 import { Compass, HomeIcon, PenBox, Users } from 'lucide-react'
 import Image from 'next/image'
@@ -12,6 +15,23 @@ export const dynamic = 'force-dynamic'
 export const fetchCache = 'force-no-store'
 export default async function Home() {
   const session = await getAuthSession()
+  // Get top communities
+  const topCommunities = await db.community.findMany({
+    take: 5,
+    orderBy: {
+      members: {
+        _count: 'desc'
+
+      }
+    }, select: {
+      id: true,
+      name: true,
+    }
+
+  });
+  logger.info(typeof topCommunities, topCommunities)
+
+
   return (
     <main className="">
       <h1 className="font-bold text-3xl md:text-4xl">
@@ -34,18 +54,16 @@ export default async function Home() {
                 </p>
               </div>
 
-              <div className="my-3  px-6 py-4 text-sm leading-6 ">
+              <div className="my-3  px-6 py-0 text-sm leading-6 ">
                 <div className="flex justify-between gap-x-4 py-3">
                   <p className="text-zinc-600 dark:text-zinc-300">
                     Communities you may be interested in.
                   </p>
                 </div>
-                <div className="flex flex-col w-full  gap-x-4 gap-y-2 py-3 items-center h-[70%]">
-
-                  <CommunityListItem community={{}} name="events" />
-                  <CommunityListItem community={{}} name="faq" />
-                  <CommunityListItem community={{}} name="hackathons" />
-                  <CommunityListItem community={{}} name="fests" />
+                <div className="flex flex-col w-full  gap-x-4 items-center h-[70%]">
+                  {topCommunities.map((community) => (
+                    <CommunityListItem key={community.id} community={community} name={community.name} />
+                  ))}
                 </div>
 
                 <Link className={buttonVariants({ className: 'w-full mt-4 mb-6 ', variant: "black" })} href='/popular'>
@@ -89,10 +107,13 @@ export default async function Home() {
 const CommunityListItem = ({ community, name }) => {
   if (!name) return null;
   return (
-    <div className={buttonVariants({ variant: "outline", className: "w-full h-12 justify-center items-start " })}>
-      <div className="items-center justify-start gap-x-2 inline-flex w-full">
-        <CommunityAvatar community={{}} className="w-5 h-5 rounded-full" /> r/{name}
+
+    <Link href={`/r/${community.name}`} key={community.id} className="w-full h-12 justify-center items-start ">
+      <div className={buttonVariants({ variant: "outline", className: "w-full h-12 justify-center items-start " })}>
+        <div className="items-center justify-start  inline-flex w-full">
+          <CommunityAvatar community={community} className="w-5 h-5 rounded-full mr-2" /> r/{name}
+        </div>
       </div>
-    </div>
+    </Link>
   )
 }

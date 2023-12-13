@@ -61,11 +61,11 @@ body {
   }
  
   .dark {
-    --background: 222.2 84% 4.9%;
+    --background: 217.2, 32.6%, 17.5%;
     --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
+    --card: 240 3.7% 15.9%;
     --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
+    --popover: 240 3.7% 15.9%;
     --popover-foreground: 210 40% 98%;
     --primary: 162.93, 93.55%, 24.31%;
     --primary-foreground: 144.9 80.4% 10%;
