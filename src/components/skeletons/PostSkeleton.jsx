@@ -11,7 +11,7 @@ const PostSkeleton = ({ count }) => {
 
         for (let i = 0; i < count; i++) {
             postSk.push(
-                <div key={i} className='rounded-md bg-white shadow dark:bg-zinc-800 dark:text-white'>
+                <div key={i} className='rounded-md bg-white shadow dark:bg-zinc-800 dark:text-white my-2'>
                     <div className="px-4 py-3 flex flex-col sm:flex-row">
                         <div className=' flex items-center flex-row sm:flex-col gap-4 sm:gap-0 pr-6 sm:w-20 pb-4 sm:pb-0'>
                             <div className={buttonVariants({ variant: 'ghost' })}>

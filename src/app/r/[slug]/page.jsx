@@ -1,4 +1,6 @@
+import CommunityAvatar from '@/components/CommunityAvatar';
 import MiniCreatePost from '@/components/MiniCreatePost';
+import SubscribeLeaveToggle from '@/components/SubscribeLeaveToggle';
 import FeedSkeleton from '@/components/skeletons/FeedSkeleton';
 import config from '@/config/config';
 import { getAuthSession } from '@/lib/auth';
@@ -38,9 +40,19 @@ const page = async ({ params }) => {
     return (
         <>
             <Suspense fallback={<FeedSkeleton />}>
-                <h1 className="font-bold text-3xl md:text-4xl h-14">
-                    r/{community.name}
-                </h1>
+                <div className='w-full h-fit p-3 items-center justify-between  inline-flex overflow-hidden rounded-md bg-white shadow list-none dark:bg-zinc-800 dark:text-white'>
+                    <div className='inline-flex items-center gap-x-4 '>
+                        <CommunityAvatar community={community} className="w-10 h-10" />
+
+                        <p className="font-bold text-2xl md:text-3xl h-10">
+                            r/{community.name}
+                        </p>
+                    </div>
+
+                    <SubscribeLeaveToggle communityId={community.id} subscriptionStatus={community.subscriptionStatus} className="w-fit " />
+
+
+                </div>
                 <MiniCreatePost session={session} />
                 <PostFeed initialPosts={community.posts} communityName={community.name} />
 

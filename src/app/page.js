@@ -1,10 +1,11 @@
+import CommunityAvatar from '@/components/CommunityAvatar'
 import PostFeed from '@/components/PostFeed'
 import CustomFeed from '@/components/feed/CustomFeed'
 import GeneralFeed from '@/components/feed/GeneralFeed'
 import { buttonVariants } from '@/components/ui/button'
 import { getAuthSession } from '@/lib/auth'
 import { cn } from '@/lib/utils'
-import { HomeIcon } from 'lucide-react'
+import { Compass, HomeIcon, PenBox, Users } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 export const dynamic = 'force-dynamic'
@@ -18,30 +19,80 @@ export default async function Home() {
       </h1>
       <div className='grid grid-cols-1 md:grid-cols-3 gap-y-4 md:gap-x-4 py-6'>
         {/*Feed */}
-        {session ? (<CustomFeed session={session?.user}/>):(<GeneralFeed/>)}
+        {session ? (<CustomFeed session={session?.user} />) : (<GeneralFeed />)}
         {/*Widgets */}
         {/* SubbredditCluster Info */}
 
-        <div className="overflow-hidden h-fit rounded-lg border border-gray-200  order-first md:order-last">
-          <div className='bg-primary-200 dark:bg-zinc-800 dark:text-white  px-6 py-4'>
-            <p className="font-semibold py-3 flex items-center gap-1.5">
-              <HomeIcon className='w-4 h-4' />
-              Home
-            </p>
-          </div>
 
-          <div className="my-3  px-6 py-4 text-sm leading-6 ">
-            <div className="flex justify-between gap-x-4 py-3">
-              <p className="text-zinc-600 dark:text-zinc-300">Your customized personal feed, based on communities you follow.</p>
+        <div className="overflow-hidden   order-first md:order-last">
+          <div className="mb-4 rounded-lg">
+            <div className='h-fit rounded-lg border border-gray-200'>
+              <div className='bg-gray-200 dark:bg-zinc-800 dark:text-white  px-6 py-4'>
+                <p className="font-semibold py-3 flex items-center gap-1.5">
+                  <Users className='w-4 h-4' />
+                  Popular Communities
+                </p>
+              </div>
+
+              <div className="my-3  px-6 py-4 text-sm leading-6 ">
+                <div className="flex justify-between gap-x-4 py-3">
+                  <p className="text-zinc-600 dark:text-zinc-300">
+                    Communities you may be interested in.
+                  </p>
+                </div>
+                <div className="flex flex-col w-full  gap-x-4 gap-y-2 py-3 items-center h-[70%]">
+
+                  <CommunityListItem community={{}} name="events" />
+                  <CommunityListItem community={{}} name="faq" />
+                  <CommunityListItem community={{}} name="hackathons" />
+                  <CommunityListItem community={{}} name="fests" />
+                </div>
+
+                <Link className={buttonVariants({ className: 'w-full mt-4 mb-6 ', variant: "black" })} href='/popular'>
+                  <Compass className='w-4 h-4 mr-2' /> Explore</Link>
+
+              </div>
+
+            </div>
+          </div>
+          <div className='h-fit rounded-lg border border-gray-200'>
+            <div className='bg-gray-200 dark:bg-zinc-800 dark:text-white  px-6 py-4'>
+              <p className="font-semibold py-3 flex items-center gap-1.5">
+                <HomeIcon className='w-4 h-4' />
+                Start your journey
+              </p>
             </div>
 
-            <Link className={buttonVariants({className:'w-full mt-4 mb-6 ', variant:"black"})} href='/r/create'>
-              Create Community</Link>
+            <div className="my-3  px-6 py-4 text-sm leading-6 ">
+              <div className="flex justify-between gap-x-4 py-3">
+                <p className="text-zinc-600 dark:text-zinc-300">Create your space with people with similar interests</p>
+              </div>
+
+              <Link className={buttonVariants({ className: 'w-full mt-4 mb-6 ', variant: "black" })} href='/r/create'>
+                <PenBox className='w-4 h-4 mr-2' /> Create Community</Link>
+
+            </div>
 
           </div>
+
+
         </div>
+
+        {/**Secondary Widget */}
+
       </div>
 
     </main>
+  )
+}
+
+const CommunityListItem = ({ community, name }) => {
+  if (!name) return null;
+  return (
+    <div className={buttonVariants({ variant: "outline", className: "w-full h-12 justify-center items-start " })}>
+      <div className="items-center justify-start gap-x-2 inline-flex w-full">
+        <CommunityAvatar community={{}} className="w-5 h-5 rounded-full" /> r/{name}
+      </div>
+    </div>
   )
 }
