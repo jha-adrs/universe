@@ -19,12 +19,11 @@ CREATE TABLE "VerificationToken" (
 
 -- CreateTable
 CREATE TABLE "Documents" (
-    "id" TEXT NOT NULL,
+    "id" INTEGER ,
     "text" TEXT,
     "n_tokens" INTEGER,
     "embeddings" vector(1536),
 
-    CONSTRAINT "Documents_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable

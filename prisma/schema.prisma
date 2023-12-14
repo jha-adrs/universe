@@ -160,13 +160,14 @@ model Vote {
   @@index([postId])
 }
 
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model Documents {
-  id         String                 @id @default(cuid())
+  id         Int?
   text       String?
   n_tokens   Int?
   embeddings Unsupported("vector")?
 
-  @@index([embeddings])
+  @@ignore
 }
 
 model Openai_ft_data {
