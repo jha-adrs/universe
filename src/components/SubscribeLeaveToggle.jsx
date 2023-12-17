@@ -111,12 +111,12 @@ const SubscribeLeaveToggle = ({subscriptionStatus,communityId, ...props}) => {
     })
 
     return subscriptionStatus ? (
-        <Button className="w-full mt-1 mb-4" variant="destructive" onClick={()=>leave()}>
-            {isLeaveLoading ? <Icons.spinner className='animate-spin' /> : "Un-subscribe"}
+        <Button className="w-full mt-1 mb-4" variant="destructive" onClick={()=>leave()} {...props}>
+            {isLeaveLoading ? <Icons.spinner className='animate-spin' /> : "Leave"}
         </Button>
     ):
     (
-        <Button isLoading={isSubLoading} className="w-full mt-1 mb-4" variant = "black" onClick={()=>subscribe()} >
+        <Button isLoading={isSubLoading} className="w-full mt-1 mb-4" variant = "black" onClick={()=>subscribe()} {...props}>
             {isSubLoading ? <Icons.spinner className='animate-spin' /> : "Subscribe"}
         </Button>
     )

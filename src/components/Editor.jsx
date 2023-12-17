@@ -29,6 +29,7 @@ import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { useRouter, usePathname } from 'next/navigation'
 import { Checkbox } from './ui/checkbox';
+import EventBlock from './editorjs/timeline/tool';
 export const metadata = {
   title: "Create Post",
   description: "Create a post for your community.",
@@ -130,7 +131,8 @@ const Editor = ({ communityId }) => {
           code: Code,
           inlineCode: InlineCode,
           table: Table,
-          embed: Embed
+          embed: Embed,
+          timeline: EventBlock
         }
       })
     }

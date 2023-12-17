@@ -29,7 +29,7 @@ export default function UserProfileMain({ data, username }) {
         <Card className="flex-col w-full h-full">
           <CardHeader>
             <div className="relative w-full inline-flex h-36 rounded-t-md overflow-hidden">
-              <Image className="rounded-t-lg" fill style={{ "object-fit": "cover" }} alt="Cover Image" src="https://utfs.io/f/b33605dd-87a3-48e8-bdc5-04e7026c203a-tbokdq.jpg" />
+              <Image className="rounded-t-lg" fill style={{ "objectFit": "cover" }} alt="Cover Image" src="https://utfs.io/f/b33605dd-87a3-48e8-bdc5-04e7026c203a-tbokdq.jpg" />
               <div className="absolute top-2 right-2 rounded-full w-6 h-6 dark:bg-gray-900/50 flex items-center justify-center hover:bg-gray-500 bg-gray-900 hover:dark:bg-gray-900">
                 <ImagePlus className=' text-white/50 cursor-pointer' size={16} />
               </div>

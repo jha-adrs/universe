@@ -47,6 +47,8 @@ config.SIDEBAR_ITEMS=[
     },
   ]
 
-config.NEXTAPP_DOMAIN='http://localhost:3000'
 
+
+//config.NEXTAPP_DOMAIN="http://universe-flax.vercel.app"
+config.NEXTAPP_DOMAIN="http://localhost:3000"
 export default config;

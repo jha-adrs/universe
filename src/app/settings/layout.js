@@ -16,7 +16,7 @@ const page = async({children}) => {
     if(!session?.user) {return redirect(authOptions.pages?.signIn || '/sign-in')}
 
   return (
-    <div className='max-w-4xl mx-auto py-12'>
+    <div className='max-w-4xl mx-auto'>
         <div className="grid items-start gap-8">
         <>
       <div className="md:hidden">

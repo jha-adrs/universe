@@ -1,55 +1,30 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-  provider = "prisma-client-js"
-  previewFeatures = ["fullTextSearch"]
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "postgresqlExtensions"]
 }
 
-//MySQL
+datasource db {
+  provider     = "postgresql"
+  url          = env("AWS_POSTGRES_DB_CONNECTION_STRING")
+  relationMode = "foreignKeys"
+  extensions   = [vector]
+}
 
-// datasource db {
-//   provider     = "mysql"// "mysql" 
-//   url          = env("DATABASE_URL")
-//   relationMode = "prisma"
-// }
-
-// Supabase
-// datasource db {
-//  provider     = "postgresql" 
-//   url          = env("DATABASE_URL")
-//   directUrl = env("DIRECT_URL")
-//   relationMode = "foreignKeys"
-// }
-// VERCEL
-// datasource db {
-//   provider = "postgresql"
-//   url = env("POSTGRES_PRISMA_URL") // uses connection pooling
-//   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
-//   relationMode = "foreignKeys"
-// }
-// AWS
- datasource db {
-  provider     = "postgresql" 
-   url          = env("AWS_POSTGRES_DB_CONNECTION_STRING")
-   relationMode = "foreignKeys"
- }
 model Account {
-  id                String  @id @default(cuid())
-  userId            String
-  type              String
-  provider          String
-  providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
-  expires_at        Int?
-  token_type        String?
-  scope             String?
-  id_token          String? @db.Text
-  session_state     String?
+  id                       String  @id @default(cuid())
+  userId                   String
+  type                     String
+  provider                 String
+  providerAccountId        String
+  refresh_token            String?
+  access_token             String?
+  expires_at               Int?
+  token_type               String?
+  scope                    String?
+  id_token                 String?
+  session_state            String?
   refresh_token_expires_in Int?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user                     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
   @@index([userId])
@@ -66,26 +41,25 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  username      String?   @unique
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
-  bio           String?
-  posts        Post[]
-  comments     Comment[]
-  commentVotes CommentVote[]
-
-  subscription Subscription[]
-  Vote         Vote[]
-
-  createdCommunity Community[] @relation("CreatedBy")
-  karma          Int      @default(0)
-  joinedDate     DateTime @default(now())
+  id               String         @id @default(cuid())
+  name             String?
+  email            String?        @unique
+  emailVerified    DateTime?
+  username         String?        @unique
+  image            String?
+  karma            Int            @default(0)
+  joinedDate       DateTime       @default(now())
+  bio              String?
+  accounts         Account[]
+  comments         Comment[]
+  commentVotes     CommentVote[]
+  createdCommunity Community[]    @relation("CreatedBy")
+  posts            Post[]
+  sessions         Session[]
+  subscription     Subscription[]
+  Vote             Vote[]
 }
+
 model VerificationToken {
   identifier String
   token      String   @unique
@@ -94,98 +68,80 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-
-
 model Community {
-  id        String   @id @default(cuid())
-  name      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  posts     Post[]
-  image    String?
-  creatorId String?
-  creator   User?          @relation("CreatedBy", fields: [creatorId], references: [id])
-  members   Subscription[]
+  id          String              @id @default(cuid())
+  name        String              @unique
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+  creatorId   String?
   description String?
-  visibility CommunityVisibility @default(PUBLIC)
+  visibility  CommunityVisibility @default(PUBLIC)
+  image       String?
+  creator     User?               @relation("CreatedBy", fields: [creatorId], references: [id])
+  posts       Post[]
+  members     Subscription[]
+
   @@index([name])
   @@index([creatorId])
 }
 
-enum CommunityVisibility{
-  PUBLIC
-  PRIVATE
-  RESTRICTED
-}
 model Subscription {
-  user      User    @relation(fields: [userId], references: [id])
-  userId    String
-  community   Community @relation(fields: [communityId], references: [id])
+  userId      String
   communityId String
-  dateJoined DateTime @default(now())
-  
+  dateJoined  DateTime  @default(now())
+  community   Community @relation(fields: [communityId], references: [id])
+  user        User      @relation(fields: [userId], references: [id])
+
   @@id([userId, communityId])
-  @@index([userId]) // for user's Communities
-  @@index([communityId]) // for Community's members
+  @@index([userId])
+  @@index([communityId])
   @@index([dateJoined])
 }
 
 model Post {
-  id        String   @id @default(cuid())
-  title     String   @unique
-  content   Json?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  community   Community  @relation(fields: [communityId], references: [id])
+  id          String         @id @default(cuid())
+  title       String         @unique
+  content     Json?
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
   communityId String
-  visibility PostVisibility @default(PUBLIC)
-  authorId String
-  author   User   @relation(fields: [authorId], references: [id])
+  authorId    String
+  visibility  PostVisibility @default(PUBLIC)
+  comments    Comment[]
+  author      User           @relation(fields: [authorId], references: [id])
+  community   Community      @relation(fields: [communityId], references: [id])
+  votes       Vote[]
 
-  comments Comment[]
-  votes    Vote[]
   @@index([communityId])
   @@index([authorId])
 }
-enum PostVisibility{
-  PUBLIC
-  PRIVATE
-}
 
 model Comment {
-  id        String   @id @default(cuid())
+  id        String        @id @default(cuid())
   text      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  post      Post     @relation(fields: [postId], references: [id])
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
   postId    String
-
-  author   User   @relation(fields: [authorId], references: [id])
-  authorId String
-
+  authorId  String
   replyToId String?
-  replyTo   Comment?  @relation("ReplyTo", fields: [replyToId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  replies   Comment[] @relation("ReplyTo")
-
-  votes     CommentVote[]
   commentId String?
+  author    User          @relation(fields: [authorId], references: [id])
+  post      Post          @relation(fields: [postId], references: [id])
+  replyTo   Comment?      @relation("ReplyTo", fields: [replyToId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  replies   Comment[]     @relation("ReplyTo")
+  votes     CommentVote[]
 
   @@index([postId])
   @@index([authorId])
   @@index([replyToId])
 }
 
-enum VoteType {
-  UP
-  DOWN
-}
-
 model CommentVote {
-  user      User     @relation(fields: [userId], references: [id])
   userId    String
-  comment   Comment  @relation(fields: [commentId], references: [id])
   commentId String
   type      VoteType
+  comment   Comment  @relation(fields: [commentId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
 
   @@id([userId, commentId])
   @@index([userId])
@@ -193,13 +149,52 @@ model CommentVote {
 }
 
 model Vote {
-  user   User     @relation(fields: [userId], references: [id])
   userId String
-  post   Post     @relation(fields: [postId], references: [id])
   postId String
   type   VoteType
+  post   Post     @relation(fields: [postId], references: [id])
+  user   User     @relation(fields: [userId], references: [id])
 
   @@id([userId, postId])
   @@index([userId])
   @@index([postId])
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model Documents {
+  id         Int?
+  text       String?
+  n_tokens   Int?
+  embeddings Unsupported("vector")?
+
+  @@ignore
+}
+
+model Openai_ft_data {
+  id               String    @id @default(cuid())
+  query            String?
+  answer           String?
+  suggested_answer String?
+  user_feedback    FeedBack?
+}
+
+enum CommunityVisibility {
+  PUBLIC
+  PRIVATE
+  RESTRICTED
+}
+
+enum PostVisibility {
+  PUBLIC
+  PRIVATE
+}
+
+enum VoteType {
+  UP
+  DOWN
+}
+
+enum FeedBack {
+  UPVOTE
+  DOWNVOTE
 }
