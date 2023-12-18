@@ -58,6 +58,7 @@ model User {
   sessions         Session[]
   subscription     Subscription[]
   Vote             Vote[]
+  Chathistory     Chathistory[]
 }
 
 model VerificationToken {
@@ -170,12 +171,19 @@ model Documents {
   @@ignore
 }
 
-model Openai_ft_data {
+model Chathistory {
   id               String    @id @default(cuid())
-  query            String?
+  question         String?
   answer           String?
   suggested_answer String?
-  user_feedback    FeedBack?
+  feedback        FeedBack?
+  created_at       DateTime  @default(now())
+  updated_at       DateTime  @updatedAt
+  userId           String?
+  user             User?     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([feedback])
 }
 
 enum CommunityVisibility {
@@ -195,6 +203,6 @@ enum VoteType {
 }
 
 enum FeedBack {
-  UPVOTE
-  DOWNVOTE
+  UP
+  DOWN
 }

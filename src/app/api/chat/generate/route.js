@@ -45,7 +45,7 @@ export async function POST(req) {
         WHERE cum_n_tokens <= 1700
       ORDER BY distances ASC;
       `;
-        logger.info("Insert response", insertQuery);
+        //logger.info("Insert response", insertQuery);
         //const queryParams = [1700];
         logger.info('Querying database...');
         const { rows } = await client.query(insertQuery);
@@ -53,17 +53,39 @@ export async function POST(req) {
         const context = rows.reduce((acc, cur) => {
             return acc + cur.text;
         }, '');
-        prompt = `You are an enthusiastic chatbot for an university and named Max, helping students about different aspects of the university. Answer the question asked by students based on the context below, you should be polite always and paraphrase your ansers according to question asked , also be descriptive and helpful, but also avoid giving subjective answers and do not speak ill of any person or organisation. If the question can't be answered based on the context, say "Sorry :( I don't know as of now."\n\nContext: ${context}\n\n---\n\nQuestion: ${query}\nAnswer:`;
+        prompt = `You are an enthusiastic chatbot for an university and named Max, 
+        helping students about different aspects of the university. 
+        Answer the question asked by students based on the context below, 
+        you should be polite always and paraphrase your ansers according to question asked , 
+        also be descriptive and helpful, but also avoid giving subjective answers and 
+        do not speak ill of any person or organisation and all questions are related to university directly or indirectly.
+        If the question can't be answered based on the context, say 
+        "Sorry :( I don't have much information about this."\n\nContext: ${context}\n\n---\n\nQuestion: ${query}\nAnswer:`;
 
         // OpenAI completions
         const output = await getOpenAIChoices(prompt);
         logger.info(output);
+        // Also insert into DB
+        insertChatHistory(query, output,session);
         return new Response( output , { status: 200 });
 
     } catch (error) {
         logger.error(error)
         return new Response(JSON.stringify({ success: 0, error: "Something went wrong!" }), { status: 500 })
     }
+}
+const insertChatHistory = async (query, output,session) => {
+    const res = await db.chathistory.create({
+        data:{
+            question: query,
+            answer: output,
+            user:{
+                connect:{
+                    id: session?.user.id
+                }
+            }
+        }
+    })
 }
 const getOpenAIChoices = (prompt) => {
     return new Promise((resolve, reject) => {

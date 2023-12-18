@@ -1,7 +1,10 @@
 "use client"
 import _ from 'lodash'
-import { BrainCircuit, Loader2 } from 'lucide-react'
-import React, { useEffect, useRef } from 'react'
+import { BrainCircuit, Loader2, ThumbsDown, ThumbsUp } from 'lucide-react'
+import React, { useEffect, useRef, useState } from 'react'
+import { useToast } from '@/components/ui/use-toast';
+import UserAvatar from './UserAvatar';
+import { useSession } from 'next-auth/react';
 
 const customScrollBar = {
     '&::-webkit-scrollbar': {
@@ -18,15 +21,16 @@ const customScrollBar = {
     }
 }
 
-const QAComponent = ({ questions, isAnswerFetching, answers,loadingQuestionuuid }) => {
+const QAComponent = ({ questions, isAnswerFetching, answers, loadingQuestionuuid }) => {
+    const {data: session} = useSession();
     useEffect(() => {
-
+        //console.log('QAComponent', questions, answers, "sess",session)
     }, [questions, answers])
 
     return (
         <div className='py-5 h-full'>
             {
-                questions?.length === 0 ? <InitialComponent /> : <QAPopulatedComponent questions={questions} answers={answers} isAnswerFetching={isAnswerFetching} loadingQuestionuuid={loadingQuestionuuid} />
+                questions?.length === 0 ? <InitialComponent /> : <QAPopulatedComponent questions={questions} answers={answers} isAnswerFetching={isAnswerFetching} loadingQuestionuuid={loadingQuestionuuid} session={session}/>
             }
         </div>
     )
@@ -56,7 +60,7 @@ const InitialComponent = () => {
     )
 }
 
-const QAPopulatedComponent = ({ questions, answers, isAnswerFetching,loadingQuestionuuid }) => {
+const QAPopulatedComponent = ({ questions, answers, isAnswerFetching, loadingQuestionuuid ,session}) => {
     const ScrollEndRef = useRef(null);
     const scrollToBottom = () => {
         ScrollEndRef.current?.scrollIntoView({ behavior: "auto" })
@@ -75,11 +79,11 @@ const QAPopulatedComponent = ({ questions, answers, isAnswerFetching,loadingQues
                         return (
                             <>
 
-                                <MiniTextComponent key={question?.uuid} type='question' text={question?.question} />
+                                <MiniTextComponent key={question?.uuid} type='question' text={question?.question} session={session}/>
                                 {answers && answers?.length > 0 && answers?.map((answer, index) => {
                                     if (answer?.uuid === question?.uuid) {
                                         return (
-                                            <MiniTextComponent key={answer?.answer_uuid} type='answer' text={answer?.answer} isLoading={isAnswerFetching} loadingQuestionuuid={loadingQuestionuuid} currentuuid={question?.uuid} />
+                                            <MiniTextComponent key={answer?.answer_uuid} type='answer' text={answer?.answer} isLoading={isAnswerFetching} loadingQuestionuuid={loadingQuestionuuid} currentuuid={question?.uuid} currentQuestion={question.question} session={session} />
                                         )
                                     }
                                 })}
@@ -96,19 +100,65 @@ const QAPopulatedComponent = ({ questions, answers, isAnswerFetching,loadingQues
     )
 }
 
-const MiniTextComponent = ({ type, text, isLoading, loadingQuestionuuid , currentuuid}) => {
+const MiniTextComponent = ({ type, text, isLoading, loadingQuestionuuid, currentuuid, currentQuestion,session }) => {
+    const [feedback, setFeedback] = useState(null) // [UP, DOWN]
+    const { toast } = useToast();
+    const handleFeedback = (value) => {
+        if (feedback === value) {
+            setFeedback(null);
+            toast({
+                title: 'Feedback removed',
+                description: 'Your feedback has been removed',
+                status: 'info',
+            })
+        } else {
+            if (feedback !== null) {
+                toast({
+                    title: 'Feedback changed',
+                    description: 'Your feedback has been changed',
+                    status: 'info',
+                })
+            } else {
+                toast({
+                    title: 'Feedback added',
+                    description: 'Thanks for making UniChat better!',
+                    status: 'info',
+                })
+            }
+            setFeedback(value);
+            console.log(currentQuestion, text, value)
+            let res;
+            fetch('/api/chat/feedback', {
+                method: 'POST',
+                body: JSON.stringify({
+                    question: currentQuestion,
+                    answer: text,
+                    feedback: value
+                })
+            })
+                .then(data => {
+                    //console.log(data)
+                    res = data;
+                })
+                .catch(err => {
+                    console.log(err)
+                })
 
+        }
+
+    }
     const chatbotDiv = <div className='w-6 h-6 rounded-full bg-emerald-600 flex items-center justify-center'>
         <p className='font-medium text-xs p-0 m-0'>
             <BrainCircuit className='w-4 h-4 text-white font-medium' />
         </p>
+
     </div>
     const userDiv = <div className='w-6 h-6 rounded-full bg-purple-700 flex items-center justify-center'>
-        <p className='font-light text-white text-xs p-0 m-0'>
-            U
-        </p>
+
+        <UserAvatar user={session?.user} className='w-6 h-6 text-white font-medium rounded-full' />
+
     </div>;
-    if (text === null && !isLoading ) return (<></>)
+    if (text === null && !isLoading) return (<></>)
     return (
         <>
             <div className='flex flex-row items-center justify-start mb-4'>
@@ -118,10 +168,15 @@ const MiniTextComponent = ({ type, text, isLoading, loadingQuestionuuid , curren
                         <p className='text-zinc-800 dark:text-gray-300 text-md font-extrabold ml-2'>{type == 'question' ? "You" : "UniChat"}</p>
                     </div>
                     <div className='ml-6'>
-                        <p className='text-zinc-800 dark:text-gray-300 text-md font-medium ml-2 w-full overflow-auto break-all no-scrollbar'>
-                        {( type!=="question" && (loadingQuestionuuid == currentuuid)) ? <Loader2 className='animate-spin' /> : text}
+                        <p className='text-zinc-800 dark:text-gray-300 text-md font-medium ml-2 w-full overflow-auto break-words no-scrollbar'>
+                            {(type !== "question" && (loadingQuestionuuid == currentuuid)) ? <Loader2 className='animate-spin' /> : text}
                         </p>
                     </div>
+                    {
+                        type == 'question' ? null : (<div className='inline-flex gap-x-4 mt-4 items-center'>
+                            <ThumbsUp className={`w-4 h-4 font-medium cursor-pointer ${feedback === "UP" ? "fill-black dark:fill-white" : ""}`} onClick={() => handleFeedback("UP")} />
+                            <ThumbsDown className={`w-4 h-4 font-medium cursor-pointer ${feedback === "DOWN" ? "fill-black dark:fill-white" : ""}`} onClick={() => handleFeedback("DOWN")} /></div>)
+                    }
                 </div>
             </div>
         </>
