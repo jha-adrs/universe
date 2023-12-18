@@ -58,13 +58,7 @@ export async function GET(req) {
                 },
                 visibility: "PUBLIC",
             };
-        } else if (session) {
-            whereClause = {
-                community: {
-                    id: { in: userCommunityIds },
-                },
-            };
-        }else{
+        } else{
             whereClause = {
                 visibility: "PUBLIC",
             };
