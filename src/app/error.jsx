@@ -13,7 +13,7 @@ export default function Error({
         console.error(error)
     }, [error])
     return (
-        <div className='flex flex-col h-screen w-screen items-center justify-center'>
+        <div className='flex flex-col h-screen w-screen items-center justify-center inset-0'>
             <h2 className='text-3xl font-bold text-primary'>Something went wrong!</h2>
             <Image src={ErrorSvg} alt="Error Page" width={400} height={400} />
             <div className="flex flex-col gap-y-4 items-center justify-between">
