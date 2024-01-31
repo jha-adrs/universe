@@ -32,7 +32,7 @@ export async function POST(req) {
         const q_embeddings_str = q_embeddings.toString().replace(/\.\.\./g, '');
 
         // Query DB
-        const client = new Client({ connectionString: process.env.AWS_POSTGRES_DB_CONNECTION_STRING, ssl: { rejectUnauthorized: false } });
+        const client = new Client({ connectionString: process.env.NEON_PG_DB_CONNECTION_STRING, ssl: { rejectUnauthorized: false } });
         await client.connect();
         const insertQuery = `
       SELECT text

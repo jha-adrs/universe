@@ -5,7 +5,7 @@ generator client {
 
 datasource db {
   provider     = "postgresql"
-  url          = env("AWS_POSTGRES_DB_CONNECTION_STRING")
+  url          = env("NEON_PG_DB_CONNECTION_STRING")
   relationMode = "foreignKeys"
   extensions   = [vector]
 }
