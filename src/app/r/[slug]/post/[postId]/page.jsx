@@ -12,6 +12,7 @@ import EditorOutput from '@/components/EditorOutput'
 import { Skeleton } from '@/components/ui/skeleton'
 import Comment from '@/components/comments/Comment'
 import CommentsSection from '@/components/comments/CommentsSection'
+import { logger } from '@/lib/logger'
 export const dynamic = 'force-dynamic'
 export const fetchCache = 'force-no-store'
 
@@ -21,6 +22,7 @@ const page = async ({ params }) => {
   
   let post;
   if (!cachedPost) {
+    logger.warn("Post not found in cache, fetching from database")
     post = await db.post.findFirst({
       where: {
         id: postId

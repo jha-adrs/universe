@@ -78,8 +78,8 @@ const Layout = async ({children, params:{slug}}) =>{
                                 <dd className="text-gray-700 dark:text-zinc-300">{memberCount}</dd>
                                 
                             </div>
-                            <div className="flex justify-between gap-x-4 py-3">
-                                <dt className="text-gray-500 dark:text-zinc-300">Description</dt>
+                            <div className="flex flex-col justify-between gap-x-4 py-3">
+                                <dt className="text-gray-500 font-semibold dark:text-zinc-300">Description</dt>
                                 <dd className="text-gray-700 dark:text-zinc-300">{community.description}</dd>
                                 
                             </div>

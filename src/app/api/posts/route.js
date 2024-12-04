@@ -34,7 +34,7 @@ export async function GET(req) {
             page: url.searchParams.get("page"),
             username: url.searchParams.get("username"),
         });
-        logger.info("GET /api/posts", { limit, page, communityName, username });
+        logger.info("GET /api/posts", { limit, username });
         let whereClause = {};
 
         if (session && communityName) {
@@ -87,7 +87,7 @@ export async function GET(req) {
         const postCount = await db.post.count({
             where: whereClause,
         });
-        logger.info("GET /api/posts response", { posts, postCount });
+        logger.info("GET /api/posts response", {postCount });
         return new Response(JSON.stringify(posts), {
             headers: {
                 "content-type": "application/json",
