@@ -9,6 +9,7 @@ import TooltipWrapper from "@/components/TooltipWrapper"
 import { useCustomToasts } from '@/hooks/use-custom-toasts'
 import { getSession } from 'next-auth/react'
 import { debounce } from 'lodash'
+import { toast } from '@/components/ui/use-toast'
 
 
 const questionSchema = z.object({
@@ -51,13 +52,13 @@ const Page = ({ params }) => {
     const [loadingQuestionuuid, setLoadingQuestionuuid] = useState('');
     const [debouncedTextInput, setDebouncedTextInput] = useState('');
     const router = useRouter();
-    const {loginToast} = useCustomToasts();
-    
+    const { loginToast } = useCustomToasts();
+
 
     const handleAnswering = (textInput) => {
 
         console.log('handleAnswering', textInput);
-        
+
         const uuid = uuidv4();
         const timestamp = Date.now();
         // Store the current input value in a variable
@@ -94,8 +95,8 @@ const Page = ({ params }) => {
                     query: text,
                     stream: false,
                     context: {
-                        questions : questions?.map((question)=>question.question),
-                        answers : answers?.map((answer)=>answer.answer),
+                        questions: questions?.map((question) => question.question),
+                        answers: answers?.map((answer) => answer.answer),
                     }
                 }),
             });
@@ -142,12 +143,12 @@ const Page = ({ params }) => {
         const updateDebouncedTextInput = debounce(() => setDebouncedTextInput(textInput), 50);
         updateDebouncedTextInput();
         return updateDebouncedTextInput.cancel;
-      }, [textInput]);
+    }, [textInput]);
     return (
         <div className="flex flex-col w-full h-fit  no-scrollbar items-center justify-between">
             {/**Upper Icons */}
             <div className='flex w-full h-6 items-center justify-between'>
-                <TooltipWrapper text={'New Chat'} Component={PenSquare} className="w-4 h-4 " onClick={()=>{
+                <TooltipWrapper text={'New Chat'} Component={PenSquare} className="w-4 h-4 " onClick={() => {
                     setAnswers([]);
                     setQuestions([]);
                     setRerender(0);
@@ -158,17 +159,17 @@ const Page = ({ params }) => {
                 }} />
                 <div>
                     <p className="font-bold text-lg gap-x-2 inline-flex items-center">
-                        <TooltipWrapper Component={BrainCircuit} text="Home" className="w-5 h-5 cursor-pointer" onClick={()=>{
+                        <TooltipWrapper Component={BrainCircuit} text="Home" className="w-5 h-5 cursor-pointer" onClick={() => {
                             router.push('/');
                         }} />  UniChat
                     </p>
                 </div>
-                <TooltipWrapper text={'Help'} Component={ShieldQuestion} className="w-4 h-4 " 
+                <TooltipWrapper text={'Help'} Component={ShieldQuestion} className="w-4 h-4 "
                 />
             </div>
             {/**Chat */}
             <div className='h-full w-full '>
-                <QAComponent  questions={questions} isAnswerFetching={isAnswerFetching} answers={answers} loadingQuestionuuid={loadingQuestionuuid} />
+                <QAComponent questions={questions} isAnswerFetching={isAnswerFetching} answers={answers} loadingQuestionuuid={loadingQuestionuuid} />
             </div>
             {/**Search bar at sticky position */}
 
@@ -176,21 +177,25 @@ const Page = ({ params }) => {
                 <div className='relative w-full bg-transparent items-center dark:bg-zinc-800 rounded-lg h-12 '>
                     <div className='relative flex flex-row w-full  items-center  rounded-lg border border-zinc-500 shadow-sm dark:shadow-transparent'>
                         <Search className='w-6 h-6 text-primary dark:text-white   ml-2' />
-                        <input style={{ resize: 'none', outline: 'none', overflow: 'hidden' }}
+                        <input
+                            style={{ resize: 'none', outline: 'none', overflow: 'hidden' }}
                             placeholder='Ask UniChat...' name="" id="" cols="30" rows="1"
                             onChange={(e) => setTextInput(e.target.value)}
                             value={debouncedTextInput}
                             className='m-0 w-full resize-none border-0 bg-transparent py-[10px] pr-10 focus:ring-0 focus-visible:ring-0 md:py-3.5 md:pr-12 placeholder-black/50 dark:placeholder-white/50 pl-3 md:pl-4'
-                            autoFocus />
-                        <button className='rounded-lg bg-zinc-100 dark:bg-zinc-700 mr-3 hover:bg-zinc-200 dark:hover:bg-zinc-600'
-                            onClick={(e) => {
-                                handleAnswering(textInput);
-                            }}
+                            autoFocus
                             onKeyDown={(e) => {
                                 if (e.key === 'Enter') {
-                                    console.log(e.key)
+                                    e.preventDefault();
                                     handleAnswering(textInput);
                                 }
+                            }}
+                        />
+                        <button
+                            type='submit'
+                            className='rounded-lg bg-zinc-100 dark:bg-zinc-700 mr-3 hover:bg-zinc-200 dark:hover:bg-zinc-600'
+                            onClick={(e) => {
+                                handleAnswering(textInput);
                             }}
                             disabled={textInput.length === 0 || isAnswerFetching}
                         >
