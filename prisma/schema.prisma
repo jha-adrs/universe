@@ -176,14 +176,16 @@ model Chathistory {
   question         String?
   answer           String?
   suggested_answer String?
-  feedback        FeedBack?
+  feedback         FeedBack?
   created_at       DateTime  @default(now())
   updated_at       DateTime  @updatedAt
   userId           String?
+  conversationId   String?   @default(cuid())
   user             User?     @relation(fields: [userId], references: [id])
 
   @@index([userId])
   @@index([feedback])
+  @@index([conversationId])
 }
 
 enum CommunityVisibility {
