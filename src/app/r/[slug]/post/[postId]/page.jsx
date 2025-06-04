@@ -19,7 +19,7 @@ export const fetchCache = 'force-no-store'
 const page = async ({ params }) => {
   const { postId } = params
   const cachedPost = await redisHelpers.getPostData(postId)
-  
+
   let post;
   if (!cachedPost) {
     logger.warn("Post not found in cache, fetching from database")
@@ -34,7 +34,7 @@ const page = async ({ params }) => {
         comments: true,
       }
     })
-    await redisHelpers.setPostData(post)
+    redisHelpers.setPostData(post) // Removing async so it doesn't block the response
 
   }
   else {
@@ -94,7 +94,7 @@ const page = async ({ params }) => {
               </div>
             </div>
           }>
-              <CommentsSection postId={post.id}/>
+            <CommentsSection postId={post.id} />
           </Suspense>
 
         </div>

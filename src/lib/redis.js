@@ -5,17 +5,21 @@ require('server-only');
 import https from 'https'
 let redisClient;
 
-if (global.redisClient) {
-    logger.info('Using existing redis client')
-    redisClient = global.redisClient;
-    global.redisClient = redisClient;
-}
-else {
-    logger.info('Creating new redis client')
-    redisClient = Redis.fromEnv({ agent: new https.Agent({ keepAlive: true, timeout: 60000, }) });
-    global.redisClient = redisClient;
-}
+try {
+    if (global.redisClient) {
+        logger.info('Using existing redis client')
+        redisClient = global.redisClient;
+        global.redisClient = redisClient;
+    }
+    else {
+        logger.info('Creating new redis client')
+        redisClient = Redis.fromEnv({ agent: new https.Agent({ keepAlive: true, timeout: 60000, }) });
+        global.redisClient = redisClient;
+    }
 
+} catch (error) {
+    logger.error('Error creating Redis client:', error);
+}
 
 export const redis = redisClient;
 
