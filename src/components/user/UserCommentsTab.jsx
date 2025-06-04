@@ -66,7 +66,7 @@ const UserCommentsTab = ({ userId }) => {
           <Frown className="mx-auto h-12 w-12 text-gray-400" />
           <h3 className="mt-4 text-lg font-medium">No comments yet</h3>
           <p className="mt-2 text-sm text-gray-500">
-            This user hasn't made any comments yet.
+            This user hasn&apos;t made any comments yet.
           </p>
         </CardContent>
       </Card>
