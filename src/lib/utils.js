@@ -62,3 +62,31 @@ export function getJoinedDate(date) {
 }
 
 export const wait  = (ms)=> new Promise((resolve, reject)=>setTimeout(()=>resolve(),ms || 1000))
+
+// Gradient color pairs for community headers
+const gradientPairs = [
+  ['from-blue-600', 'to-violet-600'],
+  ['from-rose-500', 'to-orange-500'],
+  ['from-emerald-500', 'to-teal-600'],
+  ['from-pink-500', 'to-purple-600'],
+  ['from-amber-500', 'to-red-500'],
+  ['from-indigo-600', 'to-cyan-500'],
+  ['from-green-500', 'to-cyan-600'],
+  ['from-fuchsia-600', 'to-pink-500'],
+  ['from-cyan-500', 'to-blue-600'],
+  ['from-violet-600', 'to-indigo-600']
+];
+
+export function getRandomGradient(seed) {
+  // If a seed is provided, generate a deterministic gradient based on the seed
+  if (seed) {
+    // Convert seed string to a number for consistency
+    const seedValue = seed.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    const index = seedValue % gradientPairs.length;
+    return `bg-gradient-to-r ${gradientPairs[index][0]} ${gradientPairs[index][1]}`;
+  }
+  
+  // Otherwise, return a random gradient
+  const randomIndex = Math.floor(Math.random() * gradientPairs.length);
+  return `bg-gradient-to-r ${gradientPairs[randomIndex][0]} ${gradientPairs[randomIndex][1]}`;
+}

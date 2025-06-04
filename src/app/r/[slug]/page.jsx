@@ -1,5 +1,4 @@
-
-import CommunityProfileMain from '@/components/CommunityProfileMain';
+import CommunityHeader from '@/components/community/CommunityHeader';
 import MiniCreatePost from '@/components/MiniCreatePost';
 import FeedSkeleton from '@/components/skeletons/FeedSkeleton';
 
@@ -19,6 +18,7 @@ const page = async ({ params }) => {
     const { slug } = params;
     const session = await getAuthSession();
     let subscriptionStatus = false;
+    
     const community = await db.community.findFirst({
         where: { name: slug },
         include: {
@@ -33,9 +33,15 @@ const page = async ({ params }) => {
                     community: true
                 },
                 take: config.INFINITE_SCROLL_PAGINATION_AMOUNT,
+            },
+            _count: {
+                select: {
+                    members: true
+                }
             }
         }
     });
+    
     if (!community) {
         return notFound();
     }
@@ -51,25 +57,29 @@ const page = async ({ params }) => {
             }
         }
     })
+    
     if ((subscription) && (_.get(subscription, "userId") == session?.user?.id) && (_.get(subscription, "communityId") == community.id)) {
         subscriptionStatus = true;
         logger.info("User subscription status true");
     }
 
-
+    const isOwner = community.creatorId === session?.user?.id;
 
     return (
-        <>
+        <div className="flex flex-col space-y-4">
+            <CommunityHeader 
+                community={community} 
+                subscriptionStatus={subscriptionStatus} 
+                isOwner={isOwner}
+                session={session}
+                memberCount={community._count.members}
+            />
+            
             <Suspense fallback={<FeedSkeleton />}>
-                <div className='w-full h-fit  items-center justify-between  inline-flex overflow-hidden rounded-md bg-white shadow list-none dark:bg-zinc-800 dark:text-white'>
-                    <CommunityProfileMain subscriptionStatus={subscriptionStatus} community={community} />
-                </div>
                 <MiniCreatePost session={session} />
                 <PostFeed initialPosts={community.posts} communityName={community.name} />
-
             </Suspense>
-
-        </>
+        </div>
     )
 }
 

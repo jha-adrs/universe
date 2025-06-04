@@ -37,7 +37,7 @@ const CreateComment = ({ postId, user,replyToId, ...props }) => {
             }
             return toast({
               title: 'Oops! Something went wrong.',
-              description:  err?.response.data||"Comment was not published!",
+              description:  "Comment was not published!",
               variant: 'destructive'
             })
           },
@@ -57,7 +57,7 @@ const CreateComment = ({ postId, user,replyToId, ...props }) => {
     return (
         <div className='grid w-full gap-1.5'>
             <Label htmlFor='comment' className='text-sm font-medium'>
-                Comment as @{user?.username}
+                Comment as @{user?.name || user?.username || 'Anonymous'}
             </Label>
             <div className="mt-2">
                 <Textarea

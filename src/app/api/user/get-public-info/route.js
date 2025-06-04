@@ -52,7 +52,7 @@ export async function POST(req) {
             }
         });
 
-        logger.info("Get public user info", { username }, { user }, { posts });
+        logger.info("Get public user info", { username }, { user  });
 
         return new Response(JSON.stringify({ user, posts }), {
             status: 200,

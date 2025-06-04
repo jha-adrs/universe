@@ -66,8 +66,11 @@ export default async function Home() {
                   ))}
                 </div>
 
-                <Link className={buttonVariants({ className: 'w-full mt-4 mb-6 ', variant: "black" })} href='/popular'>
+                <Link className={buttonVariants({ className: 'w-full mt-4 mb-3', variant: "black" })} href='/popular'>
                   <Compass className='w-4 h-4 mr-2' /> Explore</Link>
+
+                <Link className={buttonVariants({ className: 'w-full mb-6', variant: "outline" })} href='/communities'>
+                  <Users className='w-4 h-4 mr-2' /> My Communities</Link>
 
               </div>
 

@@ -1,9 +1,13 @@
-import FeedSkeleton from '@/components/skeletons/FeedSkeleton'
 import React from 'react'
+import CommunityHeaderSkeleton from '@/components/skeletons/CommunityHeaderSkeleton'
+import FeedSkeleton from '@/components/skeletons/FeedSkeleton'
 
 const Loading = () => {
   return (
-    <FeedSkeleton/>
+    <div className="flex flex-col space-y-6">
+      <CommunityHeaderSkeleton />
+      <FeedSkeleton />
+    </div>
   )
 }
 

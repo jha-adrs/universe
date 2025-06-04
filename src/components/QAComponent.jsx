@@ -21,17 +21,90 @@ const customScrollBar = {
     }
 }
 
-const QAComponent = ({ questions, isAnswerFetching, answers, loadingQuestionuuid }) => {
+const QAComponent = ({ questions, answers, isAnswerFetching, loadingQuestionuuid }) => {
     const {data: session} = useSession();
     useEffect(() => {
         //console.log('QAComponent', questions, answers, "sess",session)
     }, [questions, answers])
 
+    // Helper function to find answers for a question
+    const findAnswerForQuestion = (questionUuid) => {
+        if (!answers || !Array.isArray(answers)) return null;
+        return answers.find(answer => answer.uuid === questionUuid);
+    };
+
+    // Helper function to format answer text with proper line breaks
+    const formatAnswer = (text) => {
+        if (text === 'Loading') return text;
+        return text.split('\n').map((line, i) => (
+            <React.Fragment key={i}>
+                {line}
+                <br />
+            </React.Fragment>
+        ));
+    };
+
+    if (!questions || questions.length === 0) {
+        return null;
+    }
+
     return (
-        <div className='py-5 h-full'>
-            {
-                questions?.length === 0 ? <InitialComponent /> : <QAPopulatedComponent questions={questions} answers={answers} isAnswerFetching={isAnswerFetching} loadingQuestionuuid={loadingQuestionuuid} session={session}/>
-            }
+        <div className="flex flex-col space-y-6 w-full">
+            {questions.map((question, index) => {
+                const answer = findAnswerForQuestion(question.uuid);
+                const isCurrentlyLoading = loadingQuestionuuid === question.uuid && isAnswerFetching;
+
+                return (
+                    <div key={question.uuid} className="flex flex-col space-y-4 w-full">
+                        {/* Question */}
+                        <div className="flex items-start space-x-3">
+                            <div className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center flex-shrink-0">
+                                <span className="font-semibold">Y</span>
+                            </div>
+                            <div className="flex-1">
+                                <p className="text-sm font-medium mb-1">You</p>
+                                <div className="prose prose-sm dark:prose-invert">
+                                    <p>{question.question}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Answer */}
+                        {answer && (
+                            <div className="flex items-start space-x-3">
+                                <div className="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center flex-shrink-0">
+                                    <span className="font-semibold">M</span>
+                                </div>
+                                <div className="flex-1">
+                                    <p className="text-sm font-medium mb-1">Max</p>
+                                    <div className={`prose prose-sm dark:prose-invert ${isCurrentlyLoading ? 'opacity-60' : ''}`}>
+                                        {isCurrentlyLoading ? (
+                                            <div className="flex items-center space-x-2">
+                                                <Loader2 className="w-4 h-4 animate-spin" />
+                                                <p>Thinking...</p>
+                                            </div>
+                                        ) : answer.answer === 'Loading' ? (
+                                            <div className="flex items-center space-x-2">
+                                                <Loader2 className="w-4 h-4 animate-spin" />
+                                                <p>Thinking...</p>
+                                            </div>
+                                        ) : (
+                                            <div className="bg-gray-50 dark:bg-zinc-800 p-4 rounded-lg">
+                                                {formatAnswer(answer.answer)}
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Divider */}
+                        {index < questions.length - 1 && (
+                            <hr className="border-t border-zinc-200 dark:border-zinc-800" />
+                        )}
+                    </div>
+                )
+            })}
         </div>
     )
 }

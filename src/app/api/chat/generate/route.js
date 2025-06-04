@@ -12,8 +12,8 @@ export async function POST(req) {
             return new Response("Unauthorized", { status: 401 })
         }
         const body = await req.json();
-        const { query, stream_required } = ChatSchema.parse(body);
-        logger.info("Chat generation request", query, stream_required);
+        const { query, stream, conversationId } = ChatSchema.parse(body);
+        logger.info("Chat generation request", query, stream, conversationId);
         let prompt = '';
         // OpenAI
         const response = await fetch('https://api.openai.com/v1/embeddings', {
@@ -66,7 +66,7 @@ export async function POST(req) {
         const output = await getOpenAIChoices(prompt);
         logger.info(output);
         // Also insert into DB
-        insertChatHistory(query, output,session);
+        insertChatHistory(query, output, session, conversationId);
         return new Response( output , { status: 200 });
 
     } catch (error) {
@@ -74,11 +74,13 @@ export async function POST(req) {
         return new Response(JSON.stringify({ success: 0, error: "Something went wrong!" }), { status: 500 })
     }
 }
-const insertChatHistory = async (query, output,session) => {
+
+const insertChatHistory = async (query, output, session, conversationId) => {
     const res = await db.chathistory.create({
         data:{
             question: query,
             answer: output,
+            conversationId: conversationId || undefined,
             user:{
                 connect:{
                     id: session?.user.id
@@ -87,6 +89,7 @@ const insertChatHistory = async (query, output,session) => {
         }
     })
 }
+
 const getOpenAIChoices = (prompt) => {
     return new Promise((resolve, reject) => {
         fetch('https://api.openai.com/v1/completions', {

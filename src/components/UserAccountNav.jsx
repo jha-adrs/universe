@@ -71,7 +71,7 @@ export function UserAccountNav({ user, ...props }) {
                         <AvatarImage src={`${avatarURL}`} alt={`@${username}`} />
                         <AvatarFallback>{name?.slice(0, 2)}</AvatarFallback>
                     </Avatar>
-                    <span className='ml-3'>{username}</span>
+                    <span className='ml-3'>{name || username}</span>
                     <CaretDownIcon className='w-5 h-5 ml-2' />
                 </Button>
             </DropdownMenuTrigger>
@@ -79,41 +79,56 @@ export function UserAccountNav({ user, ...props }) {
                 <DropdownMenuLabel className="rounded">My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                    <DropdownMenuItem>
-                        <Link href='/' className='flex flex-row place-items-center'><NewspaperIcon className='mr-2'/> Feed</Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem disabled={!username}>
-                        <Link href={`${config.NEXTAPP_DOMAIN}/u/${username}`} className='flex flex-row place-items-center'><UserCircle className='mr-2'/> Profile</Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                        <Link href='/settings' className='flex flex-row place-items-center'><UserCog2 className='mr-2'/> Settings</Link>
-                    </DropdownMenuItem>
+                    <Link href='/' className='w-full'>
+                        <DropdownMenuItem>
+                            <NewspaperIcon className='mr-2'/> Feed
+                        </DropdownMenuItem>
+                    </Link>
+                    <Link href={`${config.NEXTAPP_DOMAIN}/u/${username}`} className={cn('w-full', !username && 'pointer-events-none opacity-50')}>
+                        <DropdownMenuItem disabled={!username}>
+                            <UserCircle className='mr-2'/> Profile
+                        </DropdownMenuItem>
+                    </Link>
+                    <Link href='/settings' className='w-full'>
+                        <DropdownMenuItem>
+                            <UserCog2 className='mr-2'/> Settings
+                        </DropdownMenuItem>
+                    </Link>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                    <DropdownMenuItem>
-                        <Link href='/u/subscriptions'className='flex flex-row place-items-center' >
-                        <Users2Icon className='mr-2'/>  My Communities
-                        </Link>
-                    </DropdownMenuItem>
-
-                    <DropdownMenuItem>
-                        <Link href='/r/create'className='flex flex-row place-items-center' ><Plus className='mr-2' /> Create a Community </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                        <Link href='/interactions' className='flex flex-row place-items-center' ><HistoryIcon className='mr-2'/>My Interactions </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                        <Link href='/notifications' className='flex flex-row place-items-center' ><BellDot className='mr-2'/> Notifications</Link> {/*Add modal */}
-                    </DropdownMenuItem>
+                    <Link href='/communities' className='w-full'>
+                        <DropdownMenuItem>
+                            <Users2Icon className='mr-2'/> My Communities
+                        </DropdownMenuItem>
+                    </Link>
+                    <Link href='/r/create' className='w-full'>
+                        <DropdownMenuItem>
+                            <Plus className='mr-2' /> Create a Community
+                        </DropdownMenuItem>
+                    </Link>
+                    <Link href='/u/interactions' className='w-full'>
+                        <DropdownMenuItem>
+                            <HistoryIcon className='mr-2'/> My Interactions
+                        </DropdownMenuItem>
+                    </Link>
+                    <Link href='/notifications' className='w-full'>
+                        <DropdownMenuItem>
+                            <BellDot className='mr-2'/> Notifications
+                        </DropdownMenuItem>
+                    </Link>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                    <Link href='/messages' className='flex flex-row place-items-center' ><InboxIcon className='mr-2'/>Direct Messages </Link> {/*Add modal */}
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                <Link href='/messages' className='flex flex-row place-items-center' ><HelpCircle className='mr-2'/> Support  </Link>
-                </DropdownMenuItem>
+                <Link href='/messages' className='w-full'>
+                    <DropdownMenuItem>
+                        <InboxIcon className='mr-2'/> Direct Messages
+                    </DropdownMenuItem>
+                </Link>
+                <Link href='/help' className='w-full'>
+                    <DropdownMenuItem>
+                        <HelpCircle className='mr-2'/> Support
+                    </DropdownMenuItem>
+                </Link>
                 
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
