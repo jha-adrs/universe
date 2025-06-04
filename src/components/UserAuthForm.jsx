@@ -83,9 +83,9 @@ const UserAuthForm = ({ className, ...props }) => {
                 <Button onClick={loginWithGoogle} variant='outline' className={cn('flex m-2', className)} disabled={isLoading || !availableProviders['google']}>
                     {isLoading ? <Icons.spinner className='w-5 h-5 mr-2 animate-spin' /> : <Icons.google className='w-5 h-5 mr-2' />} <p className='hidden md:block'>Google</p>
                 </Button>
-                <Button onClick={loginWithGithub} variant='outline' className={cn('flex m-2', className)} disabled={isLoading || !availableProviders['github']}>
+                <Button onClick={loginWithGithub} variant='outline' className={cn('flex m-2', className)} disabled={true}>
                     {isLoading ? <Icons.spinner className='w-5 h-5 mr-2 animate-spin' /> : <Icons.github className='w-5 h-5 mr-2' />}<p className='hidden md:block'>Github</p></Button>
-                <Button onClick={loginWithMicrosoft} variant='outline' className={cn('flex m-2', className)} disabled={isLoading || !availableProviders['microsoft']}>
+                <Button onClick={loginWithMicrosoft} variant='outline' className={cn('flex m-2', className)} disabled={true}>
                     {isLoading ? <Icons.spinner className='w-5 h-5 mr-2 animate-spin' /> : <Icons.microsoft className='w-5 h-5 mr-2' />}<p className='hidden md:block'>Microsoft</p></Button>
             </div>
         </div>
