@@ -84,7 +84,7 @@ export function UserAccountNav({ user, ...props }) {
                             <NewspaperIcon className='mr-2'/> Feed
                         </DropdownMenuItem>
                     </Link>
-                    <Link href={`${config.NEXTAPP_DOMAIN}/u/${username}`} className={cn('w-full', !username && 'pointer-events-none opacity-50')}>
+                    <Link href={`/u/${username}`} className={cn('w-full', !username && 'pointer-events-none opacity-50')}>
                         <DropdownMenuItem disabled={!username}>
                             <UserCircle className='mr-2'/> Profile
                         </DropdownMenuItem>
