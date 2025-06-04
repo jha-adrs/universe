@@ -37,7 +37,7 @@ const CreateComment = ({ postId, user,replyToId, ...props }) => {
             }
             return toast({
               title: 'Oops! Something went wrong.',
-              description:  err?.response.data||"Comment was not published!",
+              description:  "Comment was not published!",
               variant: 'destructive'
             })
           },
